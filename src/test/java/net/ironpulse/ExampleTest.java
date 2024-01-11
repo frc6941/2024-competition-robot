@@ -1,8 +1,8 @@
 package net.ironpulse;
 
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
 
 class ExampleTest {
     // To learn more about how to write unit tests, see the

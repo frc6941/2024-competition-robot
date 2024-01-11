@@ -125,6 +125,7 @@ spotless {
             include '**/*.java'
             exclude '**/build/**', '**/build-*/**'
         }
+        palantirJavaFormat()
         indentWithSpaces(4)
         removeUnusedImports()
         formatAnnotations()

@@ -1,17 +1,18 @@
 package net.ironpulse.subsystems;
 
+import static edu.wpi.first.units.Units.Microsecond;
+import static edu.wpi.first.units.Units.Seconds;
+
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
-
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Time;
@@ -19,13 +20,8 @@ import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-
-import net.ironpulse.Constants;
-
 import java.util.function.Supplier;
-
-import static edu.wpi.first.units.Units.Microsecond;
-import static edu.wpi.first.units.Units.Seconds;
+import net.ironpulse.Constants;
 
 public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
     private static final Measure<Time> simLoopPeriod = Microsecond.of(0.005);
@@ -35,8 +31,7 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
     public SwerveSubsystem(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
         super(driveTrainConstants, modules);
         configurePathPlanner();
-        if (!Utils.isSimulation())
-            return;
+        if (!Utils.isSimulation()) return;
         startSimThread();
     }
 
@@ -50,15 +45,14 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
                 this::seedFieldRelative,
                 this::getCurrentRobotChassisSpeeds,
                 speeds -> this.setControl(autoRequest.withSpeeds(speeds)),
-                new HolonomicPathFollowerConfig(new PIDConstants(10, 0, 0),
+                new HolonomicPathFollowerConfig(
+                        new PIDConstants(10, 0, 0),
                         new PIDConstants(10, 0, 0),
                         Constants.TunerConstants.speedAt12Volts.magnitude(),
                         driveBaseRadius,
-                        new ReplanningConfig()
-                ),
+                        new ReplanningConfig()),
                 () -> false,
-                this
-        );
+                this);
     }
 
     public Command applyRequest(Supplier<SwerveRequest> requestSupplier) {

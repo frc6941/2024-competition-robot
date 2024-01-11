@@ -51,12 +51,10 @@ public class Robot extends TimedRobot {
 
     /** This method is called once each time the robot enters Disabled mode. */
     @Override
-    public void disabledInit() {
-    }
+    public void disabledInit() {}
 
     @Override
-    public void disabledPeriodic() {
-    }
+    public void disabledPeriodic() {}
 
     /**
      * This autonomous runs the autonomous command selected by your
@@ -74,8 +72,7 @@ public class Robot extends TimedRobot {
 
     /** This method is called periodically during autonomous. */
     @Override
-    public void autonomousPeriodic() {
-    }
+    public void autonomousPeriodic() {}
 
     @Override
     public void teleopInit() {
@@ -90,8 +87,7 @@ public class Robot extends TimedRobot {
 
     /** This method is called periodically during operator control. */
     @Override
-    public void teleopPeriodic() {
-    }
+    public void teleopPeriodic() {}
 
     @Override
     public void testInit() {
@@ -101,16 +97,13 @@ public class Robot extends TimedRobot {
 
     /** This method is called periodically during test mode. */
     @Override
-    public void testPeriodic() {
-    }
+    public void testPeriodic() {}
 
     /** This method is called once when the robot is first started up. */
     @Override
-    public void simulationInit() {
-    }
+    public void simulationInit() {}
 
     /** This method is called periodically whilst in simulation. */
     @Override
-    public void simulationPeriodic() {
-    }
+    public void simulationPeriodic() {}
 }

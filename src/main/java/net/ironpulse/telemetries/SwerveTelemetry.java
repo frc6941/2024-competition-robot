@@ -1,5 +1,7 @@
 package net.ironpulse.telemetries;
 
+import static edu.wpi.first.units.Units.Seconds;
+
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
@@ -15,8 +17,6 @@ import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.util.Color8Bit;
-
-import static edu.wpi.first.units.Units.Seconds;
 
 public class SwerveTelemetry {
     private final Measure<Velocity<Distance>> maxSpeed;
@@ -35,15 +35,19 @@ public class SwerveTelemetry {
 
     /* Robot pose for field positioning */
     private final NetworkTable table = inst.getTable("Pose");
-    private final DoubleArrayPublisher fieldPub = table.getDoubleArrayTopic("robotPose").publish();
+    private final DoubleArrayPublisher fieldPub =
+            table.getDoubleArrayTopic("robotPose").publish();
     private final StringPublisher fieldTypePub = table.getStringTopic(".type").publish();
 
     /* Robot speeds for general checking */
     private final NetworkTable driveStats = inst.getTable("Drive");
-    private final DoublePublisher velocityX = driveStats.getDoubleTopic("Velocity X").publish();
-    private final DoublePublisher velocityY = driveStats.getDoubleTopic("Velocity Y").publish();
+    private final DoublePublisher velocityX =
+            driveStats.getDoubleTopic("Velocity X").publish();
+    private final DoublePublisher velocityY =
+            driveStats.getDoubleTopic("Velocity Y").publish();
     private final DoublePublisher speed = driveStats.getDoubleTopic("Speed").publish();
-    private final DoublePublisher odomFreq = driveStats.getDoubleTopic("Odometry Frequency").publish();
+    private final DoublePublisher odomFreq =
+            driveStats.getDoubleTopic("Odometry Frequency").publish();
 
     /* Keep a reference of the last pose to calculate the speeds */
     private Pose2d lastPose = new Pose2d();
@@ -51,28 +55,29 @@ public class SwerveTelemetry {
 
     /* Mechanisms to represent the swerve module states */
     private final Mechanism2d[] moduleMechanisms = new Mechanism2d[] {
-            new Mechanism2d(1, 1),
-            new Mechanism2d(1, 1),
-            new Mechanism2d(1, 1),
-            new Mechanism2d(1, 1),
+        new Mechanism2d(1, 1), new Mechanism2d(1, 1), new Mechanism2d(1, 1), new Mechanism2d(1, 1),
     };
     /* A direction and length changing ligament for speed representation */
     private final MechanismLigament2d[] moduleSpeeds = new MechanismLigament2d[] {
-            moduleMechanisms[0].getRoot("RootSpeed", 0.5, 0.5).append(new MechanismLigament2d("Speed", 0.5, 0)),
-            moduleMechanisms[1].getRoot("RootSpeed", 0.5, 0.5).append(new MechanismLigament2d("Speed", 0.5, 0)),
-            moduleMechanisms[2].getRoot("RootSpeed", 0.5, 0.5).append(new MechanismLigament2d("Speed", 0.5, 0)),
-            moduleMechanisms[3].getRoot("RootSpeed", 0.5, 0.5).append(new MechanismLigament2d("Speed", 0.5, 0)),
+        moduleMechanisms[0].getRoot("RootSpeed", 0.5, 0.5).append(new MechanismLigament2d("Speed", 0.5, 0)),
+        moduleMechanisms[1].getRoot("RootSpeed", 0.5, 0.5).append(new MechanismLigament2d("Speed", 0.5, 0)),
+        moduleMechanisms[2].getRoot("RootSpeed", 0.5, 0.5).append(new MechanismLigament2d("Speed", 0.5, 0)),
+        moduleMechanisms[3].getRoot("RootSpeed", 0.5, 0.5).append(new MechanismLigament2d("Speed", 0.5, 0)),
     };
     /* A direction changing and length constant ligament for module direction */
     private final MechanismLigament2d[] moduleDirections = new MechanismLigament2d[] {
-            moduleMechanisms[0].getRoot("RootDirection", 0.5, 0.5)
-                    .append(new MechanismLigament2d("Direction", 0.1, 0, 0, new Color8Bit(Color.kWhite))),
-            moduleMechanisms[1].getRoot("RootDirection", 0.5, 0.5)
-                    .append(new MechanismLigament2d("Direction", 0.1, 0, 0, new Color8Bit(Color.kWhite))),
-            moduleMechanisms[2].getRoot("RootDirection", 0.5, 0.5)
-                    .append(new MechanismLigament2d("Direction", 0.1, 0, 0, new Color8Bit(Color.kWhite))),
-            moduleMechanisms[3].getRoot("RootDirection", 0.5, 0.5)
-                    .append(new MechanismLigament2d("Direction", 0.1, 0, 0, new Color8Bit(Color.kWhite))),
+        moduleMechanisms[0]
+                .getRoot("RootDirection", 0.5, 0.5)
+                .append(new MechanismLigament2d("Direction", 0.1, 0, 0, new Color8Bit(Color.kWhite))),
+        moduleMechanisms[1]
+                .getRoot("RootDirection", 0.5, 0.5)
+                .append(new MechanismLigament2d("Direction", 0.1, 0, 0, new Color8Bit(Color.kWhite))),
+        moduleMechanisms[2]
+                .getRoot("RootDirection", 0.5, 0.5)
+                .append(new MechanismLigament2d("Direction", 0.1, 0, 0, new Color8Bit(Color.kWhite))),
+        moduleMechanisms[3]
+                .getRoot("RootDirection", 0.5, 0.5)
+                .append(new MechanismLigament2d("Direction", 0.1, 0, 0, new Color8Bit(Color.kWhite))),
     };
 
     /* Accept the swerve drive state and telemeterize it to smartdashboard */
@@ -80,11 +85,7 @@ public class SwerveTelemetry {
         /* Telemeterize the pose */
         Pose2d pose = state.Pose;
         fieldTypePub.set("Field2d");
-        fieldPub.set(new double[] {
-                pose.getX(),
-                pose.getY(),
-                pose.getRotation().getDegrees()
-        });
+        fieldPub.set(new double[] {pose.getX(), pose.getY(), pose.getRotation().getDegrees()});
 
         /* Telemeterize the robot's general speeds */
         var currentTime = Seconds.of(Utils.getCurrentTimeSeconds());
@@ -109,8 +110,9 @@ public class SwerveTelemetry {
             SmartDashboard.putData("Module " + i, moduleMechanisms[i]);
         }
 
-        SignalLogger.writeDoubleArray("odometry",
-                new double[]{ pose.getX(), pose.getY(), pose.getRotation().getDegrees() });
+        SignalLogger.writeDoubleArray(
+                "odometry",
+                new double[] {pose.getX(), pose.getY(), pose.getRotation().getDegrees()});
         SignalLogger.writeDouble("odom period", state.OdometryPeriod, "seconds");
     }
 }
