@@ -1,4 +1,4 @@
-# IronPulse Robotics Team 6941 2024 Robot
+# IronPulse Robotics Team 6941 2024 Competition Robot
 
 ## Code Structure
 
