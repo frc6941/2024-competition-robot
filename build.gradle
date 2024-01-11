@@ -3,6 +3,7 @@ plugins {
     id "java"
     id "edu.wpi.first.GradleRIO" version "2024.1.1"
     id "idea"
+    id "com.diffplug.spotless" version "6.20.0"
 }
 
 def javaVersion = JavaVersion.VERSION_17
@@ -114,6 +115,49 @@ idea {
         downloadJavadoc = true
         downloadSources = true
         // Exclude the .vscode directory from indexing and search
-        excludeDirs+=file(".vscode" )
+        excludeDirs+=file(".vscode")
+    }
+}
+
+spotless {
+    java {
+        target fileTree('.') {
+            include '**/*.java'
+            exclude '**/build/**', '**/build-*/**'
+        }
+        toggleOffOn()
+        googleJavaFormat()
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+    groovyGradle {
+        target fileTree('.') {
+            include '**/*.gradle'
+            exclude '**/build/**', '**/build-*/**'
+        }
+        greclipse()
+        indentWithSpaces(4)
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+    format 'xml', {
+        target fileTree('.') {
+            include '**/*.xml'
+            exclude '**/build/**', '**/build-*/**'
+        }
+        eclipseWtp('xml')
+        trimTrailingWhitespace()
+        indentWithSpaces(2)
+        endWithNewline()
+    }
+    format 'misc', {
+        target fileTree('.') {
+            include '**/*.md', '**/.gitignore'
+            exclude '**/build/**', '**/build-*/**'
+        }
+        trimTrailingWhitespace()
+        indentWithSpaces(2)
+        endWithNewline()
     }
 }
