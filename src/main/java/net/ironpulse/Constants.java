@@ -22,12 +22,20 @@ public final class Constants {
 
         // Swerve Gains
         private static final Slot0Configs steerGains = new Slot0Configs()
-                .withKP(100).withKI(0).withKD(0.05)
-                .withKS(0).withKV(1.5).withKA(0);
+                .withKP(100)
+                .withKI(0)
+                .withKD(0.05)
+                .withKS(0)
+                .withKV(1.5)
+                .withKA(0);
 
         private static final Slot0Configs driveGains = new Slot0Configs()
-                .withKP(3).withKI(0).withKD(0)
-                .withKS(0).withKV(0).withKA(0);
+                .withKP(3)
+                .withKI(0)
+                .withKD(0)
+                .withKS(0)
+                .withKV(0)
+                .withKA(0);
 
         // The closed-loop output type to use for the steer motors;
         // This affects the PID/FF gains for the steer motors
@@ -50,7 +58,8 @@ public final class Constants {
 
         private static final double DRIVE_GEAR_RATIO = 7.363636364;
         private static final double STEER_GEAR_RATIO = 15.42857143;
-        private static final Measure<Distance> wheelRadius = Inches.of(2.167); // Estimated at first, then fudge-factored to make odom match record
+        // Estimated at first, then fudge-factored to make odom match record
+        private static final Measure<Distance> wheelRadius = Inches.of(2.167);
 
         private static final boolean STEER_MOTOR_REVERSED = true;
         private static final boolean INVERT_LEFT_SIDE = false;
@@ -58,7 +67,6 @@ public final class Constants {
 
         private static final String CA_NBUS_NAME = "rio";
         private static final int PIGEON_ID = 1;
-
 
         // These are only used for simulation
         private static final double STEER_INERTIA = 0.00001;
@@ -68,27 +76,19 @@ public final class Constants {
         private static final Measure<Voltage> driveFrictionVoltage = Volts.of(0.25);
 
         private static final SwerveDrivetrainConstants DrivetrainConstants = new SwerveDrivetrainConstants()
-                .withPigeon2Id(PIGEON_ID)
-                .withCANbusName(CA_NBUS_NAME);
+                .withPigeon2Id(PIGEON_ID).withCANbusName(CA_NBUS_NAME);
 
         private static final SwerveModuleConstantsFactory ConstantCreator = new SwerveModuleConstantsFactory()
-                .withDriveMotorGearRatio(DRIVE_GEAR_RATIO)
-                .withSteerMotorGearRatio(STEER_GEAR_RATIO)
-                .withWheelRadius(wheelRadius.magnitude())
-                .withSlipCurrent(slipCurrent.magnitude())
-                .withSteerMotorGains(steerGains)
-                .withDriveMotorGains(driveGains)
+                .withDriveMotorGearRatio(DRIVE_GEAR_RATIO).withSteerMotorGearRatio(STEER_GEAR_RATIO)
+                .withWheelRadius(wheelRadius.magnitude()).withSlipCurrent(slipCurrent.magnitude())
+                .withSteerMotorGains(steerGains).withDriveMotorGains(driveGains)
                 .withSteerMotorClosedLoopOutput(steerClosedLoopOutput)
-                .withDriveMotorClosedLoopOutput(driveClosedLoopOutput)
-                .withSpeedAt12VoltsMps(speedAt12Volts.magnitude())
-                .withSteerInertia(STEER_INERTIA)
-                .withDriveInertia(DRIVE_INERTIA)
+                .withDriveMotorClosedLoopOutput(driveClosedLoopOutput).withSpeedAt12VoltsMps(speedAt12Volts.magnitude())
+                .withSteerInertia(STEER_INERTIA).withDriveInertia(DRIVE_INERTIA)
                 .withSteerFrictionVoltage(steerFrictionVoltage.magnitude())
                 .withDriveFrictionVoltage(driveFrictionVoltage.magnitude())
                 .withFeedbackSource(SwerveModuleConstants.SteerFeedbackType.FusedCANcoder)
-                .withCouplingGearRatio(COUPLE_RATIO)
-                .withSteerMotorInverted(STEER_MOTOR_REVERSED);
-
+                .withCouplingGearRatio(COUPLE_RATIO).withSteerMotorInverted(STEER_MOTOR_REVERSED);
 
         // Front Left
         private static final int FRONT_LEFT_DRIVE_MOTOR_ID = 5;
@@ -126,17 +126,24 @@ public final class Constants {
         private static final double BACK_RIGHT_X_POS_INCHES = -10.5;
         private static final double BACK_RIGHT_Y_POS_INCHES = -10.5;
 
-
         private static final SwerveModuleConstants FrontLeft = ConstantCreator.createModuleConstants(
-                FRONT_LEFT_STEER_MOTOR_ID, FRONT_LEFT_DRIVE_MOTOR_ID, FRONT_LEFT_ENCODER_ID, FRONT_LEFT_ENCODER_OFFSET, Units.inchesToMeters(FRONT_LEFT_X_POS_INCHES), Units.inchesToMeters(FRONT_LEFT_Y_POS_INCHES), INVERT_LEFT_SIDE);
+                FRONT_LEFT_STEER_MOTOR_ID, FRONT_LEFT_DRIVE_MOTOR_ID, FRONT_LEFT_ENCODER_ID, FRONT_LEFT_ENCODER_OFFSET,
+                Units.inchesToMeters(FRONT_LEFT_X_POS_INCHES), Units.inchesToMeters(FRONT_LEFT_Y_POS_INCHES),
+                INVERT_LEFT_SIDE);
         private static final SwerveModuleConstants FrontRight = ConstantCreator.createModuleConstants(
-                FRONT_RIGHT_STEER_MOTOR_ID, FRONT_RIGHT_DRIVE_MOTOR_ID, FRONT_RIGHT_ENCODER_ID, FRONT_RIGHT_ENCODER_OFFSET, Units.inchesToMeters(FRONT_RIGHT_X_POS_INCHES), Units.inchesToMeters(FRONT_RIGHT_Y_POS_INCHES), INVERT_RIGHT_SIDE);
+                FRONT_RIGHT_STEER_MOTOR_ID, FRONT_RIGHT_DRIVE_MOTOR_ID, FRONT_RIGHT_ENCODER_ID,
+                FRONT_RIGHT_ENCODER_OFFSET, Units.inchesToMeters(FRONT_RIGHT_X_POS_INCHES),
+                Units.inchesToMeters(FRONT_RIGHT_Y_POS_INCHES), INVERT_RIGHT_SIDE);
         private static final SwerveModuleConstants BackLeft = ConstantCreator.createModuleConstants(
-                BACK_LEFT_STEER_MOTOR_ID, BACK_LEFT_DRIVE_MOTOR_ID, BACK_LEFT_ENCODER_ID, BACK_LEFT_ENCODER_OFFSET, Units.inchesToMeters(BACK_LEFT_X_POS_INCHES), Units.inchesToMeters(BACK_LEFT_Y_POS_INCHES), INVERT_LEFT_SIDE);
+                BACK_LEFT_STEER_MOTOR_ID, BACK_LEFT_DRIVE_MOTOR_ID, BACK_LEFT_ENCODER_ID, BACK_LEFT_ENCODER_OFFSET,
+                Units.inchesToMeters(BACK_LEFT_X_POS_INCHES), Units.inchesToMeters(BACK_LEFT_Y_POS_INCHES),
+                INVERT_LEFT_SIDE);
         private static final SwerveModuleConstants BackRight = ConstantCreator.createModuleConstants(
-                BACK_RIGHT_STEER_MOTOR_ID, BACK_RIGHT_DRIVE_MOTOR_ID, BACK_RIGHT_ENCODER_ID, BACK_RIGHT_ENCODER_OFFSET, Units.inchesToMeters(BACK_RIGHT_X_POS_INCHES), Units.inchesToMeters(BACK_RIGHT_Y_POS_INCHES), INVERT_RIGHT_SIDE);
+                BACK_RIGHT_STEER_MOTOR_ID, BACK_RIGHT_DRIVE_MOTOR_ID, BACK_RIGHT_ENCODER_ID, BACK_RIGHT_ENCODER_OFFSET,
+                Units.inchesToMeters(BACK_RIGHT_X_POS_INCHES), Units.inchesToMeters(BACK_RIGHT_Y_POS_INCHES),
+                INVERT_RIGHT_SIDE);
 
-        public static final SwerveSubsystem DriveTrain = new SwerveSubsystem(DrivetrainConstants, FrontLeft,
-                FrontRight, BackLeft, BackRight);
+        public static final SwerveSubsystem DriveTrain = new SwerveSubsystem(DrivetrainConstants, FrontLeft, FrontRight,
+                BackLeft, BackRight);
     }
 }

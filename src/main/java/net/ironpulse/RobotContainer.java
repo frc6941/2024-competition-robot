@@ -13,8 +13,8 @@ import static net.ironpulse.Constants.TunerConstants.maxAngularRate;
 import static net.ironpulse.Constants.TunerConstants.maxSpeed;
 
 public class RobotContainer {
-    private final CommandXboxController driverController =
-            new CommandXboxController(OperatorConstants.DRIVER_CONTROLLER_PORT);
+    private final CommandXboxController driverController = new CommandXboxController(
+            OperatorConstants.DRIVER_CONTROLLER_PORT);
 
     public final SwerveSubsystem swerveSubsystem = Constants.TunerConstants.DriveTrain;
 
@@ -23,7 +23,8 @@ public class RobotContainer {
             .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage);
 
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
-    private final SwerveRequest.RobotCentric forwardStraight = new SwerveRequest.RobotCentric().withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage);
+    private final SwerveRequest.RobotCentric forwardStraight = new SwerveRequest.RobotCentric()
+            .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage);
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
     private final Command runAuto = swerveSubsystem.getAutoPath("Tests");
@@ -31,27 +32,28 @@ public class RobotContainer {
     private final SwerveTelemetry logger = new SwerveTelemetry(maxSpeed);
 
     private void configureBindings() {
-        swerveSubsystem.setDefaultCommand(
-                swerveSubsystem.applyRequest(() -> drive.withVelocityX(-driverController.getLeftY() * maxSpeed.magnitude())
+        swerveSubsystem.setDefaultCommand(swerveSubsystem
+                .applyRequest(() -> drive.withVelocityX(-driverController.getLeftY() * maxSpeed.magnitude())
                         .withVelocityY(-driverController.getLeftX() * maxSpeed.magnitude())
-                        .withRotationalRate(-driverController.getRightX() * maxAngularRate.magnitude())
-                ).ignoringDisable(true));
+                        .withRotationalRate(-driverController.getRightX() * maxAngularRate.magnitude()))
+                .ignoringDisable(true));
 
         driverController.a().whileTrue(swerveSubsystem.applyRequest(() -> brake));
-        driverController.b().whileTrue(swerveSubsystem
-                .applyRequest(() -> point.withModuleDirection(new Rotation2d(-driverController.getLeftY(), -driverController.getLeftX()))));
+        driverController.b().whileTrue(swerveSubsystem.applyRequest(() -> point
+                .withModuleDirection(new Rotation2d(-driverController.getLeftY(), -driverController.getLeftX()))));
 
         driverController.leftBumper().onTrue(swerveSubsystem.runOnce(swerveSubsystem::seedFieldRelative));
         swerveSubsystem.registerTelemetry(logger::telemeterize);
 
-        driverController.pov(0).whileTrue(swerveSubsystem.applyRequest(() -> forwardStraight.withVelocityX(0.5).withVelocityY(0)));
-        driverController.pov(180).whileTrue(swerveSubsystem.applyRequest(() -> forwardStraight.withVelocityX(-0.5).withVelocityY(0)));
+        driverController.pov(0)
+                .whileTrue(swerveSubsystem.applyRequest(() -> forwardStraight.withVelocityX(0.5).withVelocityY(0)));
+        driverController.pov(180)
+                .whileTrue(swerveSubsystem.applyRequest(() -> forwardStraight.withVelocityX(-0.5).withVelocityY(0)));
     }
 
     public Command getAutonomousCommand() {
         return runAuto;
     }
-    
 
     public RobotContainer() {
         configureBindings();
