@@ -3,7 +3,7 @@ plugins {
     id "java"
     id "edu.wpi.first.GradleRIO" version "2024.1.1"
     id "idea"
-    id "com.diffplug.spotless" version "6.20.0"
+    id "pmd"
 }
 
 def javaVersion = JavaVersion.VERSION_17
@@ -115,27 +115,12 @@ idea {
         downloadJavadoc = true
         downloadSources = true
         // Exclude the .vscode directory from indexing and search
-        excludeDirs+=file(".vscode")
+        excludeDirs += file(".vscode")
     }
 }
 
-spotless {
-    java {
-        target fileTree('.') {
-            include '**/*.java'
-            exclude '**/build/**', '**/build-*/**'
-        }
-        palantirJavaFormat()
-        indentWithSpaces(4)
-        removeUnusedImports()
-        formatAnnotations()
-    }
-
-    format 'misc', {
-        target fileTree('.') {
-            include '**/*.md', '**/.gitignore'
-            exclude '**/build/**', '**/build-*/**'
-        }
-        indentWithSpaces(2)
-    }
+pmd {
+    toolVersion = "6.55.0"
+    consoleOutput = true
+    reportsDir = file("build/reports/pmd")
 }

@@ -70,6 +70,7 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
     private void startSimThread() {
         lastSimTime = Seconds.of(Utils.getCurrentTimeSeconds());
 
+        @SuppressWarnings("PMD.CloseResource")
         Notifier simNotifier = new Notifier(() -> {
             var currentTime = Seconds.of(Utils.getCurrentTimeSeconds());
             var deltaTime = currentTime.minus(lastSimTime);
