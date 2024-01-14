@@ -70,10 +70,8 @@ public final class Constants {
         private static final String CA_NBUS_NAME = "rio";
         private static final int PIGEON_ID = 1;
 
-        // These are only used for simulation
         private static final double STEER_INERTIA = 0.00001;
         private static final double DRIVE_INERTIA = 0.001;
-        // Simulated voltage necessary to overcome friction
         private static final Measure<Voltage> steerFrictionVoltage = Volts.of(0.25);
         private static final Measure<Voltage> driveFrictionVoltage = Volts.of(0.25);
 

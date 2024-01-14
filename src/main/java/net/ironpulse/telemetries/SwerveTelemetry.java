@@ -103,7 +103,7 @@ public class SwerveTelemetry {
 
         SignalLogger.writeDoubleArray(
                 "odometry",
-                new double[] {pose.getX(), pose.getY(), pose.getRotation().getDegrees()});
+                new double[] { pose.getX(), pose.getY(), pose.getRotation().getDegrees() });
         SignalLogger.writeDouble("odom period", state.OdometryPeriod, "seconds");
     }
 }

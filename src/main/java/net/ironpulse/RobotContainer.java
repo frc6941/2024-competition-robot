@@ -30,7 +30,7 @@ public class RobotContainer {
 
     private final Command runAuto = swerveSubsystem.getAutoPath("Tests");
 
-    private final SwerveTelemetry logger = new SwerveTelemetry(maxSpeed);
+    private final SwerveTelemetry swerveLogger = new SwerveTelemetry(maxSpeed);
 
     private void configureBindings() {
         swerveSubsystem.setDefaultCommand(swerveSubsystem
@@ -46,7 +46,7 @@ public class RobotContainer {
                         new Rotation2d(-driverController.getLeftY(), -driverController.getLeftX()))));
 
         driverController.leftBumper().onTrue(swerveSubsystem.runOnce(swerveSubsystem::seedFieldRelative));
-        swerveSubsystem.registerTelemetry(logger::telemeterize);
+        swerveSubsystem.registerTelemetry(swerveLogger::telemeterize);
 
         driverController.pov(0).whileTrue(swerveSubsystem.applyRequest(() -> forwardStraight
                 .withVelocityX(0.5)
