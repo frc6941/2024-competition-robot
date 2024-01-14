@@ -98,39 +98,39 @@ public final class Constants {
 
         // Front Left
         private static final int FRONT_LEFT_DRIVE_MOTOR_ID = 5;
-        private static final int FRONT_LEFT_STEER_MOTOR_ID = 4;
-        private static final int FRONT_LEFT_ENCODER_ID = 2;
-        private static final double FRONT_LEFT_ENCODER_OFFSET = -0.83544921875;
+        private static final int FRONT_LEFT_STEER_MOTOR_ID = 3;
+        private static final int FRONT_LEFT_ENCODER_ID = 9;
+        private static final double FRONT_LEFT_ENCODER_OFFSET = -0.83544921875; // NEED WORKING
 
-        private static final double FRONT_LEFT_X_POS_INCHES = 10.5;
-        private static final double FRONT_LEFT_Y_POS_INCHES = 10.5;
+        private static final double FRONT_LEFT_X_POS_INCHES = 10.5; // NEED WORKING
+        private static final double FRONT_LEFT_Y_POS_INCHES = 10.5; // NEED WORKING
 
         // Front Right
-        private static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 7;
-        private static final int FRONT_RIGHT_STEER_MOTOR_ID = 6;
-        private static final int FRONT_RIGHT_ENCODER_ID = 3;
-        private static final double FRONT_RIGHT_ENCODER_OFFSET = -0.15234375;
+        private static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 2;
+        private static final int FRONT_RIGHT_STEER_MOTOR_ID = 7;
+        private static final int FRONT_RIGHT_ENCODER_ID = 21;
+        private static final double FRONT_RIGHT_ENCODER_OFFSET = -0.15234375; // NEED WORKING
 
-        private static final double FRONT_RIGHT_X_POS_INCHES = 10.5;
-        private static final double FRONT_RIGHT_Y_POS_INCHES = -10.5;
+        private static final double FRONT_RIGHT_X_POS_INCHES = 10.5; // NEED WORKING
+        private static final double FRONT_RIGHT_Y_POS_INCHES = -10.5; // NEED WORKING
 
         // Back Left
-        private static final int BACK_LEFT_DRIVE_MOTOR_ID = 1;
-        private static final int BACK_LEFT_STEER_MOTOR_ID = 0;
-        private static final int BACK_LEFT_ENCODER_ID = 0;
-        private static final double BACK_LEFT_ENCODER_OFFSET = -0.4794921875;
+        private static final int BACK_LEFT_DRIVE_MOTOR_ID = 15;
+        private static final int BACK_LEFT_STEER_MOTOR_ID = 14;
+        private static final int BACK_LEFT_ENCODER_ID = 20;
+        private static final double BACK_LEFT_ENCODER_OFFSET = -0.4794921875; // NEED WORKING
 
-        private static final double BACK_LEFT_X_POS_INCHES = -10.5;
-        private static final double BACK_LEFT_Y_POS_INCHES = 10.5;
+        private static final double BACK_LEFT_X_POS_INCHES = -10.5; // NEED WORKING
+        private static final double BACK_LEFT_Y_POS_INCHES = 10.5; // NEED WORKING
 
         // Back Right
-        private static final int BACK_RIGHT_DRIVE_MOTOR_ID = 3;
-        private static final int BACK_RIGHT_STEER_MOTOR_ID = 2;
-        private static final int BACK_RIGHT_ENCODER_ID = 1;
-        private static final double BACK_RIGHT_ENCODER_OFFSET = -0.84130859375;
+        private static final int BACK_RIGHT_DRIVE_MOTOR_ID = 10;
+        private static final int BACK_RIGHT_STEER_MOTOR_ID = 6;
+        private static final int BACK_RIGHT_ENCODER_ID = 12;
+        private static final double BACK_RIGHT_ENCODER_OFFSET = -0.84130859375; // NEED WORKING
 
-        private static final double BACK_RIGHT_X_POS_INCHES = -10.5;
-        private static final double BACK_RIGHT_Y_POS_INCHES = -10.5;
+        private static final double BACK_RIGHT_X_POS_INCHES = -10.5; // NEED WORKING
+        private static final double BACK_RIGHT_Y_POS_INCHES = -10.5; // NEED WORKING
 
         private static final SwerveModuleConstants FrontLeft = ConstantCreator.createModuleConstants(
                 FRONT_LEFT_STEER_MOTOR_ID,
