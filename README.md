@@ -2,11 +2,17 @@
 
 ## Code Structure
 `net.ironpulse.Constants`: All constants include PID, gear ratio, CAN ID, etc. 
-`net.ironpulse.Main`: Program entrance 
-`net.ironpulse.Robot`: Robot instance 
-`net.ironpulse.RobotContainer`: Robot instance configs 
-`net.ironpulse.commands`: All commands (see [Command-based Programming](https://docs.wpilib.org/en/stable/docs/software/commandbased/index.html)) 
-`net.ironpulse.subsystems`: All subsystems 
+
+`net.ironpulse.Main`: Program entrance
+
+`net.ironpulse.Robot`: Robot instance
+
+`net.ironpulse.RobotContainer`: Robot instance configs
+
+`net.ironpulse.commands`: All commands (see [Command-based Programming](https://docs.wpilib.org/en/stable/docs/software/commandbased/index.html))
+
+`net.ironpulse.subsystems`: All subsystems
+
 `net.ironpulse.telemetries`: All telemetry (Data shown in the ShuffleBoard)
 
 Usually, to finish a subsystem, you have to firstly config the motors in a subsystem class.
