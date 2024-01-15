@@ -101,7 +101,7 @@ public final class Constants {
         private static final int FRONT_LEFT_DRIVE_MOTOR_ID = 5;
         private static final int FRONT_LEFT_STEER_MOTOR_ID = 3;
         private static final int FRONT_LEFT_ENCODER_ID = 9;
-        private static final double FRONT_LEFT_ENCODER_OFFSET = -0.0537109375; // NEED WORKING
+        private static final double FRONT_LEFT_ENCODER_OFFSET = -0.0537109375;
 
         private static final double FRONT_LEFT_X_POS_INCHES = 10.5; // NEED WORKING
         private static final double FRONT_LEFT_Y_POS_INCHES = 10.5; // NEED WORKING
@@ -110,7 +110,7 @@ public final class Constants {
         private static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 2;
         private static final int FRONT_RIGHT_STEER_MOTOR_ID = 7;
         private static final int FRONT_RIGHT_ENCODER_ID = 21;
-        private static final double FRONT_RIGHT_ENCODER_OFFSET = 0.09326171875; // NEED WORKING
+        private static final double FRONT_RIGHT_ENCODER_OFFSET = -0.46875;
 
         private static final double FRONT_RIGHT_X_POS_INCHES = 10.5; // NEED WORKING
         private static final double FRONT_RIGHT_Y_POS_INCHES = -10.5; // NEED WORKING
@@ -119,7 +119,7 @@ public final class Constants {
         private static final int BACK_LEFT_DRIVE_MOTOR_ID = 15;
         private static final int BACK_LEFT_STEER_MOTOR_ID = 14;
         private static final int BACK_LEFT_ENCODER_ID = 20;
-        private static final double BACK_LEFT_ENCODER_OFFSET = -0.312255859375; // NEED WORKING
+        private static final double BACK_LEFT_ENCODER_OFFSET = -0.312255859375;
 
         private static final double BACK_LEFT_X_POS_INCHES = -10.5; // NEED WORKING
         private static final double BACK_LEFT_Y_POS_INCHES = 10.5; // NEED WORKING
@@ -128,7 +128,7 @@ public final class Constants {
         private static final int BACK_RIGHT_DRIVE_MOTOR_ID = 10;
         private static final int BACK_RIGHT_STEER_MOTOR_ID = 6;
         private static final int BACK_RIGHT_ENCODER_ID = 12;
-        private static final double BACK_RIGHT_ENCODER_OFFSET = 0.0009765625; // NEED WORKING
+        private static final double BACK_RIGHT_ENCODER_OFFSET = 0.0009765625;
 
         private static final double BACK_RIGHT_X_POS_INCHES = -10.5; // NEED WORKING
         private static final double BACK_RIGHT_Y_POS_INCHES = -10.5; // NEED WORKING
