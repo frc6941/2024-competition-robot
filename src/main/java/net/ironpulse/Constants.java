@@ -58,8 +58,8 @@ public final class Constants {
         // This may need to be tuned to your individual robot
         private static final double COUPLE_RATIO = 3.5;
 
-        private static final double DRIVE_GEAR_RATIO = 7.363636364;
-        private static final double STEER_GEAR_RATIO = 15.42857143;
+        private static final double DRIVE_GEAR_RATIO = 6.7460317460317460317460317460317;
+        private static final double STEER_GEAR_RATIO = 21.428571428571428571428571428571;
         // Estimated at first, then fudge-factored to make odom match record
         private static final Measure<Distance> wheelRadius = Inches.of(2.167);
 
@@ -68,6 +68,7 @@ public final class Constants {
         private static final boolean INVERT_RIGHT_SIDE = true;
 
         private static final String CA_NBUS_NAME = "rio";
+        //private static final String CA_NBUS_NAME = "6941CANivore1";
         private static final int PIGEON_ID = 1;
 
         private static final double STEER_INERTIA = 0.00001;
@@ -100,16 +101,16 @@ public final class Constants {
         private static final int FRONT_LEFT_DRIVE_MOTOR_ID = 5;
         private static final int FRONT_LEFT_STEER_MOTOR_ID = 3;
         private static final int FRONT_LEFT_ENCODER_ID = 9;
-        private static final double FRONT_LEFT_ENCODER_OFFSET = -0.83544921875; // NEED WORKING
+        private static final double FRONT_LEFT_ENCODER_OFFSET = -0.0537109375; // NEED WORKING
 
         private static final double FRONT_LEFT_X_POS_INCHES = 10.5; // NEED WORKING
         private static final double FRONT_LEFT_Y_POS_INCHES = 10.5; // NEED WORKING
 
         // Front Right
-        private static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 7;
-        private static final int FRONT_RIGHT_STEER_MOTOR_ID = 2;
+        private static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 2;
+        private static final int FRONT_RIGHT_STEER_MOTOR_ID = 7;
         private static final int FRONT_RIGHT_ENCODER_ID = 21;
-        private static final double FRONT_RIGHT_ENCODER_OFFSET = -0.15234375; // NEED WORKING
+        private static final double FRONT_RIGHT_ENCODER_OFFSET = 0.09326171875; // NEED WORKING
 
         private static final double FRONT_RIGHT_X_POS_INCHES = 10.5; // NEED WORKING
         private static final double FRONT_RIGHT_Y_POS_INCHES = -10.5; // NEED WORKING
@@ -118,7 +119,7 @@ public final class Constants {
         private static final int BACK_LEFT_DRIVE_MOTOR_ID = 15;
         private static final int BACK_LEFT_STEER_MOTOR_ID = 14;
         private static final int BACK_LEFT_ENCODER_ID = 20;
-        private static final double BACK_LEFT_ENCODER_OFFSET = -0.4794921875; // NEED WORKING
+        private static final double BACK_LEFT_ENCODER_OFFSET = -0.312255859375; // NEED WORKING
 
         private static final double BACK_LEFT_X_POS_INCHES = -10.5; // NEED WORKING
         private static final double BACK_LEFT_Y_POS_INCHES = 10.5; // NEED WORKING
@@ -127,7 +128,7 @@ public final class Constants {
         private static final int BACK_RIGHT_DRIVE_MOTOR_ID = 10;
         private static final int BACK_RIGHT_STEER_MOTOR_ID = 6;
         private static final int BACK_RIGHT_ENCODER_ID = 12;
-        private static final double BACK_RIGHT_ENCODER_OFFSET = -0.84130859375; // NEED WORKING
+        private static final double BACK_RIGHT_ENCODER_OFFSET = 0.0009765625; // NEED WORKING
 
         private static final double BACK_RIGHT_X_POS_INCHES = -10.5; // NEED WORKING
         private static final double BACK_RIGHT_Y_POS_INCHES = -10.5; // NEED WORKING
