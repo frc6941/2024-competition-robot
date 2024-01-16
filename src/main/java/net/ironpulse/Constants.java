@@ -120,7 +120,7 @@ public final class Constants {
         private static final int BACK_LEFT_DRIVE_MOTOR_ID = 15;
         private static final int BACK_LEFT_STEER_MOTOR_ID = 14;
         private static final int BACK_LEFT_ENCODER_ID = 20;
-        private static final double BACK_LEFT_ENCODER_OFFSET = -0.31225859375;
+        private static final double BACK_LEFT_ENCODER_OFFSET = -0.31298828125;
 
         private static final double BACK_LEFT_X_POS_INCHES = -10.5; // TODO
         private static final double BACK_LEFT_Y_POS_INCHES = 10.5; // TODO
