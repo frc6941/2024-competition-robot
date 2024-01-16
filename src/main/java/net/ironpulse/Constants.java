@@ -7,7 +7,6 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.*;
 import net.ironpulse.subsystems.SwerveSubsystem;
 
@@ -62,14 +61,14 @@ public final class Constants {
         private static final double STEER_GEAR_RATIO = 21.428571428571428571428571428571;
 
         // Estimated at first, then fudge-factored to make odom match record
-        private static final Measure<Distance> wheelRadius = Inches.of(2.167);
+        private static final Measure<Distance> wheelRadius = Meters.of(0.055);
 
         private static final boolean STEER_MOTOR_REVERSED = true;
         private static final boolean INVERT_LEFT_SIDE = false;
         private static final boolean INVERT_RIGHT_SIDE = true;
 
-        private static final String CA_NBUS_NAME = "rio";
-        //private static final String CA_NBUS_NAME = "6941CANivore1";
+        private static final String CAN_BUS_NAME = "rio";
+        //private static final String CAN_BUS_NAME = "6941CANivore1";
         private static final int PIGEON_ID = 1;
 
         private static final double STEER_INERTIA = 0.00001;
@@ -78,12 +77,12 @@ public final class Constants {
         private static final Measure<Voltage> driveFrictionVoltage = Volts.of(0.25);
 
         private static final SwerveDrivetrainConstants DrivetrainConstants =
-                new SwerveDrivetrainConstants().withPigeon2Id(PIGEON_ID).withCANbusName(CA_NBUS_NAME);
+                new SwerveDrivetrainConstants().withPigeon2Id(PIGEON_ID).withCANbusName(CAN_BUS_NAME);
 
         private static final SwerveModuleConstantsFactory ConstantCreator = new SwerveModuleConstantsFactory()
                 .withDriveMotorGearRatio(DRIVE_GEAR_RATIO)
                 .withSteerMotorGearRatio(STEER_GEAR_RATIO)
-                .withWheelRadius(wheelRadius.magnitude())
+                .withWheelRadius(wheelRadius.in(Inches))
                 .withSlipCurrent(slipCurrent.magnitude())
                 .withSteerMotorGains(steerGains)
                 .withDriveMotorGains(driveGains)
@@ -104,8 +103,8 @@ public final class Constants {
         private static final int FRONT_LEFT_ENCODER_ID = 9;
         private static final double FRONT_LEFT_ENCODER_OFFSET = -0.000244140625;
 
-        private static final double FRONT_LEFT_X_POS_INCHES = 10.5; // TODO
-        private static final double FRONT_LEFT_Y_POS_INCHES = 10.5; // TODO
+        private static final Measure<Distance> frontLeftXPos = Meters.of(10.5); // TODO
+        private static final Measure<Distance> frontLeftYPos = Meters.of(10.5); // TODO
 
         // Front Right
         private static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 2;
@@ -113,8 +112,8 @@ public final class Constants {
         private static final int FRONT_RIGHT_ENCODER_ID = 21;
         private static final double FRONT_RIGHT_ENCODER_OFFSET = -0.433349609375;
 
-        private static final double FRONT_RIGHT_X_POS_INCHES = 10.5; // TODO
-        private static final double FRONT_RIGHT_Y_POS_INCHES = -10.5; // TODO
+        private static final Measure<Distance> frontRightXPos = Meters.of(10.5); // TODO
+        private static final Measure<Distance> frontRightYPos = Meters.of(-10.5); // TODO
 
         // Back Left
         private static final int BACK_LEFT_DRIVE_MOTOR_ID = 15;
@@ -122,8 +121,8 @@ public final class Constants {
         private static final int BACK_LEFT_ENCODER_ID = 20;
         private static final double BACK_LEFT_ENCODER_OFFSET = -0.31225859375;
 
-        private static final double BACK_LEFT_X_POS_INCHES = -10.5; // TODO
-        private static final double BACK_LEFT_Y_POS_INCHES = 10.5; // TODO
+        private static final Measure<Distance> backLeftXPos = Meters.of(-10.5); // TODO
+        private static final Measure<Distance> backLeftYPos = Meters.of(10.5); // TODO
 
         // Back Right
         private static final int BACK_RIGHT_DRIVE_MOTOR_ID = 10;
@@ -131,40 +130,40 @@ public final class Constants {
         private static final int BACK_RIGHT_ENCODER_ID = 12;
         private static final double BACK_RIGHT_ENCODER_OFFSET = 0.005615234375;
 
-        private static final double BACK_RIGHT_X_POS_INCHES = -10.5; // TODO
-        private static final double BACK_RIGHT_Y_POS_INCHES = -10.5; // TODO
+        private static final Measure<Distance> backRightXPos = Meters.of(-10.5); // TODO
+        private static final Measure<Distance> backRightYPos = Meters.of(-10.5); // TODO
 
         private static final SwerveModuleConstants FrontLeft = ConstantCreator.createModuleConstants(
                 FRONT_LEFT_STEER_MOTOR_ID,
                 FRONT_LEFT_DRIVE_MOTOR_ID,
                 FRONT_LEFT_ENCODER_ID,
                 FRONT_LEFT_ENCODER_OFFSET,
-                Units.inchesToMeters(FRONT_LEFT_X_POS_INCHES),
-                Units.inchesToMeters(FRONT_LEFT_Y_POS_INCHES),
+                frontLeftXPos.magnitude(),
+                frontLeftYPos.magnitude(),
                 INVERT_LEFT_SIDE);
         private static final SwerveModuleConstants FrontRight = ConstantCreator.createModuleConstants(
                 FRONT_RIGHT_STEER_MOTOR_ID,
                 FRONT_RIGHT_DRIVE_MOTOR_ID,
                 FRONT_RIGHT_ENCODER_ID,
                 FRONT_RIGHT_ENCODER_OFFSET,
-                Units.inchesToMeters(FRONT_RIGHT_X_POS_INCHES),
-                Units.inchesToMeters(FRONT_RIGHT_Y_POS_INCHES),
+                frontRightXPos.magnitude(),
+                frontRightYPos.magnitude(),
                 INVERT_RIGHT_SIDE);
         private static final SwerveModuleConstants BackLeft = ConstantCreator.createModuleConstants(
                 BACK_LEFT_STEER_MOTOR_ID,
                 BACK_LEFT_DRIVE_MOTOR_ID,
                 BACK_LEFT_ENCODER_ID,
                 BACK_LEFT_ENCODER_OFFSET,
-                Units.inchesToMeters(BACK_LEFT_X_POS_INCHES),
-                Units.inchesToMeters(BACK_LEFT_Y_POS_INCHES),
+                backLeftXPos.magnitude(),
+                backLeftYPos.magnitude(),
                 INVERT_LEFT_SIDE);
         private static final SwerveModuleConstants BackRight = ConstantCreator.createModuleConstants(
                 BACK_RIGHT_STEER_MOTOR_ID,
                 BACK_RIGHT_DRIVE_MOTOR_ID,
                 BACK_RIGHT_ENCODER_ID,
                 BACK_RIGHT_ENCODER_OFFSET,
-                Units.inchesToMeters(BACK_RIGHT_X_POS_INCHES),
-                Units.inchesToMeters(BACK_RIGHT_Y_POS_INCHES),
+                backRightXPos.magnitude(),
+                backRightYPos.magnitude(),
                 INVERT_RIGHT_SIDE);
 
         public static final SwerveSubsystem DriveTrain =
