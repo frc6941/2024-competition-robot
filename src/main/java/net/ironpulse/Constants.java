@@ -101,7 +101,7 @@ public final class Constants {
         private static final int FRONT_LEFT_DRIVE_MOTOR_ID = 5;
         private static final int FRONT_LEFT_STEER_MOTOR_ID = 3;
         private static final int FRONT_LEFT_ENCODER_ID = 9;
-        private static final double FRONT_LEFT_ENCODER_OFFSET = -0.000244140625;
+        private static final double FRONT_LEFT_ENCODER_OFFSET = -0.08740234375;
 
         private static final Measure<Distance> frontLeftXPos = Meters.of(10.5); // TODO
         private static final Measure<Distance> frontLeftYPos = Meters.of(10.5); // TODO
@@ -110,7 +110,7 @@ public final class Constants {
         private static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 2;
         private static final int FRONT_RIGHT_STEER_MOTOR_ID = 7;
         private static final int FRONT_RIGHT_ENCODER_ID = 21;
-        private static final double FRONT_RIGHT_ENCODER_OFFSET = -0.433349609375;
+        private static final double FRONT_RIGHT_ENCODER_OFFSET = -0.439208984375;
 
         private static final Measure<Distance> frontRightXPos = Meters.of(10.5); // TODO
         private static final Measure<Distance> frontRightYPos = Meters.of(-10.5); // TODO
@@ -119,7 +119,7 @@ public final class Constants {
         private static final int BACK_LEFT_DRIVE_MOTOR_ID = 15;
         private static final int BACK_LEFT_STEER_MOTOR_ID = 14;
         private static final int BACK_LEFT_ENCODER_ID = 20;
-        private static final double BACK_LEFT_ENCODER_OFFSET = -0.31298828125;
+        private static final double BACK_LEFT_ENCODER_OFFSET = 0.207275390625;
 
         private static final Measure<Distance> backLeftXPos = Meters.of(-10.5); // TODO
         private static final Measure<Distance> backLeftYPos = Meters.of(10.5); // TODO
@@ -128,7 +128,7 @@ public final class Constants {
         private static final int BACK_RIGHT_DRIVE_MOTOR_ID = 10;
         private static final int BACK_RIGHT_STEER_MOTOR_ID = 6;
         private static final int BACK_RIGHT_ENCODER_ID = 12;
-        private static final double BACK_RIGHT_ENCODER_OFFSET = 0.005615234375;
+        private static final double BACK_RIGHT_ENCODER_OFFSET = -0.089599609375;
 
         private static final Measure<Distance> backRightXPos = Meters.of(-10.5); // TODO
         private static final Measure<Distance> backRightYPos = Meters.of(-10.5); // TODO
