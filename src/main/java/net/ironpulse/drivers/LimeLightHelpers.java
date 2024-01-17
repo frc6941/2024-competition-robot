@@ -4,6 +4,9 @@ import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import net.ironpulse.models.AprilTagTarget;
+
+import static edu.wpi.first.units.Units.Seconds;
 
 public class LimeLightHelpers {
     private static final NetworkTable limelightTable = NetworkTableInstance
@@ -15,6 +18,7 @@ public class LimeLightHelpers {
     private static final NetworkTableEntry ty = limelightTable.getEntry("ty");
 
     private static final NetworkTableEntry tl = limelightTable.getEntry("tl");
+    private static final NetworkTableEntry cl = limelightTable.getEntry("cl");
 
     private static final NetworkTableEntry botPose = limelightTable.getEntry("botpose");
 
@@ -25,23 +29,15 @@ public class LimeLightHelpers {
         return tv.getDouble(0) == 1;
     }
 
-    /**
-     * Get offset from crosshair to target
-     * @return Horizontal and vertical offset from crosshair to target
-     */
-    public static Translation2d getTargetPosition() {
-        return new Translation2d(tx.getDouble(0), ty.getDouble(0));
-    }
-
-    public static double getLatency() {
-        return tl.getDouble(0);
-    }
-
-    public static Pose3d getBotPose() {
+    public static AprilTagTarget getTarget() {
         var rawPose = botPose.getDoubleArray(new double[6]);
-        return new Pose3d(
-                new Translation3d(rawPose[0], rawPose[1], rawPose[2]),
-                new Rotation3d(rawPose[3], rawPose[4], rawPose[5])
+        return new AprilTagTarget(
+                new Translation2d(tx.getDouble(0), ty.getDouble(0)),
+                Seconds.of(tl.getDouble(0) + cl.getDouble(0)),
+                new Pose3d(
+                        new Translation3d(rawPose[0], rawPose[1], rawPose[2]),
+                        new Rotation3d(rawPose[3], rawPose[4], rawPose[5])
+                )
         );
     }
 }

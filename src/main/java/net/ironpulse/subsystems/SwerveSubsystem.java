@@ -44,9 +44,10 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
 
     private void updatePoseEstimatorFromLimelight() {
         if (!LimeLightHelpers.hasTarget()) return;
+        var target = LimeLightHelpers.getTarget();
         // TODO Verify this
-        var imageCaptureTime = Timer.getFPGATimestamp() - LimeLightHelpers.getLatency();
-        addVisionMeasurement(LimeLightHelpers.getBotPose().toPose2d(), imageCaptureTime);
+        var imageCaptureTime = Timer.getFPGATimestamp() - target.latency().magnitude();
+        addVisionMeasurement(target.botPose().toPose2d(), imageCaptureTime);
     }
 
     private void configurePathPlanner() {
