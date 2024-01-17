@@ -18,10 +18,12 @@ import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Time;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import java.util.function.Supplier;
 import net.ironpulse.Constants;
+import net.ironpulse.drivers.LimeLightHelpers;
 
 public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
     private static final Measure<Time> simLoopPeriod = Microsecond.of(0.005);
@@ -33,6 +35,18 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
         configurePathPlanner();
         if (!Utils.isSimulation()) return;
         startSimThread();
+    }
+
+    @Override
+    public void periodic() {
+        updatePoseEstimatorFromLimelight();
+    }
+
+    private void updatePoseEstimatorFromLimelight() {
+        if (!LimeLightHelpers.hasTarget()) return;
+        // TODO Verify this
+        var imageCaptureTime = Timer.getFPGATimestamp() - LimeLightHelpers.getLatency();
+        addVisionMeasurement(LimeLightHelpers.getBotPose().toPose2d(), imageCaptureTime);
     }
 
     private void configurePathPlanner() {
