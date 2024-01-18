@@ -1,16 +1,17 @@
 package net.ironpulse;
 
-import static net.ironpulse.Constants.TunerConstants.maxAngularRate;
-import static net.ironpulse.Constants.TunerConstants.maxSpeed;
-
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import net.ironpulse.Constants.OperatorConstants;
+import net.ironpulse.commands.AimingCommand;
 import net.ironpulse.subsystems.SwerveSubsystem;
 import net.ironpulse.telemetries.SwerveTelemetry;
+
+import static net.ironpulse.Constants.TunerConstants.maxAngularRate;
+import static net.ironpulse.Constants.TunerConstants.maxSpeed;
 
 public class RobotContainer {
     private final CommandXboxController driverController =
@@ -54,6 +55,8 @@ public class RobotContainer {
         driverController.pov(180).whileTrue(swerveSubsystem.applyRequest(() -> forwardStraight
                 .withVelocityX(-0.5)
                 .withVelocityY(0)));
+
+        driverController.x().whileTrue(new AimingCommand(swerveSubsystem));
     }
 
     public Command getAutonomousCommand() {
