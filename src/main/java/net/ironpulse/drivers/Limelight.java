@@ -6,9 +6,11 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import net.ironpulse.models.AprilTagTarget;
 
+import java.util.Optional;
+
 import static edu.wpi.first.units.Units.Seconds;
 
-public class LimeLightHelpers {
+public class Limelight {
     private static final NetworkTable limelightTable = NetworkTableInstance
             .getDefault()
             .getTable("limelight");
@@ -29,14 +31,21 @@ public class LimeLightHelpers {
         return tv.getDouble(0) == 1;
     }
 
-    public static AprilTagTarget getTarget() {
+    /**
+     * Get target if present
+     * @return Target object
+     */
+    public static Optional<AprilTagTarget> getTarget() {
+        if (!hasTarget()) return Optional.empty();
         var rawPose = botPose.getDoubleArray(new double[6]);
-        return new AprilTagTarget(
-                new Translation2d(tx.getDouble(0), ty.getDouble(0)),
-                Seconds.of(tl.getDouble(0) + cl.getDouble(0)),
-                new Pose3d(
-                        new Translation3d(rawPose[0], rawPose[1], rawPose[2]),
-                        new Rotation3d(rawPose[3], rawPose[4], rawPose[5])
+        return Optional.of(
+                new AprilTagTarget(
+                    new Translation2d(tx.getDouble(0), ty.getDouble(0)),
+                    Seconds.of(tl.getDouble(0) + cl.getDouble(0)),
+                    new Pose3d(
+                            new Translation3d(rawPose[0], rawPose[1], rawPose[2]),
+                            new Rotation3d(rawPose[3], rawPose[4], rawPose[5])
+                    )
                 )
         );
     }

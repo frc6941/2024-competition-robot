@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import java.util.function.Supplier;
 import net.ironpulse.Constants;
-import net.ironpulse.drivers.LimeLightHelpers;
+import net.ironpulse.drivers.Limelight;
 
 public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
     private static final Measure<Time> simLoopPeriod = Microsecond.of(0.005);
@@ -46,11 +46,15 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
     }
 
     private void updatePoseEstimatorFromLimelight() {
-        if (!LimeLightHelpers.hasTarget()) return;
-        var target = LimeLightHelpers.getTarget();
         // TODO Verify this
-        var imageCaptureTime = Timer.getFPGATimestamp() - target.latency().magnitude();
-        addVisionMeasurement(target.botPose().toPose2d(), imageCaptureTime);
+        Limelight
+                .getTarget()
+                .ifPresent(target ->
+                        addVisionMeasurement(
+                                target.botPose().toPose2d(),
+                                Timer.getFPGATimestamp() - target.latency().magnitude()
+                        )
+                );
     }
 
     private void configurePathPlanner() {
