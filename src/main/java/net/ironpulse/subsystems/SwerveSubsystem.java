@@ -1,8 +1,5 @@
 package net.ironpulse.subsystems;
 
-import static edu.wpi.first.units.Units.Microsecond;
-import static edu.wpi.first.units.Units.Seconds;
-
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
@@ -18,12 +15,14 @@ import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Time;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import java.util.function.Supplier;
 import net.ironpulse.Constants;
-import net.ironpulse.drivers.Limelight;
+
+import java.util.function.Supplier;
+
+import static edu.wpi.first.units.Units.Microsecond;
+import static edu.wpi.first.units.Units.Seconds;
 
 public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
     private static final Measure<Time> simLoopPeriod = Microsecond.of(0.005);
@@ -32,6 +31,9 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
 
     public SwerveSubsystem(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
         super(driveTrainConstants, modules);
+        for(var module : Modules){
+            module.getCANcoder().setPosition(0);
+        }
         configurePathPlanner();
         if (!Utils.isSimulation()) return;
         startSimThread();
@@ -44,14 +46,14 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
 
     private void updatePoseEstimatorFromLimelight() {
         // TODO Verify this
-        Limelight
-                .getTarget()
-                .ifPresent(target ->
-                        addVisionMeasurement(
-                                target.botPose().toPose2d(),
-                                Timer.getFPGATimestamp() - target.latency().magnitude()
-                        )
-                );
+//        Limelight
+//                .getTarget()
+//                .ifPresent(target ->
+//                        addVisionMeasurement(
+//                                target.botPose().toPose2d(),
+//                                Timer.getFPGATimestamp() - target.latency().magnitude()
+//                        )
+//                );
     }
 
     private void configurePathPlanner() {

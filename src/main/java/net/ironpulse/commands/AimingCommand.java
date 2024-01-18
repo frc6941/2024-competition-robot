@@ -7,6 +7,9 @@ import net.ironpulse.drivers.Limelight;
 import net.ironpulse.maths.Compare;
 import net.ironpulse.subsystems.SwerveSubsystem;
 
+import static net.ironpulse.Constants.TunerConstants.maxAngularRate;
+import static net.ironpulse.Constants.TunerConstants.maxSpeed;
+
 public class AimingCommand extends Command {
     private final SwerveSubsystem swerveSubsystem;
 
@@ -18,9 +21,11 @@ public class AimingCommand extends Command {
     @Override
     public void execute() {
         Limelight.getTarget().ifPresent(target -> swerveSubsystem.applyRequest(() ->
-                new SwerveRequest.RobotCentric()
+                new SwerveRequest.FieldCentric()
+                        .withDeadband(maxSpeed.magnitude() * 0.1)
+                        .withRotationalDeadband(maxAngularRate.magnitude() * 0.1)
                         .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage)
-                        .withVelocityY(target.position().getY() < 0 ? 0.5 : -0.5)
+                        .withRotationalRate(target.position().getX() < 0 ? -0.8 : 0.8)
         ).execute());
     }
 
