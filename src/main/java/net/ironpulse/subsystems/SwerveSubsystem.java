@@ -69,7 +69,7 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
                 new HolonomicPathFollowerConfig(
                         new PIDConstants(10, 0, 0),
                         new PIDConstants(10, 0, 0),
-                        Constants.TunerConstants.speedAt12Volts.magnitude(),
+                        Constants.SwerveConstants.speedAt12Volts.magnitude(),
                         driveBaseRadius,
                         new ReplanningConfig()),
                 () -> false,

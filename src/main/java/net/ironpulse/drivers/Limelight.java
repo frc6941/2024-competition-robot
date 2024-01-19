@@ -4,7 +4,7 @@ import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import net.ironpulse.models.AprilTagTarget;
+import net.ironpulse.data.AprilTagTarget;
 
 import java.util.Optional;
 

@@ -7,23 +7,25 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import net.ironpulse.Constants.OperatorConstants;
 import net.ironpulse.commands.AimingCommand;
+import net.ironpulse.subsystems.IndexerSubsystem;
 import net.ironpulse.subsystems.SwerveSubsystem;
+import net.ironpulse.telemetries.IndexerTelemetry;
 import net.ironpulse.telemetries.SwerveTelemetry;
 
-import static net.ironpulse.Constants.TunerConstants.maxAngularRate;
-import static net.ironpulse.Constants.TunerConstants.maxSpeed;
+import static net.ironpulse.Constants.SwerveConstants.maxAngularRate;
+import static net.ironpulse.Constants.SwerveConstants.maxSpeed;
 
 public class RobotContainer {
     private final CommandXboxController driverController =
             new CommandXboxController(OperatorConstants.DRIVER_CONTROLLER_PORT);
 
-    public final SwerveSubsystem swerveSubsystem = Constants.TunerConstants.DriveTrain;
+    public final SwerveSubsystem swerveSubsystem = Constants.SwerveConstants.DriveTrain;
+    public final IndexerSubsystem indexerSubsystem = new IndexerSubsystem();
 
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             .withDeadband(maxSpeed.magnitude() * 0.1)
             .withRotationalDeadband(maxAngularRate.magnitude() * 0.1)
             .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage);
-
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.RobotCentric forwardStraight =
             new SwerveRequest.RobotCentric().withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage);
@@ -31,9 +33,15 @@ public class RobotContainer {
 
     private final Command runAuto = swerveSubsystem.getAutoPath("Tests");
 
-    private final SwerveTelemetry swerveLogger = new SwerveTelemetry(maxSpeed);
+    private final SwerveTelemetry swerveTelemetry = new SwerveTelemetry(maxSpeed);
+    private final IndexerTelemetry indexerTelemetry = new IndexerTelemetry();
 
-    private void configureBindings() {
+    private void configureTelemetryBindings() {
+        swerveSubsystem.registerTelemetry(swerveTelemetry::telemeterize);
+        indexerSubsystem.registerTelemetry(indexerTelemetry::telemeterize);
+    }
+
+    private void configureKeyBindings() {
         swerveSubsystem.setDefaultCommand(swerveSubsystem
                 .applyRequest(() -> drive.withVelocityX(-driverController.getLeftY() * maxSpeed.magnitude())
                         .withVelocityY(-driverController.getLeftX() * maxSpeed.magnitude())
@@ -47,7 +55,6 @@ public class RobotContainer {
                         new Rotation2d(-driverController.getLeftY(), -driverController.getLeftX()))));
 
         driverController.leftBumper().onTrue(swerveSubsystem.runOnce(swerveSubsystem::seedFieldRelative));
-        swerveSubsystem.registerTelemetry(swerveLogger::telemeterize);
 
         driverController.pov(0).whileTrue(swerveSubsystem.applyRequest(() -> forwardStraight
                 .withVelocityX(0.5)
@@ -64,6 +71,7 @@ public class RobotContainer {
     }
 
     public RobotContainer() {
-        configureBindings();
+        configureKeyBindings();
+        configureTelemetryBindings();
     }
 }

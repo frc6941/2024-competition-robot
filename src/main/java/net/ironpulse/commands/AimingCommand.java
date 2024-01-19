@@ -7,8 +7,8 @@ import net.ironpulse.drivers.Limelight;
 import net.ironpulse.maths.Compare;
 import net.ironpulse.subsystems.SwerveSubsystem;
 
-import static net.ironpulse.Constants.TunerConstants.maxAngularRate;
-import static net.ironpulse.Constants.TunerConstants.maxSpeed;
+import static net.ironpulse.Constants.SwerveConstants.maxAngularRate;
+import static net.ironpulse.Constants.SwerveConstants.maxSpeed;
 
 public class AimingCommand extends Command {
     private final SwerveSubsystem swerveSubsystem;

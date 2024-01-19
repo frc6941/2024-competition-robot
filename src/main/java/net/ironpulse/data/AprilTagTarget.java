@@ -1,4 +1,4 @@
-package net.ironpulse.models;
+package net.ironpulse.data;
 
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Translation2d;

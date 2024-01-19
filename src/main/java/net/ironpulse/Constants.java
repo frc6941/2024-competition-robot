@@ -2,11 +2,15 @@ package net.ironpulse;
 
 import static edu.wpi.first.units.Units.*;
 
+import com.ctre.phoenix6.configs.FeedbackConfigs;
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.units.*;
 import net.ironpulse.subsystems.SwerveSubsystem;
 
@@ -15,7 +19,7 @@ public final class Constants {
         public static final int DRIVER_CONTROLLER_PORT = 0;
     }
 
-    public static class TunerConstants {
+    public static class SwerveConstants {
         public static final Measure<Velocity<Distance>> maxSpeed = MetersPerSecond.of(6);
         public static final Measure<Velocity<Angle>> maxAngularRate = RotationsPerSecond.of(0.5 * Math.PI);
 
@@ -168,5 +172,27 @@ public final class Constants {
 
         public static final SwerveSubsystem DriveTrain =
                 new SwerveSubsystem(DrivetrainConstants, FrontLeft, FrontRight, BackLeft, BackRight);
+    }
+
+    public static class IndexerConstants {
+        public static final int INDEXER_MOTOR_ID = 0;
+        public static final int BEAM_BREAK_ID = 0;
+
+        public static final Slot0Configs indexerGains = new Slot0Configs()
+                .withKP(60)
+                .withKI(0)
+                .withKD(0.1)
+                .withKV(0.12)
+                .withKS(0.25);
+
+        public static final MotionMagicConfigs motionMagicConfigs = new MotionMagicConfigs()
+                .withMotionMagicAcceleration(10)
+                .withMotionMagicJerk(50)
+                .withMotionMagicCruiseVelocity(5);
+        public static final MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs()
+                .withNeutralMode(NeutralModeValue.Brake);
+
+        public static final FeedbackConfigs feedbackConfigs = new FeedbackConfigs()
+                .withSensorToMechanismRatio(1);
     }
 }
