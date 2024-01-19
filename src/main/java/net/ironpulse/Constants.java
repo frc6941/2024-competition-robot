@@ -177,8 +177,13 @@ public final class Constants {
     public static class IndexerConstants {
         public static final int INDEXER_MOTOR_ID = 0;
         public static final int BEAM_BREAK_ID = 0;
+    }
 
-        public static final Slot0Configs indexerGains = new Slot0Configs()
+    public static class ShooterConstants {
+        public static final int DEPLOY_MOTOR_ID = 0;
+        public static final int SHOOT_MOTOR_ID = 0;
+
+        public static final Slot0Configs deployGains = new Slot0Configs()
                 .withKP(60)
                 .withKI(0)
                 .withKD(0.1)
@@ -194,5 +199,10 @@ public final class Constants {
 
         public static final FeedbackConfigs feedbackConfigs = new FeedbackConfigs()
                 .withSensorToMechanismRatio(1);
+    }
+
+    public static class IntakerConstants {
+        public static final int INTAKER_MOTOR_ID = 0;
+        public static final int BEAM_BREAK_ID = 0;
     }
 }
