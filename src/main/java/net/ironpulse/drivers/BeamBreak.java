@@ -9,10 +9,10 @@ public class BeamBreak {
 
     private boolean cleared;
 
-    private final AnalogInput beamBreak;
+    private final AnalogInput analogInput;
 
     public BeamBreak(int channel) {
-        beamBreak = new AnalogInput(channel);
+        analogInput = new AnalogInput(channel);
     }
 
     public void update() {
@@ -23,7 +23,7 @@ public class BeamBreak {
     }
 
     public boolean get() {
-        return beamBreak.getVoltage() > 2.0;
+        return analogInput.getVoltage() > 2.0;
     }
 
     public boolean wasTripped() {
