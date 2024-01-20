@@ -13,7 +13,10 @@ public class ShooterSubsystem implements Subsystem {
     private final TalonFX deployMotor;
     private final TalonFX shootMotor;
 
-    public ShooterSubsystem() {
+    private final Consumer<ShooterData> telemetryFunction;
+
+    public ShooterSubsystem(Consumer<ShooterData> telemetryFunction) {
+        this.telemetryFunction = telemetryFunction;
         deployMotor = new TalonFX(DEPLOY_MOTOR_ID);
         shootMotor = new TalonFX(SHOOT_MOTOR_ID);
 
@@ -28,7 +31,8 @@ public class ShooterSubsystem implements Subsystem {
             System.out.println("Shooter Deploy TalonFX failed config with error" + response);
     }
 
-    public void registerTelemetry(Consumer<ShooterData> telemetryFunction) {
+    @Override
+    public void periodic() {
         telemetryFunction.accept(
                 new ShooterData()
         );

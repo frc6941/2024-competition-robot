@@ -19,8 +19,11 @@ public class RobotContainer {
     private final CommandXboxController driverController =
             new CommandXboxController(OperatorConstants.DRIVER_CONTROLLER_PORT);
 
+    private final IndexerTelemetry indexerTelemetry = new IndexerTelemetry();
+    private final SwerveTelemetry swerveTelemetry = new SwerveTelemetry(maxSpeed);
+
     public final SwerveSubsystem swerveSubsystem = Constants.SwerveConstants.DriveTrain;
-    public final IndexerSubsystem indexerSubsystem = new IndexerSubsystem();
+    public final IndexerSubsystem indexerSubsystem = new IndexerSubsystem(indexerTelemetry::telemeterize);
 
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             .withDeadband(maxSpeed.magnitude() * 0.1)
@@ -32,14 +35,6 @@ public class RobotContainer {
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
     private final Command runAuto = swerveSubsystem.getAutoPath("Tests");
-
-    private final SwerveTelemetry swerveTelemetry = new SwerveTelemetry(maxSpeed);
-    private final IndexerTelemetry indexerTelemetry = new IndexerTelemetry();
-
-    private void configureTelemetryBindings() {
-        swerveSubsystem.registerTelemetry(swerveTelemetry::telemeterize);
-        indexerSubsystem.registerTelemetry(indexerTelemetry::telemeterize);
-    }
 
     private void configureKeyBindings() {
         swerveSubsystem.setDefaultCommand(swerveSubsystem
@@ -55,6 +50,7 @@ public class RobotContainer {
                         new Rotation2d(-driverController.getLeftY(), -driverController.getLeftX()))));
 
         driverController.leftBumper().onTrue(swerveSubsystem.runOnce(swerveSubsystem::seedFieldRelative));
+        swerveSubsystem.registerTelemetry(swerveTelemetry::telemeterize);
 
         driverController.pov(0).whileTrue(swerveSubsystem.applyRequest(() -> forwardStraight
                 .withVelocityX(0.5)
@@ -72,6 +68,5 @@ public class RobotContainer {
 
     public RobotContainer() {
         configureKeyBindings();
-        configureTelemetryBindings();
     }
 }

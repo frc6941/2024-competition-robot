@@ -15,12 +15,17 @@ public class IndexerSubsystem implements Subsystem {
     private final TalonFX indexerMotor;
     private final BeamBreak beamBreak;
 
-    public IndexerSubsystem() {
+    private Consumer<IndexerData> telemetryFunction;
+
+    public IndexerSubsystem(Consumer<IndexerData> telemetryFunction) {
         indexerMotor = new TalonFX(Constants.IndexerConstants.INDEXER_MOTOR_ID);
         beamBreak = new BeamBreak(BEAM_BREAK_ID);
+
+        this.telemetryFunction = telemetryFunction;
     }
 
-    public void registerTelemetry(Consumer<IndexerData> telemetryFunction) {
+    @Override
+    public void periodic() {
         telemetryFunction.accept(
                 new IndexerData(
                         RotationsPerSecond.of(indexerMotor.getVelocity().getValue()),
