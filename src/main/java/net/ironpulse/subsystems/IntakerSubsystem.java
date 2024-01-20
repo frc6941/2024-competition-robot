@@ -1,6 +1,7 @@
 package net.ironpulse.subsystems;
 
 import com.ctre.phoenix6.hardware.TalonFX;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import lombok.Getter;
 import net.ironpulse.data.IntakerData;
@@ -16,6 +17,7 @@ public class IntakerSubsystem implements Subsystem {
     private final Consumer<IntakerData> telemetryFunction;
 
     public IntakerSubsystem(Consumer<IntakerData> telemetryFunction) {
+        CommandScheduler.getInstance().registerSubsystem(this);
         intakerMotor = new TalonFX(INTAKER_MOTOR_ID);
 
         this.telemetryFunction = telemetryFunction;

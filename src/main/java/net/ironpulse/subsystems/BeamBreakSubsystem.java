@@ -1,5 +1,6 @@
 package net.ironpulse.subsystems;
 
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import lombok.Getter;
 import net.ironpulse.RobotContainer;
@@ -18,6 +19,7 @@ public class BeamBreakSubsystem implements Subsystem {
     private final RobotContainer robotContainer;
 
     public BeamBreakSubsystem(RobotContainer robotContainer) {
+        CommandScheduler.getInstance().registerSubsystem(this);
         this.robotContainer = robotContainer;
         intakerBeamBreak = new BeamBreak(INTAKER_BEAM_BREAK_ID);
         indexerBeamBreak1 = new BeamBreak(INDEXER_BEAM_BREAK_1_ID);

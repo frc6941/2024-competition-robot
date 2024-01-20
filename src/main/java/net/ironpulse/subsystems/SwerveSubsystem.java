@@ -16,6 +16,7 @@ import edu.wpi.first.units.Time;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import net.ironpulse.Constants;
 
@@ -31,6 +32,7 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
 
     public SwerveSubsystem(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
         super(driveTrainConstants, modules);
+        CommandScheduler.getInstance().registerSubsystem(this);
         for(var module : Modules){
             module.getCANcoder().setPosition(0);
         }
