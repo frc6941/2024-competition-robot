@@ -176,7 +176,8 @@ public final class Constants {
 
     public static class IndexerConstants {
         public static final int INDEXER_MOTOR_ID = 0;
-        public static final int BEAM_BREAK_ID = 0;
+
+        public static final Measure<Voltage> indexVoltage = Volts.of(1);
     }
 
     public static class ShooterConstants {
@@ -203,6 +204,13 @@ public final class Constants {
 
     public static class IntakerConstants {
         public static final int INTAKER_MOTOR_ID = 0;
-        public static final int BEAM_BREAK_ID = 0;
+
+        public static final Measure<Voltage> intakeVoltage = Volts.of(1);
+    }
+
+    public static class BeamBreakConstants {
+        public static final int INTAKER_BEAM_BREAK_ID = 0;
+        public static final int INDEXER_BEAM_BREAK_1_ID = 0;
+        public static final int INDEXER_BEAM_BREAK_2_ID = 0;
     }
 }
