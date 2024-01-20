@@ -200,6 +200,10 @@ public final class Constants {
 
         public static final FeedbackConfigs feedbackConfigs = new FeedbackConfigs()
                 .withSensorToMechanismRatio(1);
+
+        public static final Measure<Voltage> shootVoltage = Volts.of(1);
+
+        public static final Measure<Time> shootWaitTime = Seconds.of(2);
     }
 
     public static class IntakerConstants {

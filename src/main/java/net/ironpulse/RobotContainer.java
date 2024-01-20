@@ -7,15 +7,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import lombok.Getter;
 import net.ironpulse.Constants.OperatorConstants;
-import net.ironpulse.commands.AimingCommand;
+import net.ironpulse.commands.AutoShootCommand;
 import net.ironpulse.commands.IndexCommand;
 import net.ironpulse.commands.IntakeCommand;
 import net.ironpulse.state.StateMachine;
 import net.ironpulse.state.Transition;
-import net.ironpulse.subsystems.BeamBreakSubsystem;
-import net.ironpulse.subsystems.IndexerSubsystem;
-import net.ironpulse.subsystems.IntakerSubsystem;
-import net.ironpulse.subsystems.SwerveSubsystem;
+import net.ironpulse.subsystems.*;
 import net.ironpulse.telemetries.IndexerTelemetry;
 import net.ironpulse.telemetries.SwerveTelemetry;
 
@@ -35,6 +32,7 @@ public class RobotContainer {
     public final IndexerSubsystem indexerSubsystem = new IndexerSubsystem(indexerTelemetry::telemeterize);
     public final BeamBreakSubsystem beamBreakSubsystem = new BeamBreakSubsystem(this);
     private final IntakerSubsystem intakerSubsystem = new IntakerSubsystem(a -> {});
+    private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem(a -> {});
 
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             .withDeadband(maxSpeed.magnitude() * 0.1)
@@ -52,7 +50,7 @@ public class RobotContainer {
     }
 
     public enum Actions {
-        INTAKE, FINISH_INTAKE, SHOOT, AIM, FINISH_SHOOT, INTERRUPT_INTAKE
+        INTAKE, FINISH_INTAKE, SHOOT, AIM, FINISH_SHOOT, INTERRUPT_INTAKE, INTERRUPT_SHOOT
     }
 
     private final List<Transition> transitions = List.of(
@@ -81,6 +79,16 @@ public class RobotContainer {
                     .currentState(States.AIMING)
                     .nextState(States.SHOOTING)
                     .action(Actions.SHOOT)
+                    .build(),
+            Transition.builder()
+                    .currentState(States.SHOOTING)
+                    .nextState(States.PENDING)
+                    .action(Actions.INTERRUPT_SHOOT)
+                    .build(),
+            Transition.builder()
+                    .currentState(States.AIMING)
+                    .nextState(States.PENDING)
+                    .action(Actions.INTERRUPT_SHOOT)
                     .build(),
             Transition.builder()
                     .currentState(States.SHOOTING)
@@ -115,7 +123,8 @@ public class RobotContainer {
                 .withVelocityX(-0.5)
                 .withVelocityY(0)));
 
-        driverController.x().whileTrue(new AimingCommand(swerveSubsystem));
+        driverController.rightTrigger().whileTrue(new AutoShootCommand(this, swerveSubsystem,
+                shooterSubsystem, indexerSubsystem));
         driverController.rightBumper().whileTrue(new IntakeCommand(this, intakerSubsystem));
     }
 
