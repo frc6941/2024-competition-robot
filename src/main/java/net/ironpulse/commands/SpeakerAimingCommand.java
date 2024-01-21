@@ -15,12 +15,16 @@ import net.ironpulse.subsystems.SwerveSubsystem;
 
 import static net.ironpulse.Constants.SwerveConstants.maxAngularRate;
 import static net.ironpulse.Constants.SwerveConstants.maxSpeed;
-import static net.ironpulse.state.StateMachine.*;
+import static net.ironpulse.state.StateMachine.Actions;
 
 public class SpeakerAimingCommand extends Command {
     private final SwerveSubsystem swerveSubsystem;
     private final ShooterSubsystem shooterSubsystem;
     private final RobotContainer robotContainer;
+    private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
+            .withDeadband(maxSpeed.magnitude() * 0.1)
+            .withRotationalDeadband(maxAngularRate.magnitude() * 0.1)
+            .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage);
 
     public SpeakerAimingCommand(RobotContainer robotContainer, ShooterSubsystem shooterSubsystem, SwerveSubsystem swerveSubsystem) {
         this.swerveSubsystem = swerveSubsystem;
@@ -31,13 +35,17 @@ public class SpeakerAimingCommand extends Command {
 
     @Override
     public void execute() {
+        if (Limelight.getTarget().isPresent() &&
+                new Compare(Limelight.getTarget().get().position().getX(), 0).epsilonEqual(1))
+            return;
         Limelight.getTarget().ifPresent(target ->
                 CommandScheduler.getInstance().schedule(swerveSubsystem.applyRequest(() ->
-                    new SwerveRequest.FieldCentric()
-                            .withDeadband(maxSpeed.magnitude() * 0.1)
-                            .withRotationalDeadband(maxAngularRate.magnitude() * 0.1)
-                            .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage)
-                            .withRotationalRate(target.position().getX() < 0 ? -0.8 : 0.8)
+                            drive
+                                    .withVelocityX(-robotContainer.getDriverController()
+                                            .getLeftY() * maxSpeed.magnitude())
+                                    .withVelocityY(-robotContainer.getDriverController().
+                                            getLeftX() * maxSpeed.magnitude())
+                                    .withRotationalRate(target.position().getX() < 0 ? -0.8 : 0.8)
                     )
                 )
         );
@@ -57,12 +65,5 @@ public class SpeakerAimingCommand extends Command {
             return;
         }
         robotContainer.getGlobalState().transfer(Actions.AIM);
-    }
-
-    @Override
-    public boolean isFinished() {
-        return (Limelight.getTarget().isEmpty()) ||
-                new Compare(Limelight.getTarget().get().position().getX(), 0)
-                        .epsilonEqual(1);
     }
 }

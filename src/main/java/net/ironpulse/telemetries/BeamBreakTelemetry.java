@@ -19,7 +19,7 @@ public class BeamBreakTelemetry {
 
     public void telemeterize(BeamBreakData beamBreakData) {
         fieldIntakerBeamBreak.set(beamBreakData.intakerBeamBreak());
-        fieldIndexerBeamBreak1.set(beamBreakData.indexerBeamBreak1());
-        fieldIndexerBeamBreak2.set(beamBreakData.indexerBeamBreak2());
+        fieldIndexerBeamBreak1.set(beamBreakData.indexerBeamBreak());
+        fieldIndexerBeamBreak2.set(beamBreakData.shooterBeamBreak());
     }
 }

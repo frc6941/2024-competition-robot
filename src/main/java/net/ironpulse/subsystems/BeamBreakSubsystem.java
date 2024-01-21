@@ -17,9 +17,9 @@ import static net.ironpulse.Constants.BeamBreakConstants.*;
 public class BeamBreakSubsystem implements Subsystem {
     private final BeamBreak intakerBeamBreak;
 
-    private final BeamBreak indexerBeamBreak1;
+    private final BeamBreak indexerBeamBreak;
 
-    private final BeamBreak indexerBeamBreak2;
+    private final BeamBreak shooterBeamBreak;
 
     private final RobotContainer robotContainer;
     private final Consumer<BeamBreakData> telemetryFunction;
@@ -31,8 +31,8 @@ public class BeamBreakSubsystem implements Subsystem {
         this.telemetryFunction = telemetryFunction;
         this.robotContainer = robotContainer;
         intakerBeamBreak = new BeamBreak(INTAKER_BEAM_BREAK_ID);
-        indexerBeamBreak1 = new BeamBreak(INDEXER_BEAM_BREAK_1_ID);
-        indexerBeamBreak2 = new BeamBreak(INDEXER_BEAM_BREAK_2_ID);
+        indexerBeamBreak = new BeamBreak(INDEXER_BEAM_BREAK_ID);
+        shooterBeamBreak = new BeamBreak(SHOOTER_BEAM_BREAK_ID);
     }
 
     @Override
@@ -40,16 +40,16 @@ public class BeamBreakSubsystem implements Subsystem {
         telemetryFunction.accept(
                 new BeamBreakData(
                         intakerBeamBreak.get(),
-                        indexerBeamBreak1.get(),
-                        indexerBeamBreak2.get()
+                        indexerBeamBreak.get(),
+                        shooterBeamBreak.get()
                 )
         );
-        if (!intakerBeamBreak.get() && indexerBeamBreak1.get() && indexerBeamBreak2.get()) {
+        if (!intakerBeamBreak.get() && indexerBeamBreak.get() && !shooterBeamBreak.get()) {
             robotContainer.getGlobalState().transfer(StateMachine.Actions.FINISH_INTAKE);
             return;
         }
 
-        if (!intakerBeamBreak.get() && !indexerBeamBreak1.get() && !indexerBeamBreak2.get()) {
+        if (!intakerBeamBreak.get() && !indexerBeamBreak.get() && !shooterBeamBreak.get()) {
             timer.start();
             if (!timer.hasElapsed(0.5)) return;
             robotContainer.getGlobalState().transfer(StateMachine.Actions.FINISH_SHOOT);
