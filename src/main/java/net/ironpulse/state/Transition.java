@@ -7,14 +7,14 @@ import lombok.Data;
 @Data
 @Builder
 public class Transition {
-    private Enum<?> currentState;
+    private StateMachine.States currentState;
 
-    private Enum<?> nextState;
+    private StateMachine.States nextState;
 
     /**
      * The action required to do this transition
      */
-    private Enum<?> action;
+    private StateMachine.Actions action;
 
     /**
      * The command that will be executed after this transition

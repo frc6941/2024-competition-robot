@@ -5,6 +5,8 @@ import net.ironpulse.Constants;
 import net.ironpulse.RobotContainer;
 import net.ironpulse.subsystems.IndexerSubsystem;
 
+import static net.ironpulse.state.StateMachine.*;
+
 public class DeliverNoteCommand extends Command {
     private final IndexerSubsystem indexerSubsystem;
     private final RobotContainer robotContainer;
@@ -28,6 +30,6 @@ public class DeliverNoteCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        return robotContainer.getGlobalState().getCurrentState() == RobotContainer.States.IDLE;
+        return robotContainer.getGlobalState().getCurrentState() == States.IDLE;
     }
 }

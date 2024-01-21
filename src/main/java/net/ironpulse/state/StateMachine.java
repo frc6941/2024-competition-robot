@@ -13,9 +13,9 @@ public class StateMachine {
     private final List<Transition> transitions;
 
     @Getter
-    private Enum<?> currentState;
+    private States currentState;
 
-    public StateMachine(Enum<?> initialState, List<Transition> transitions) {
+    public StateMachine(States initialState, List<Transition> transitions) {
         currentState = initialState;
         this.transitions = transitions;
     }
@@ -24,12 +24,12 @@ public class StateMachine {
      * Do an action to trigger a specific transition
      * @param action The action that is going to be done
      */
-    public void transfer(Enum<?> action) {
+    public void transfer(Actions action) {
         var transition = transitions
                 .stream()
                 .filter(trans ->
-                        trans.getAction().equals(action)
-                                && trans.getCurrentState().equals(currentState))
+                        trans.getAction() == action
+                                && trans.getCurrentState() == currentState)
                 .findFirst();
         if (transition.isEmpty()) return;
         currentState = transition.get().getNextState();
@@ -39,5 +39,13 @@ public class StateMachine {
                                 .getInstance()
                                 .schedule(command)
                 );
+    }
+
+    public enum States {
+        IDLE, INTAKING, PENDING, AIMING, SHOOTING
+    }
+
+    public enum Actions {
+        INTAKE, FINISH_INTAKE, SHOOT, AIM, FINISH_SHOOT, INTERRUPT_INTAKE, INTERRUPT_SHOOT
     }
 }

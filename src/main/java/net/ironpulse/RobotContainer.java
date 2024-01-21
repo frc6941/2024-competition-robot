@@ -11,13 +11,13 @@ import net.ironpulse.commands.*;
 import net.ironpulse.state.StateMachine;
 import net.ironpulse.state.Transition;
 import net.ironpulse.subsystems.*;
-import net.ironpulse.telemetries.IndexerTelemetry;
-import net.ironpulse.telemetries.SwerveTelemetry;
+import net.ironpulse.telemetries.*;
 
 import java.util.List;
 
 import static net.ironpulse.Constants.SwerveConstants.maxAngularRate;
 import static net.ironpulse.Constants.SwerveConstants.maxSpeed;
+import static net.ironpulse.state.StateMachine.*;
 
 public class RobotContainer {
     private final CommandXboxController driverController =
@@ -25,12 +25,22 @@ public class RobotContainer {
 
     private final IndexerTelemetry indexerTelemetry = new IndexerTelemetry();
     private final SwerveTelemetry swerveTelemetry = new SwerveTelemetry(maxSpeed);
+    private final IntakerTelemetry intakerTelemetry = new IntakerTelemetry();
+    private final ShooterTelemetry shooterTelemetry = new ShooterTelemetry();
+    private final BeamBreakTelemetry beamBreakTelemetry = new BeamBreakTelemetry();
+    private final StateTelemetry stateTelemetry = new StateTelemetry();
 
     public final SwerveSubsystem swerveSubsystem = Constants.SwerveConstants.DriveTrain;
-    public final IndexerSubsystem indexerSubsystem = new IndexerSubsystem(indexerTelemetry::telemeterize);
-    public final BeamBreakSubsystem beamBreakSubsystem = new BeamBreakSubsystem(this);
-    private final IntakerSubsystem intakerSubsystem = new IntakerSubsystem(a -> {});
-    private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem(a -> {});
+    public final IndexerSubsystem indexerSubsystem =
+            new IndexerSubsystem(indexerTelemetry::telemeterize);
+    public final BeamBreakSubsystem beamBreakSubsystem =
+            new BeamBreakSubsystem(this, beamBreakTelemetry::telemeterize);
+    private final IntakerSubsystem intakerSubsystem =
+            new IntakerSubsystem(intakerTelemetry::telemeterize);
+    private final ShooterSubsystem shooterSubsystem =
+            new ShooterSubsystem(shooterTelemetry::telemeterize);
+    private final StateSubsystem stateSubsystem =
+            new StateSubsystem(this, stateTelemetry::telemeterize);
 
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             .withDeadband(maxSpeed.magnitude() * 0.1)
@@ -42,14 +52,6 @@ public class RobotContainer {
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
     private final Command runAuto = swerveSubsystem.getAutoPath("Tests");
-
-    public enum States {
-        IDLE, INTAKING, PENDING, AIMING, SHOOTING
-    }
-
-    public enum Actions {
-        INTAKE, FINISH_INTAKE, SHOOT, AIM, FINISH_SHOOT, INTERRUPT_INTAKE, INTERRUPT_SHOOT
-    }
 
     private final List<Transition> transitions = List.of(
             Transition.builder()

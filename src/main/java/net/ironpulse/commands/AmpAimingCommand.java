@@ -6,6 +6,8 @@ import net.ironpulse.Constants;
 import net.ironpulse.RobotContainer;
 import net.ironpulse.subsystems.ShooterSubsystem;
 
+import static net.ironpulse.state.StateMachine.*;
+
 public class AmpAimingCommand extends Command {
     private final ShooterSubsystem shooterSubsystem;
     private final RobotContainer robotContainer;
@@ -25,9 +27,9 @@ public class AmpAimingCommand extends Command {
     @Override
     public void end(boolean interrupted) {
         if (interrupted) {
-            robotContainer.getGlobalState().transfer(RobotContainer.Actions.INTERRUPT_SHOOT);
+            robotContainer.getGlobalState().transfer(Actions.INTERRUPT_SHOOT);
             return;
         }
-        robotContainer.getGlobalState().transfer(RobotContainer.Actions.AIM);
+        robotContainer.getGlobalState().transfer(Actions.AIM);
     }
 }

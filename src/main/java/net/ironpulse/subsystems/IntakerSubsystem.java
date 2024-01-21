@@ -8,6 +8,7 @@ import net.ironpulse.data.IntakerData;
 
 import java.util.function.Consumer;
 
+import static edu.wpi.first.units.Units.RotationsPerSecond;
 import static net.ironpulse.Constants.IntakerConstants.INTAKER_MOTOR_ID;
 
 public class IntakerSubsystem implements Subsystem {
@@ -26,7 +27,8 @@ public class IntakerSubsystem implements Subsystem {
     @Override
     public void periodic() {
         telemetryFunction.accept(
-                new IntakerData()
+                new IntakerData(RotationsPerSecond.of(intakerMotor
+                        .getVelocity().getValue()))
         );
     }
 }

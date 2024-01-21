@@ -15,6 +15,7 @@ import net.ironpulse.subsystems.SwerveSubsystem;
 
 import static net.ironpulse.Constants.SwerveConstants.maxAngularRate;
 import static net.ironpulse.Constants.SwerveConstants.maxSpeed;
+import static net.ironpulse.state.StateMachine.*;
 
 public class SpeakerAimingCommand extends Command {
     private final SwerveSubsystem swerveSubsystem;
@@ -52,10 +53,10 @@ public class SpeakerAimingCommand extends Command {
     @Override
     public void end(boolean interrupted) {
         if (interrupted) {
-            robotContainer.getGlobalState().transfer(RobotContainer.Actions.INTERRUPT_SHOOT);
+            robotContainer.getGlobalState().transfer(Actions.INTERRUPT_SHOOT);
             return;
         }
-        robotContainer.getGlobalState().transfer(RobotContainer.Actions.AIM);
+        robotContainer.getGlobalState().transfer(Actions.AIM);
     }
 
     @Override

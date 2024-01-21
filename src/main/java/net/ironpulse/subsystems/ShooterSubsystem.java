@@ -9,6 +9,7 @@ import net.ironpulse.data.ShooterData;
 
 import java.util.function.Consumer;
 
+import static edu.wpi.first.units.Units.*;
 import static net.ironpulse.Constants.ShooterConstants.*;
 
 @Getter
@@ -40,7 +41,11 @@ public class ShooterSubsystem implements Subsystem {
     @Override
     public void periodic() {
         telemetryFunction.accept(
-                new ShooterData()
+                new ShooterData(
+                        Degrees.of(Degrees.convertFrom(deployMotor.getPosition()
+                                .getValue(), Rotations)),
+                        RotationsPerSecond.of(shootMotor.getVelocity().getValue())
+                )
         );
     }
 }

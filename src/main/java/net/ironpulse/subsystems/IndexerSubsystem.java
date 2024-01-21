@@ -28,7 +28,6 @@ public class IndexerSubsystem implements Subsystem {
     public void periodic() {
         telemetryFunction.accept(
                 new IndexerData(
-                        RotationsPerSecond.of(indexerMotor.getVelocity().getValue()),
                         Degrees.of(Degrees.convertFrom(
                                 indexerMotor.getPosition().getValue(), Rotations))
                 )
