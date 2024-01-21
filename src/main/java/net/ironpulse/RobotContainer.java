@@ -20,6 +20,7 @@ import static net.ironpulse.Constants.SwerveConstants.maxSpeed;
 import static net.ironpulse.state.StateMachine.*;
 
 public class RobotContainer {
+    @Getter
     private final CommandXboxController driverController =
             new CommandXboxController(OperatorConstants.DRIVER_CONTROLLER_PORT);
 
