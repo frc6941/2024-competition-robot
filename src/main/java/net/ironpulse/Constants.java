@@ -70,6 +70,7 @@ public final class Constants {
         private static final String CAN_BUS_NAME = "6941CANivore1";
         private static final int PIGEON_ID = 1;
 
+        // Simulation only
         private static final double STEER_INERTIA = 0.00001;
         private static final double DRIVE_INERTIA = 0.001;
         private static final Measure<Voltage> steerFrictionVoltage = Volts.of(0.25);
@@ -102,7 +103,6 @@ public final class Constants {
         private static final int FRONT_LEFT_STEER_MOTOR_ID = 3;
         private static final int FRONT_LEFT_ENCODER_ID = 9;
         private static final double FRONT_LEFT_ENCODER_OFFSET = -0.10205078125;
-//         private static final double FRONT_LEFT_ENCODER_OFFSET = 0;
 
         private static final Measure<Distance> frontLeftXPos = Meters.of(0.5);
         private static final Measure<Distance> frontLeftYPos = Meters.of(0.5);
@@ -112,7 +112,6 @@ public final class Constants {
         private static final int FRONT_RIGHT_STEER_MOTOR_ID = 7;
         private static final int FRONT_RIGHT_ENCODER_ID = 21;
         private static final double FRONT_RIGHT_ENCODER_OFFSET = -0.448974609375;
-//        private static final double FRONT_RIGHT_ENCODER_OFFSET = 0;
 
         private static final Measure<Distance> frontRightXPos = Meters.of(0.5);
         private static final Measure<Distance> frontRightYPos = Meters.of(-0.5);
@@ -122,7 +121,6 @@ public final class Constants {
         private static final int BACK_LEFT_STEER_MOTOR_ID = 14;
         private static final int BACK_LEFT_ENCODER_ID = 20;
         private static final double BACK_LEFT_ENCODER_OFFSET = 0.191650390625;
-//        private static final double BACK_LEFT_ENCODER_OFFSET = 0;
 
         private static final Measure<Distance> backLeftXPos = Meters.of(-0.5);
         private static final Measure<Distance> backLeftYPos = Meters.of(0.5);
@@ -132,7 +130,6 @@ public final class Constants {
         private static final int BACK_RIGHT_STEER_MOTOR_ID = 6;
         private static final int BACK_RIGHT_ENCODER_ID = 12;
         private static final double BACK_RIGHT_ENCODER_OFFSET = -0.095703125;
-//        private static final double BACK_RIGHT_ENCODER_OFFSET = 0;
 
         private static final Measure<Distance> backRightXPos = Meters.of(-0.5);
         private static final Measure<Distance> backRightYPos = Meters.of(-0.5);
@@ -202,8 +199,10 @@ public final class Constants {
                 .withSensorToMechanismRatio(1);
 
         public static final Measure<Voltage> shootVoltage = Volts.of(1);
-
         public static final Measure<Time> shootWaitTime = Seconds.of(2);
+
+        public static final Measure<Angle> speakerAngleOffset = Degrees.of(0);
+        public static final Measure<Angle> ampDeployAngle = Degrees.of(0);
     }
 
     public static class IntakerConstants {

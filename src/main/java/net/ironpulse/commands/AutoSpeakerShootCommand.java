@@ -9,10 +9,10 @@ import net.ironpulse.subsystems.IndexerSubsystem;
 import net.ironpulse.subsystems.ShooterSubsystem;
 import net.ironpulse.subsystems.SwerveSubsystem;
 
-public class AutoShootCommand extends SequentialCommandGroup {
-    public AutoShootCommand(RobotContainer robotContainer, SwerveSubsystem swerveSubsystem, ShooterSubsystem shooterSubsystem, IndexerSubsystem indexerSubsystem) {
+public class AutoSpeakerShootCommand extends SequentialCommandGroup {
+    public AutoSpeakerShootCommand(RobotContainer robotContainer, SwerveSubsystem swerveSubsystem, ShooterSubsystem shooterSubsystem, IndexerSubsystem indexerSubsystem) {
         addCommands(
-                new AimingCommand(robotContainer, shooterSubsystem, swerveSubsystem),
+                new SpeakerAimingCommand(robotContainer, shooterSubsystem, swerveSubsystem),
                 Commands.parallel(
                         new ShootCommand(robotContainer, shooterSubsystem),
                         Commands.sequence(

@@ -33,6 +33,8 @@ public class ShooterSubsystem implements Subsystem {
         var response = deployMotor.getConfigurator().apply(deployMotorConfig);
         if (response.isError())
             System.out.println("Shooter Deploy TalonFX failed config with error" + response);
+
+        deployMotor.setPosition(0);
     }
 
     @Override

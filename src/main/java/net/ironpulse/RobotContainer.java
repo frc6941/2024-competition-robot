@@ -7,9 +7,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import lombok.Getter;
 import net.ironpulse.Constants.OperatorConstants;
-import net.ironpulse.commands.AutoShootCommand;
-import net.ironpulse.commands.IndexCommand;
-import net.ironpulse.commands.IntakeCommand;
+import net.ironpulse.commands.*;
 import net.ironpulse.state.StateMachine;
 import net.ironpulse.state.Transition;
 import net.ironpulse.subsystems.*;
@@ -84,16 +82,19 @@ public class RobotContainer {
                     .currentState(States.SHOOTING)
                     .nextState(States.PENDING)
                     .action(Actions.INTERRUPT_SHOOT)
+                    .command(new ResetShooterCommand(shooterSubsystem))
                     .build(),
             Transition.builder()
                     .currentState(States.AIMING)
                     .nextState(States.PENDING)
                     .action(Actions.INTERRUPT_SHOOT)
+                    .command(new ResetShooterCommand(shooterSubsystem))
                     .build(),
             Transition.builder()
                     .currentState(States.SHOOTING)
                     .nextState(States.IDLE)
                     .action(Actions.FINISH_SHOOT)
+                    .command(new ResetShooterCommand(shooterSubsystem))
                     .build()
     );
 
@@ -123,8 +124,11 @@ public class RobotContainer {
                 .withVelocityX(-0.5)
                 .withVelocityY(0)));
 
-        driverController.rightTrigger().whileTrue(new AutoShootCommand(this, swerveSubsystem,
+        driverController.rightTrigger().whileTrue(new AutoSpeakerShootCommand(this, swerveSubsystem,
                 shooterSubsystem, indexerSubsystem));
+        driverController.leftTrigger().whileTrue(new AutoAmpShootCommand(this,
+                shooterSubsystem, indexerSubsystem));
+
         driverController.rightBumper().whileTrue(new IntakeCommand(this, intakerSubsystem));
     }
 
