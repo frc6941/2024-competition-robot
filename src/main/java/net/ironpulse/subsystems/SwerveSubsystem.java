@@ -75,7 +75,8 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
                         driveBaseRadius,
                         new ReplanningConfig()),
                 () -> false,
-                this);
+                this
+        );
     }
 
     public Command applyRequest(Supplier<SwerveRequest> requestSupplier) {
@@ -94,7 +95,7 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
         lastSimTime = Seconds.of(Utils.getCurrentTimeSeconds());
 
         @SuppressWarnings("PMD.CloseResource")
-        Notifier simNotifier = new Notifier(() -> {
+        var simNotifier = new Notifier(() -> {
             var currentTime = Seconds.of(Utils.getCurrentTimeSeconds());
             var deltaTime = currentTime.minus(lastSimTime);
             lastSimTime = currentTime;

@@ -174,7 +174,7 @@ public final class Constants {
     public static class IndexerConstants {
         public static final int INDEXER_MOTOR_ID = 0;
 
-        public static final Measure<Voltage> indexVoltage = Volts.of(1);
+        public static final Measure<Voltage> indexVoltage = Volts.of(7);
     }
 
     public static class ShooterConstants {
@@ -198,10 +198,10 @@ public final class Constants {
         public static final FeedbackConfigs feedbackConfigs = new FeedbackConfigs()
                 .withSensorToMechanismRatio(1);
 
-        public static final Measure<Voltage> shootVoltage = Volts.of(1);
-        public static final Measure<Time> shootWaitTime = Seconds.of(2);
+        public static final Measure<Voltage> shootVoltage = Volts.of(16);
+        public static final Measure<Time> shootWaitTime = Seconds.of(1);
 
-        public static final Measure<Angle> speakerAngleOffset = Degrees.of(0);
+        public static final Measure<Angle> speakerAngleOffset = Degrees.of(5);
         public static final Measure<Angle> ampDeployAngle = Degrees.of(0);
     }
 
