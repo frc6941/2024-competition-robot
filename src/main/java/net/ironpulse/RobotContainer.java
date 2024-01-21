@@ -70,6 +70,7 @@ public class RobotContainer {
                     .currentState(States.INTAKING)
                     .nextState(States.IDLE)
                     .action(Actions.INTERRUPT_INTAKE)
+                    .command(new ResetIntakerCommand(intakerSubsystem))
                     .build(),
             Transition.builder()
                     .currentState(States.PENDING)
