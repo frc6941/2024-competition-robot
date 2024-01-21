@@ -24,7 +24,7 @@ public class StateMachine {
      * Do an action to trigger a specific transition
      * @param action The action that is going to be done
      */
-    public void transfer(Actions action) {
+    public synchronized void transfer(Actions action) {
         var transition = transitions
                 .stream()
                 .filter(trans ->
@@ -42,10 +42,10 @@ public class StateMachine {
     }
 
     public enum States {
-        IDLE, INTAKING, PENDING, AIMING, SHOOTING
+        IDLE, INTAKING, PENDING, SHOOTING
     }
 
     public enum Actions {
-        INTAKE, FINISH_INTAKE, SHOOT, AIM, FINISH_SHOOT, INTERRUPT_INTAKE, INTERRUPT_SHOOT
+        INTAKE, FINISH_INTAKE, SHOOT, FINISH_SHOOT, INTERRUPT_INTAKE, INTERRUPT_SHOOT
     }
 }

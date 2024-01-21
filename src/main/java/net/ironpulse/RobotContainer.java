@@ -74,22 +74,11 @@ public class RobotContainer {
                     .build(),
             Transition.builder()
                     .currentState(States.PENDING)
-                    .nextState(States.AIMING)
-                    .action(Actions.AIM)
-                    .build(),
-            Transition.builder()
-                    .currentState(States.AIMING)
                     .nextState(States.SHOOTING)
                     .action(Actions.SHOOT)
                     .build(),
             Transition.builder()
                     .currentState(States.SHOOTING)
-                    .nextState(States.PENDING)
-                    .action(Actions.INTERRUPT_SHOOT)
-                    .command(new ResetShooterCommand(shooterSubsystem))
-                    .build(),
-            Transition.builder()
-                    .currentState(States.AIMING)
                     .nextState(States.PENDING)
                     .action(Actions.INTERRUPT_SHOOT)
                     .command(new ResetShooterCommand(shooterSubsystem))

@@ -13,6 +13,8 @@ import net.ironpulse.maths.Compare;
 import net.ironpulse.subsystems.ShooterSubsystem;
 import net.ironpulse.subsystems.SwerveSubsystem;
 
+import java.util.function.Supplier;
+
 import static net.ironpulse.Constants.SwerveConstants.maxAngularRate;
 import static net.ironpulse.Constants.SwerveConstants.maxSpeed;
 import static net.ironpulse.state.StateMachine.Actions;
@@ -25,28 +27,34 @@ public class SpeakerAimingCommand extends Command {
             .withDeadband(maxSpeed.magnitude() * 0.1)
             .withRotationalDeadband(maxAngularRate.magnitude() * 0.1)
             .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage);
+    private final Supplier<Boolean> confirmation;
 
-    public SpeakerAimingCommand(RobotContainer robotContainer, ShooterSubsystem shooterSubsystem, SwerveSubsystem swerveSubsystem) {
+    public SpeakerAimingCommand(
+            RobotContainer robotContainer,
+            ShooterSubsystem shooterSubsystem,
+            SwerveSubsystem swerveSubsystem,
+            Supplier<Boolean> confirmation
+    ) {
         this.swerveSubsystem = swerveSubsystem;
         this.shooterSubsystem = shooterSubsystem;
         this.robotContainer = robotContainer;
+        this.confirmation = confirmation;
         addRequirements(swerveSubsystem, shooterSubsystem);
     }
 
     @Override
     public void execute() {
-        if (Limelight.getTarget().isPresent() &&
-                new Compare(Limelight.getTarget().get().position().getX(), 0).epsilonEqual(1))
-            return;
+        robotContainer.getGlobalState().transfer(Actions.SHOOT);
         Limelight.getTarget().ifPresent(target ->
-                CommandScheduler.getInstance().schedule(swerveSubsystem.applyRequest(() ->
-                            drive
-                                    .withVelocityX(-robotContainer.getDriverController()
-                                            .getLeftY() * maxSpeed.magnitude())
-                                    .withVelocityY(-robotContainer.getDriverController().
-                                            getLeftX() * maxSpeed.magnitude())
-                                    .withRotationalRate(target.position().getX() < 0 ? -0.8 : 0.8)
-                    )
+                CommandScheduler.getInstance().schedule(
+                        swerveSubsystem.applyRequest(() ->
+                                drive
+                                        .withVelocityX(-robotContainer.getDriverController()
+                                                .getLeftY() * maxSpeed.magnitude())
+                                        .withVelocityY(-robotContainer.getDriverController()
+                                                .getLeftX() * maxSpeed.magnitude())
+                                        .withRotationalRate(atSetpoint() ? 0 : target.position().getX() < 0 ? -0.8 : 0.8)
+                        )
                 )
         );
         // TODO Test whether ty is the pitch angle
@@ -58,12 +66,19 @@ public class SpeakerAimingCommand extends Command {
         );
     }
 
+    private boolean atSetpoint() {
+        return Limelight.getTarget().isPresent() && new Compare(
+                Limelight.getTarget().get().position().getX(), 0).epsilonEqual(1);
+    }
+
     @Override
     public void end(boolean interrupted) {
-        if (interrupted) {
-            robotContainer.getGlobalState().transfer(Actions.INTERRUPT_SHOOT);
-            return;
-        }
-        robotContainer.getGlobalState().transfer(Actions.AIM);
+        if (!interrupted) return;
+        robotContainer.getGlobalState().transfer(Actions.INTERRUPT_SHOOT);
+    }
+
+    @Override
+    public boolean isFinished() {
+        return confirmation.get();
     }
 }

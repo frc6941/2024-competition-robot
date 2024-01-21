@@ -22,14 +22,12 @@ public class AmpAimingCommand extends Command {
     public void execute() {
         shooterSubsystem.getDeployMotor().setControl(
                 new MotionMagicVoltage(Constants.ShooterConstants.ampDeployAngle.magnitude()));
+        robotContainer.getGlobalState().transfer(Actions.SHOOT);
     }
 
     @Override
     public void end(boolean interrupted) {
-        if (interrupted) {
-            robotContainer.getGlobalState().transfer(Actions.INTERRUPT_SHOOT);
-            return;
-        }
-        robotContainer.getGlobalState().transfer(Actions.AIM);
+        if (!interrupted) return;
+        robotContainer.getGlobalState().transfer(Actions.INTERRUPT_SHOOT);
     }
 }
