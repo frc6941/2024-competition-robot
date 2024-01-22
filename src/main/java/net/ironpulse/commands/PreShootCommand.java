@@ -26,8 +26,6 @@ public class PreShootCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        if (interrupted)
-            robotContainer.getGlobalState().transfer(Actions.INTERRUPT_SHOOT);
         shooterSubsystem.getShootMotor().setVoltage(0);
     }
 

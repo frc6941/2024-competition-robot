@@ -45,6 +45,11 @@ public final class Constants {
                 .withKI(0)
                 .withKD(0);
 
+        public static final Slot0Configs txGains = new Slot0Configs()
+                .withKP(0.1)
+                .withKI(0)
+                .withKD(0);
+
         // The closed-loop output type to use for the steer motors;
         // This affects the PID/FF gains for the steer motors
         private static final SwerveModule.ClosedLoopOutputType steerClosedLoopOutput =
@@ -204,9 +209,7 @@ public final class Constants {
                 .withSensorToMechanismRatio(1);
 
         public static final Measure<Voltage> shootVoltage = Volts.of(16);
-        public static final Measure<Time> shootWaitTime = Seconds.of(1);
 
-        public static final Measure<Angle> speakerAngleOffset = Degrees.of(5);
         public static final Measure<Angle> ampDeployAngle = Degrees.of(0);
     }
 

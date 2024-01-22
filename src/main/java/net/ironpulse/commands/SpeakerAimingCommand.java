@@ -3,16 +3,12 @@ package net.ironpulse.commands;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
-
-import net.ironpulse.Constants;
 import net.ironpulse.RobotContainer;
 import net.ironpulse.drivers.Limelight;
 import net.ironpulse.maths.Angle;
-import net.ironpulse.state.StateMachine;
 import net.ironpulse.subsystems.ShooterSubsystem;
 import net.ironpulse.subsystems.SwerveSubsystem;
 
@@ -51,24 +47,22 @@ public class SpeakerAimingCommand extends Command {
         robotContainer.getGlobalState().transfer(Actions.SHOOT);
         if (Limelight.getTarget().isEmpty()) return;
         var target = Limelight.getTarget().get();
+        var targetDirectionInHeadingSpace = Angle.continuousToPositive360(
+                Angle.continuousToPositive360(swerveSubsystem.getPigeon2().getAngle())
+                        + 180) + target.position().getX();
+        var deployAngleInRotations = Units.degreesToRotations(90 - target.position().getY());
         swerveSubsystem.applyRequest(() ->
                 drive
                         .withVelocityX(-robotContainer.getDriverController().getLeftY()
                                 * maxSpeed.magnitude())
                         .withVelocityY(-robotContainer.getDriverController().getLeftX()
                                 * maxSpeed.magnitude())
-                        .withTargetDirection(Rotation2d.fromDegrees(
-                                Angle.continuousToPositive360(
-                                        Angle.continuousToPositive360(
-                                                swerveSubsystem.getPigeon2().getAngle()) + 180)
-                                        + target.position().getX())
-                        )
+                        .withTargetDirection(
+                                Rotation2d.fromDegrees(targetDirectionInHeadingSpace))
         ).execute();
         // TODO Test whether ty is the pitch angle
         shooterSubsystem.getDeployMotor()
-                .setControl(new MotionMagicVoltage(
-                        Units.degreesToRotations(90 - target.position().getY() +
-                                Constants.ShooterConstants.speakerAngleOffset.magnitude())));
+                .setControl(new MotionMagicVoltage(deployAngleInRotations));
     }
 
     @Override
@@ -79,7 +73,6 @@ public class SpeakerAimingCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        return confirmation.get() ||
-                robotContainer.getGlobalState().getCurrentState() == StateMachine.States.IDLE;
+        return confirmation.get();
     }
 }

@@ -120,7 +120,7 @@ public class RobotContainer {
         driverController.rightTrigger().whileTrue(new AutoSpeakerShootCommand(this, swerveSubsystem,
                 shooterSubsystem, indexerSubsystem, () -> driverController.getHID().getAButton()));
         driverController.leftTrigger().whileTrue(new AutoAmpShootCommand(this,
-                shooterSubsystem, indexerSubsystem));
+                shooterSubsystem, indexerSubsystem, swerveSubsystem, () -> driverController.getHID().getAButton()));
 
         driverController.rightBumper().whileTrue(new IntakeCommand(this, intakerSubsystem));
     }
