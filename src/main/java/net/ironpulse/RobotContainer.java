@@ -2,12 +2,18 @@ package net.ironpulse;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import lombok.Getter;
 import net.ironpulse.Constants.OperatorConstants;
 import net.ironpulse.commands.*;
+import net.ironpulse.commands.autos.AutoIntakeCommand;
+import net.ironpulse.commands.autos.AutoShootCommand;
 import net.ironpulse.state.StateMachine;
 import net.ironpulse.state.Transition;
 import net.ironpulse.subsystems.*;
@@ -52,7 +58,8 @@ public class RobotContainer {
             .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage);
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
-    private final Command runAuto = swerveSubsystem.getAutoPath("Tests");
+    private final SendableChooser<Command> autoChooser =
+            AutoBuilder.buildAutoChooser("M 1 Note Auto");
 
     private final List<Transition> transitions = List.of(
             Transition.builder()
@@ -125,11 +132,20 @@ public class RobotContainer {
         driverController.rightBumper().whileTrue(new IntakeCommand(this, intakerSubsystem));
     }
 
+    private void configureAutos() {
+        NamedCommands.registerCommand("AutoShoot",
+                new AutoShootCommand(shooterSubsystem, indexerSubsystem));
+        NamedCommands.registerCommand("Intake",
+                new AutoIntakeCommand(intakerSubsystem, indexerSubsystem, beamBreakSubsystem));
+        SmartDashboard.putData("Auto Chooser", autoChooser);
+    }
+
     public Command getAutonomousCommand() {
-        return runAuto;
+        return autoChooser.getSelected();
     }
 
     public RobotContainer() {
+        configureAutos();
         configureKeyBindings();
     }
 }
