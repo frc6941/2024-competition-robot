@@ -7,6 +7,7 @@ import com.ctre.phoenix6.mechanisms.swerve.utility.PhoenixPIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 
+@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
 public class FieldCentricTargetTx implements SwerveRequest {
     /**
      * The velocity in the X direction, in m/s.

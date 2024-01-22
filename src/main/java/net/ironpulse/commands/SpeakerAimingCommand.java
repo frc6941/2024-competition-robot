@@ -47,9 +47,6 @@ public class SpeakerAimingCommand extends Command {
         robotContainer.getGlobalState().transfer(Actions.SHOOT);
         if (Limelight.getTarget().isEmpty()) return;
         var target = Limelight.getTarget().get();
-        var targetDirectionInHeadingSpace = Angle.continuousToPositive360(
-                Angle.continuousToPositive360(swerveSubsystem.getPigeon2().getAngle())
-                        + 180) + target.position().getX();
         var deployAngleInRotations = Units.degreesToRotations(90 - target.position().getY());
         swerveSubsystem.applyRequest(() ->
                 drive
@@ -58,7 +55,11 @@ public class SpeakerAimingCommand extends Command {
                         .withVelocityY(-robotContainer.getDriverController().getLeftX()
                                 * maxSpeed.magnitude())
                         .withTargetDirection(
-                                Rotation2d.fromDegrees(targetDirectionInHeadingSpace))
+                                Rotation2d.fromDegrees(
+                                        Angle.continuousToPositive360(
+                                                Angle.continuousToPositive360(
+                                                        swerveSubsystem.getPigeon2().getAngle()) + 180)
+                                                + target.position().getX()))
         ).execute();
         // TODO Test whether ty is the pitch angle
         shooterSubsystem.getDeployMotor()

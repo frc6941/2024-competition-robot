@@ -41,12 +41,11 @@ public class AmpAimingCommand extends Command {
         shooterSubsystem.getDeployMotor().setControl(
                 new MotionMagicVoltage(Constants.ShooterConstants.ampDeployAngle.magnitude()));
         if (Limelight.getTarget().isEmpty()) return;
-        var target = Limelight.getTarget().get();
         swerveSubsystem.applyRequest(() ->
                 drive
                         .withVelocityX(-robotContainer.getDriverController().getLeftY()
                                 * maxSpeed.magnitude())
-                        .withTargetTx(target.position().getX())
+                        .withTargetTx(Limelight.getTarget().get().position().getX())
                         .withRotationalRate(-robotContainer.getDriverController().getRightX()
                                 * maxAngularRate.magnitude())
         );
