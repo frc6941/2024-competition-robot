@@ -17,7 +17,7 @@ public class AutoAmpShootCommand extends SequentialCommandGroup {
         addCommands(
                 new AmpAimingCommand(shooterSubsystem, robotContainer),
                 Commands.parallel(
-                        new ShootCommand(robotContainer, shooterSubsystem),
+                        new PreShootCommand(robotContainer, shooterSubsystem),
                         Commands.sequence(
                                 new WaitCommand(Constants.ShooterConstants.shootWaitTime.magnitude()),
                                 new DeliverNoteCommand(indexerSubsystem, robotContainer)

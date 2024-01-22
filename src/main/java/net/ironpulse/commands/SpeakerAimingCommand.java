@@ -12,13 +12,13 @@ import net.ironpulse.Constants;
 import net.ironpulse.RobotContainer;
 import net.ironpulse.drivers.Limelight;
 import net.ironpulse.maths.Angle;
+import net.ironpulse.state.StateMachine;
 import net.ironpulse.subsystems.ShooterSubsystem;
 import net.ironpulse.subsystems.SwerveSubsystem;
 
 import java.util.function.Supplier;
 
-import static net.ironpulse.Constants.SwerveConstants.maxAngularRate;
-import static net.ironpulse.Constants.SwerveConstants.maxSpeed;
+import static net.ironpulse.Constants.SwerveConstants.*;
 import static net.ironpulse.state.StateMachine.Actions;
 
 public class SpeakerAimingCommand extends Command {
@@ -28,7 +28,8 @@ public class SpeakerAimingCommand extends Command {
     private final SwerveRequest.FieldCentricFacingAngle drive = new SwerveRequest.FieldCentricFacingAngle()
             .withDeadband(maxSpeed.magnitude() * 0.1)
             .withRotationalDeadband(maxAngularRate.magnitude() * 0.1)
-            .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage);
+            .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage)
+            .withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo);
     private final Supplier<Boolean> confirmation;
 
     public SpeakerAimingCommand(
@@ -41,6 +42,7 @@ public class SpeakerAimingCommand extends Command {
         this.shooterSubsystem = shooterSubsystem;
         this.robotContainer = robotContainer;
         this.confirmation = confirmation;
+        drive.HeadingController.setPID(headingGains.kP, headingGains.kI, headingGains.kD);
         addRequirements(swerveSubsystem, shooterSubsystem);
     }
 
@@ -77,6 +79,7 @@ public class SpeakerAimingCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        return confirmation.get();
+        return confirmation.get() ||
+                robotContainer.getGlobalState().getCurrentState() == StateMachine.States.IDLE;
     }
 }

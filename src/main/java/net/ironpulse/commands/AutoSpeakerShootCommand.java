@@ -19,7 +19,7 @@ public class AutoSpeakerShootCommand extends ParallelCommandGroup {
     ) {
         addCommands(
                 new SpeakerAimingCommand(robotContainer, shooterSubsystem, swerveSubsystem, confirmation),
-                new ShootCommand(robotContainer, shooterSubsystem),
+                new PreShootCommand(robotContainer, shooterSubsystem),
                 Commands.sequence(
                         new WaitUntilCommand(confirmation::get),
                         new DeliverNoteCommand(indexerSubsystem, robotContainer)

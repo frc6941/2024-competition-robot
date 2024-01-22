@@ -7,12 +7,12 @@ import net.ironpulse.subsystems.ShooterSubsystem;
 
 import static net.ironpulse.state.StateMachine.*;
 
-public class ShootCommand extends Command {
+public class PreShootCommand extends Command {
     private final ShooterSubsystem shooterSubsystem;
     private final RobotContainer robotContainer;
 
 
-    public ShootCommand(RobotContainer robotContainer, ShooterSubsystem shooterSubsystem) {
+    public PreShootCommand(RobotContainer robotContainer, ShooterSubsystem shooterSubsystem) {
         this.shooterSubsystem = shooterSubsystem;
         this.robotContainer = robotContainer;
         addRequirements(shooterSubsystem);
