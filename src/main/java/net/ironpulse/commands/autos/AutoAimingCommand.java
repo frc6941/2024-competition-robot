@@ -14,7 +14,6 @@ public class AutoAimingCommand extends Command {
 
     public AutoAimingCommand(ShooterSubsystem shooterSubsystem) {
         this.shooterSubsystem = shooterSubsystem;
-        addRequirements(shooterSubsystem);
     }
 
     @Override

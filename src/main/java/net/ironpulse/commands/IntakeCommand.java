@@ -1,13 +1,13 @@
 package net.ironpulse.commands;
 
-import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 import net.ironpulse.Constants;
 import net.ironpulse.RobotContainer;
 import net.ironpulse.subsystems.IntakerSubsystem;
 
-import static net.ironpulse.state.StateMachine.*;
+import static net.ironpulse.state.StateMachine.Actions;
+import static net.ironpulse.state.StateMachine.States;
 
 public class IntakeCommand extends Command {
     private final IntakerSubsystem intakerSubsystem;
@@ -21,6 +21,7 @@ public class IntakeCommand extends Command {
 
     @Override
     public void execute() {
+        if (isFinished()) return;
         intakerSubsystem.getIntakerMotor()
                 .setVoltage(Constants.IntakerConstants.intakeVoltage.magnitude());
         robotContainer.getGlobalState().transfer(Actions.INTAKE);

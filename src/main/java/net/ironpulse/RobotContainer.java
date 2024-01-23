@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import lombok.Getter;
 import net.ironpulse.Constants.OperatorConstants;
@@ -29,6 +30,9 @@ public class RobotContainer {
     @Getter
     private final CommandXboxController driverController =
             new CommandXboxController(OperatorConstants.DRIVER_CONTROLLER_PORT);
+
+    private final CommandXboxController operatorController =
+            new CommandXboxController(OperatorConstants.OPERATOR_CONTROLLER_PORT);
 
     private final IndexerTelemetry indexerTelemetry = new IndexerTelemetry();
     private final SwerveTelemetry swerveTelemetry = new SwerveTelemetry(maxSpeed);
@@ -66,7 +70,6 @@ public class RobotContainer {
                     .currentState(States.IDLE)
                     .nextState(States.INTAKING)
                     .action(Actions.INTAKE)
-                    .command(new IndexCommand(this, indexerSubsystem))
                     .build(),
             Transition.builder()
                     .currentState(States.INTAKING)
@@ -124,12 +127,19 @@ public class RobotContainer {
                 .withVelocityX(-0.5)
                 .withVelocityY(0)));
 
-        driverController.rightTrigger().whileTrue(new AutoSpeakerShootCommand(this, swerveSubsystem,
+        driverController.rightTrigger().whileTrue(new SpeakerShootCommand(this, swerveSubsystem,
                 shooterSubsystem, indexerSubsystem, () -> driverController.getHID().getAButton()));
-        driverController.leftTrigger().whileTrue(new AutoAmpShootCommand(this,
+        driverController.leftTrigger().whileTrue(new AmpShootCommand(this,
                 shooterSubsystem, indexerSubsystem, swerveSubsystem, () -> driverController.getHID().getAButton()));
 
-        driverController.rightBumper().whileTrue(new IntakeCommand(this, intakerSubsystem));
+        driverController.rightBumper().whileTrue(
+                Commands.parallel(
+                        new IntakeCommand(this, intakerSubsystem),
+                        new IndexCommand(this, indexerSubsystem)
+                )
+        );
+
+        // TODO Bind operator manual actions
     }
 
     private void configureAutos() {

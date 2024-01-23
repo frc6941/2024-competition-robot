@@ -17,6 +17,7 @@ import net.ironpulse.subsystems.SwerveSubsystem;
 public final class Constants {
     public static class OperatorConstants {
         public static final int DRIVER_CONTROLLER_PORT = 0;
+        public static final int OPERATOR_CONTROLLER_PORT = 1;
     }
 
     public static class SwerveConstants {
@@ -211,6 +212,8 @@ public final class Constants {
         public static final Measure<Voltage> shootVoltage = Volts.of(16);
 
         public static final Measure<Angle> ampDeployAngle = Degrees.of(0);
+
+        public static final Measure<Angle> manualAimingStep = Degrees.of(0);
     }
 
     public static class IntakerConstants {
@@ -221,7 +224,7 @@ public final class Constants {
 
     public static class BeamBreakConstants {
         public static final int INTAKER_BEAM_BREAK_ID = 0;
-        public static final int INDEXER_BEAM_BREAK_ID = 0;
-        public static final int SHOOTER_BEAM_BREAK_ID = 0;
+        public static final int INDEXER_BEAM_BREAK_ID = 1;
+        public static final int SHOOTER_BEAM_BREAK_ID = 2;
     }
 }

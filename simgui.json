@@ -12,15 +12,50 @@
     "types": {
       "/FMSInfo": "FMSInfo",
       "/Pose": "Field2d",
+      "/SmartDashboard/Auto Chooser": "String Chooser",
       "/SmartDashboard/Module 0": "Mechanism2d",
       "/SmartDashboard/Module 1": "Mechanism2d",
       "/SmartDashboard/Module 2": "Mechanism2d",
       "/SmartDashboard/Module 3": "Mechanism2d"
+    },
+    "windows": {
+      "/Pose": {
+        "bottom": 1476,
+        "height": 8.210550308227539,
+        "left": 150,
+        "right": 2961,
+        "top": 79,
+        "width": 16.541748046875
+      }
     }
   },
   "NetworkTables": {
     "transitory": {
+      "BeamBreak": {
+        "open": true
+      },
+      "Drive": {
+        "open": true
+      },
+      "Indexer": {
+        "open": true
+      },
+      "Intaker": {
+        "Velocity (r": {
+          "open": true
+        },
+        "open": true
+      },
       "Shuffleboard": {
+        "open": true
+      },
+      "SmartDashboard": {
+        "Auto Chooser": {
+          "open": true
+        },
+        "open": true
+      },
+      "State": {
         "open": true
       }
     }

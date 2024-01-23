@@ -39,7 +39,7 @@ public class SpeakerAimingCommand extends Command {
         this.robotContainer = robotContainer;
         this.confirmation = confirmation;
         drive.HeadingController.setPID(headingGains.kP, headingGains.kI, headingGains.kD);
-        addRequirements(swerveSubsystem, shooterSubsystem);
+        addRequirements(swerveSubsystem);
     }
 
     @Override

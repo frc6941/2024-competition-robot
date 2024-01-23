@@ -10,6 +10,7 @@ import net.ironpulse.subsystems.ShooterSubsystem;
 import net.ironpulse.subsystems.SwerveSubsystem;
 import net.ironpulse.swerve.FieldCentricTargetTx;
 
+import static edu.wpi.first.units.Units.Rotations;
 import static net.ironpulse.Constants.SwerveConstants.*;
 import static net.ironpulse.state.StateMachine.Actions;
 
@@ -39,7 +40,7 @@ public class AmpAimingCommand extends Command {
     public void execute() {
         robotContainer.getGlobalState().transfer(Actions.SHOOT);
         shooterSubsystem.getDeployMotor().setControl(
-                new MotionMagicVoltage(Constants.ShooterConstants.ampDeployAngle.magnitude()));
+                new MotionMagicVoltage(Constants.ShooterConstants.ampDeployAngle.in(Rotations)));
         if (Limelight.getTarget().isEmpty()) return;
         swerveSubsystem.applyRequest(() ->
                 drive

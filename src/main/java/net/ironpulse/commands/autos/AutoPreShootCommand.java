@@ -11,7 +11,6 @@ public class AutoPreShootCommand extends Command {
 
     public AutoPreShootCommand(ShooterSubsystem shooterSubsystem) {
         this.shooterSubsystem = shooterSubsystem;
-        addRequirements(shooterSubsystem);
     }
 
     @Override

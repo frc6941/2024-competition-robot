@@ -1,25 +1,19 @@
-package net.ironpulse.commands;
+package net.ironpulse.commands.manuals;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import net.ironpulse.Constants;
-import net.ironpulse.RobotContainer;
 import net.ironpulse.subsystems.IndexerSubsystem;
 
-import static net.ironpulse.state.StateMachine.*;
-
-public class IndexCommand extends Command {
+public class ManualIndexInCommand extends Command {
     private final IndexerSubsystem indexerSubsystem;
-    private final RobotContainer robotContainer;
 
-    public IndexCommand(RobotContainer robotContainer, IndexerSubsystem indexerSubsystem) {
+    public ManualIndexInCommand(IndexerSubsystem indexerSubsystem) {
         this.indexerSubsystem = indexerSubsystem;
-        this.robotContainer = robotContainer;
         addRequirements(indexerSubsystem);
     }
 
     @Override
     public void execute() {
-        if (isFinished()) return;
         indexerSubsystem.getIndexerMotor()
                 .setVoltage(Constants.IndexerConstants.indexVoltage.magnitude());
     }
@@ -27,10 +21,5 @@ public class IndexCommand extends Command {
     @Override
     public void end(boolean interrupted) {
         indexerSubsystem.getIndexerMotor().setVoltage(0);
-    }
-
-    @Override
-    public boolean isFinished() {
-        return robotContainer.getGlobalState().getCurrentState() == States.PENDING;
     }
 }

@@ -1,7 +1,8 @@
 package net.ironpulse.commands;
 
-import com.pathplanner.lib.auto.NamedCommands;
-import edu.wpi.first.wpilibj2.command.*;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import net.ironpulse.RobotContainer;
 import net.ironpulse.subsystems.IndexerSubsystem;
 import net.ironpulse.subsystems.ShooterSubsystem;
@@ -9,17 +10,16 @@ import net.ironpulse.subsystems.SwerveSubsystem;
 
 import java.util.function.Supplier;
 
-public class AutoSpeakerShootCommand extends ParallelCommandGroup {
-
-    public AutoSpeakerShootCommand(
+public class AmpShootCommand extends ParallelCommandGroup {
+    public AmpShootCommand(
             RobotContainer robotContainer,
-            SwerveSubsystem swerveSubsystem,
             ShooterSubsystem shooterSubsystem,
             IndexerSubsystem indexerSubsystem,
+            SwerveSubsystem swerveSubsystem,
             Supplier<Boolean> confirmation
     ) {
         addCommands(
-                new SpeakerAimingCommand(robotContainer, shooterSubsystem, swerveSubsystem, confirmation),
+                new AmpAimingCommand(shooterSubsystem, swerveSubsystem, robotContainer),
                 new PreShootCommand(robotContainer, shooterSubsystem),
                 Commands.sequence(
                         new WaitUntilCommand(confirmation::get),

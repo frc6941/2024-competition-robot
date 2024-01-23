@@ -15,7 +15,6 @@ public class PreShootCommand extends Command {
     public PreShootCommand(RobotContainer robotContainer, ShooterSubsystem shooterSubsystem) {
         this.shooterSubsystem = shooterSubsystem;
         this.robotContainer = robotContainer;
-        addRequirements(shooterSubsystem);
     }
 
     @Override
