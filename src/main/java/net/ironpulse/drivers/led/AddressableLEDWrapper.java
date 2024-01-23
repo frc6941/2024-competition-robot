@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.util.Color;
 import lombok.Setter;
 import net.ironpulse.drivers.led.patterns.SolidColorPattern;
 
+@SuppressWarnings("PMD")
 public class AddressableLEDWrapper {
     private final AddressableLED addressableLED;
     private final AddressableLEDBuffer buffer;

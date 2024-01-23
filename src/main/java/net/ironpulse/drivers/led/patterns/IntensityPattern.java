@@ -30,11 +30,13 @@ public class IntensityPattern implements AddressableLEDPattern {
 
     @Override
     public void setLEDs(AddressableLEDBuffer buffer) {
-        var red = MathUtil.interpolate(lowColor.red, highColor.red, intensity);
-        var green = MathUtil.interpolate(lowColor.green, highColor.green, intensity);
-        var blue = MathUtil.interpolate(lowColor.blue, highColor.blue, intensity);
         for (var index = 0; index < buffer.getLength(); index++){
-            buffer.setLED(index, new Color(red,green,blue));
+            buffer.setLED(index, new Color(
+                    MathUtil.interpolate(lowColor.red, highColor.red, intensity),
+                    MathUtil.interpolate(lowColor.green, highColor.green, intensity),
+                    MathUtil.interpolate(lowColor.blue, highColor.blue, intensity)
+                    )
+            );
         }
     }
 

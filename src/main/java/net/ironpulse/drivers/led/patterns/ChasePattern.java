@@ -16,13 +16,12 @@ public class ChasePattern implements AddressableLEDPattern {
 
     @Override
     public void setLEDs(AddressableLEDBuffer buffer) {
-        var numberOfColors = colors.length;
         int effectiveIndex;
         int colorIndex;
         int bufferLength = buffer.getLength();
         for (var index = 0; index < bufferLength; index++){
             effectiveIndex = (index + offset) % bufferLength;
-            colorIndex =(index / segmentWidth)% numberOfColors;
+            colorIndex = (index / segmentWidth) % colors.length;
             buffer.setLED(effectiveIndex, colors[colorIndex]);
         }
 
