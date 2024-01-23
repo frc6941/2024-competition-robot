@@ -45,14 +45,14 @@ public class BeamBreakSubsystem implements Subsystem {
                 )
         );
         if (!intakerBeamBreak.get() && indexerBeamBreak.get() && !shooterBeamBreak.get()) {
-            robotContainer.getGlobalState().transfer(StateMachine.Actions.FINISH_INTAKE);
+            robotContainer.getGlobalStateMachine().transfer(StateMachine.Actions.FINISH_INTAKE);
             return;
         }
 
         if (!intakerBeamBreak.get() && !indexerBeamBreak.get() && !shooterBeamBreak.get()) {
             timer.start();
             if (!timer.hasElapsed(0.5)) return;
-            robotContainer.getGlobalState().transfer(StateMachine.Actions.FINISH_SHOOT);
+            robotContainer.getGlobalStateMachine().transfer(StateMachine.Actions.FINISH_SHOOT);
             timer.stop();
             timer.reset();
         }

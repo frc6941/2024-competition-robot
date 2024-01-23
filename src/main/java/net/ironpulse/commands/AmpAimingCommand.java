@@ -38,7 +38,7 @@ public class AmpAimingCommand extends Command {
 
     @Override
     public void execute() {
-        robotContainer.getGlobalState().transfer(Actions.SHOOT);
+        robotContainer.getGlobalStateMachine().transfer(Actions.SHOOT);
         shooterSubsystem.getDeployMotor().setControl(
                 new MotionMagicVoltage(Constants.ShooterConstants.ampDeployAngle.in(Rotations)));
         if (Limelight.getTarget().isEmpty()) return;
@@ -55,6 +55,6 @@ public class AmpAimingCommand extends Command {
     @Override
     public void end(boolean interrupted) {
         if (!interrupted) return;
-        robotContainer.getGlobalState().transfer(Actions.INTERRUPT_SHOOT);
+        robotContainer.getGlobalStateMachine().transfer(Actions.INTERRUPT_SHOOT);
     }
 }

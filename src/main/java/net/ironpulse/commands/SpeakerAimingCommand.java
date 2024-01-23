@@ -44,7 +44,7 @@ public class SpeakerAimingCommand extends Command {
 
     @Override
     public void execute() {
-        robotContainer.getGlobalState().transfer(Actions.SHOOT);
+        robotContainer.getGlobalStateMachine().transfer(Actions.SHOOT);
         if (Limelight.getTarget().isEmpty()) return;
         var target = Limelight.getTarget().get();
         var deployAngleInRotations = Units.degreesToRotations(90 - target.position().getY());
@@ -69,7 +69,7 @@ public class SpeakerAimingCommand extends Command {
     @Override
     public void end(boolean interrupted) {
         if (!interrupted) return;
-        robotContainer.getGlobalState().transfer(Actions.INTERRUPT_SHOOT);
+        robotContainer.getGlobalStateMachine().transfer(Actions.INTERRUPT_SHOOT);
     }
 
     @Override

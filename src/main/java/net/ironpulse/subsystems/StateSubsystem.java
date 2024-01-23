@@ -19,6 +19,6 @@ public class StateSubsystem implements Subsystem {
 
     @Override
     public void periodic() {
-        telemetryFunction.accept(new StateData(robotContainer.getGlobalState().getCurrentState()));
+        telemetryFunction.accept(new StateData(robotContainer.getGlobalStateMachine().getCurrentState()));
     }
 }

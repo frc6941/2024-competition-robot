@@ -227,4 +227,9 @@ public final class Constants {
         public static final int INDEXER_BEAM_BREAK_ID = 1;
         public static final int SHOOTER_BEAM_BREAK_ID = 2;
     }
+
+    public static class IndicatorConstants {
+        public static final int LED_PORT = 0;
+        public static final int LED_BUFFER_LENGTH = 0;
+    }
 }

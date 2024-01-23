@@ -102,7 +102,7 @@ public class RobotContainer {
     );
 
     @Getter
-    private final StateMachine globalState = new StateMachine(States.IDLE, transitions);
+    private final StateMachine globalStateMachine = new StateMachine(States.IDLE, transitions);
 
     private void configureKeyBindings() {
         swerveSubsystem.setDefaultCommand(swerveSubsystem

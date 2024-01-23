@@ -24,13 +24,13 @@ public class IntakeCommand extends Command {
         if (isFinished()) return;
         intakerSubsystem.getIntakerMotor()
                 .setVoltage(Constants.IntakerConstants.intakeVoltage.magnitude());
-        robotContainer.getGlobalState().transfer(Actions.INTAKE);
+        robotContainer.getGlobalStateMachine().transfer(Actions.INTAKE);
     }
 
     @Override
     public void end(boolean interrupted) {
         if (interrupted)
-            robotContainer.getGlobalState().transfer(Actions.INTERRUPT_INTAKE);
+            robotContainer.getGlobalStateMachine().transfer(Actions.INTERRUPT_INTAKE);
         intakerSubsystem.getIntakerMotor()
                 .setVoltage(0);
         robotContainer.getDriverController().getHID()
@@ -39,6 +39,6 @@ public class IntakeCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        return robotContainer.getGlobalState().getCurrentState() == States.PENDING;
+        return robotContainer.getGlobalStateMachine().getCurrentState() == States.PENDING;
     }
 }

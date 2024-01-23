@@ -30,6 +30,6 @@ public class PreShootCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        return robotContainer.getGlobalState().getCurrentState() == States.IDLE;
+        return robotContainer.getGlobalStateMachine().getCurrentState() == States.IDLE;
     }
 }

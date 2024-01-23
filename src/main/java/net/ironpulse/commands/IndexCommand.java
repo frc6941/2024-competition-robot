@@ -31,6 +31,6 @@ public class IndexCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        return robotContainer.getGlobalState().getCurrentState() == States.PENDING;
+        return robotContainer.getGlobalStateMachine().getCurrentState() == States.PENDING;
     }
 }
