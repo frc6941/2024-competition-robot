@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.math.estimator.PoseEstimator;
 import net.ironpulse.Constants;
 import net.ironpulse.drivers.Limelight;
 
@@ -34,7 +35,7 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
     public SwerveSubsystem(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
         super(driveTrainConstants, modules);
         CommandScheduler.getInstance().registerSubsystem(this);
-        for(var module : Modules){
+        for (var module : Modules) {
             module.getCANcoder().setPosition(0);
         }
         configurePathPlanner();
@@ -47,8 +48,11 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
         updatePoseEstimatorFromLimelight();
     }
 
+    /**
+     * Update {@link PoseEstimator} from Limelight Vision
+     */
     private void updatePoseEstimatorFromLimelight() {
-        // TODO Verify this
+        // TODO: Verify this
         Limelight
                 .getTarget()
                 .ifPresent(target ->
@@ -81,14 +85,29 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
         );
     }
 
+    /**
+     * Apply a {@link SwerveRequest} to the SwerveSubsystem
+     * @param requestSupplier A lambda expression returns {@link SwerveRequest}
+     * @return A {@link Command}
+     */
     public Command applyRequest(Supplier<SwerveRequest> requestSupplier) {
         return run(() -> this.setControl(requestSupplier.get()));
     }
 
-    public Command getAutoPath(String pathName) {
-        return new PathPlannerAuto(pathName);
+    /**
+     * Get an auto created by PathPlanner editor through its name
+     * @param autoName Auto name
+     * @return A {@link Command}
+     */
+    public Command getAuto(String autoName) {
+        return new PathPlannerAuto(autoName);
     }
 
+    /**
+     * Get current chassis speeds of the robot
+     * @return A {@link ChassisSpeeds} object
+     * @see ChassisSpeeds
+     */
     public ChassisSpeeds getCurrentRobotChassisSpeeds() {
         return m_kinematics.toChassisSpeeds(getState().ModuleStates);
     }

@@ -1,11 +1,8 @@
 package net.ironpulse.commands.manuals;
 
-import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import edu.wpi.first.wpilibj2.command.Command;
 import net.ironpulse.Constants;
 import net.ironpulse.subsystems.ShooterSubsystem;
-
-import static edu.wpi.first.units.Units.Rotations;
 
 public class ManualShooterDownCommand extends Command {
     private final ShooterSubsystem shooterSubsystem;
@@ -18,8 +15,11 @@ public class ManualShooterDownCommand extends Command {
     @Override
     public void execute() {
         shooterSubsystem.getDeployMotor()
-                .setControl(new MotionMagicVoltage(
-                        shooterSubsystem.getDeployMotor().getPosition().getValue() -
-                                Constants.ShooterConstants.manualAimingStep.in(Rotations)));
+                .setVoltage(Constants.ShooterConstants.manualAimingVoltage.magnitude());
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        shooterSubsystem.getDeployMotor().setVoltage(0);
     }
 }

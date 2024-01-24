@@ -21,10 +21,12 @@ public final class Constants {
     }
 
     public static class SwerveConstants {
+        // The max speed of the swerve (should not larger than speedAt12Volts)
         public static final Measure<Velocity<Distance>> maxSpeed = MetersPerSecond.of(6);
+        // The max turning speed of the swerve
         public static final Measure<Velocity<Angle>> maxAngularRate = RotationsPerSecond.of(0.5 * Math.PI);
 
-        // Swerve Gains
+        // Swerve steering gains
         private static final Slot0Configs steerGains = new Slot0Configs()
                 .withKP(50)
                 .withKI(0)
@@ -33,6 +35,7 @@ public final class Constants {
                 .withKV(0.5)
                 .withKA(0);
 
+        // Swerve driving gains
         private static final Slot0Configs driveGains = new Slot0Configs()
                 .withKP(2)
                 .withKI(0)
@@ -41,11 +44,13 @@ public final class Constants {
                 .withKV(0)
                 .withKA(0);
 
+        // The swerve heading (used in SpeakerAimingCommand) gains
         public static final Slot0Configs headingGains = new Slot0Configs()
                 .withKP(0.1)
                 .withKI(0)
                 .withKD(0);
 
+        // The swerve gains when adjusting tx (used in AmpAimingCommand)
         public static final Slot0Configs txGains = new Slot0Configs()
                 .withKP(0.1)
                 .withKI(0)
@@ -192,6 +197,7 @@ public final class Constants {
         public static final int DEPLOY_MOTOR_ID = 0;
         public static final int SHOOT_MOTOR_ID = 0;
 
+        // Shooter gains when deploying shooter to desired angle
         public static final Slot0Configs deployGains = new Slot0Configs()
                 .withKP(60)
                 .withKI(0)
@@ -213,7 +219,7 @@ public final class Constants {
 
         public static final Measure<Angle> ampDeployAngle = Degrees.of(0);
 
-        public static final Measure<Angle> manualAimingStep = Degrees.of(0);
+        public static final Measure<Voltage> manualAimingVoltage = Volts.of(0);
     }
 
     public static class IntakerConstants {

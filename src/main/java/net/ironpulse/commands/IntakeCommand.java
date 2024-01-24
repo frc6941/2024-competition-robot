@@ -1,6 +1,5 @@
 package net.ironpulse.commands;
 
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 import net.ironpulse.Constants;
 import net.ironpulse.RobotContainer;
@@ -33,8 +32,6 @@ public class IntakeCommand extends Command {
             robotContainer.getGlobalStateMachine().transfer(Actions.INTERRUPT_INTAKE);
         intakerSubsystem.getIntakerMotor()
                 .setVoltage(0);
-        robotContainer.getDriverController().getHID()
-                .setRumble(GenericHID.RumbleType.kBothRumble, 1);
     }
 
     @Override

@@ -10,6 +10,13 @@ import net.ironpulse.subsystems.SwerveSubsystem;
 
 import java.util.function.Supplier;
 
+/**
+ * This command will first aim the Amp and at the same time set the shooter to a voltage.
+ * When the command get confirmation from driver, the indexer will deliver the note into
+ * the shooter and finish a shot.
+ * <p>
+ * End Condition: Once robot state transferred from SHOOTING to IDLE
+ */
 public class AmpShootCommand extends ParallelCommandGroup {
     public AmpShootCommand(
             RobotContainer robotContainer,

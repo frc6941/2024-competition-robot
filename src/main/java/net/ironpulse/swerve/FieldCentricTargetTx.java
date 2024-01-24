@@ -16,51 +16,74 @@ public class FieldCentricTargetTx implements SwerveRequest {
      */
     public double VelocityX = 0;
 
+    /**
+     * Current tx returned by Limelight
+     */
     public double CurrentTx = 0;
+
     /**
      * The angular rate to rotate at, in radians per second.
      * Angular rate is defined as counterclockwise positive,
      * so this determines how fast to turn counterclockwise.
      */
     public double RotationalRate = 0;
+
     /**
      * The allowable deadband of the request.
      */
     public double Deadband = 0;
+
     /**
      * The rotational deadband of the request.
      */
     public double RotationalDeadband = 0;
+
     /**
      * The type of control request to use for the drive motor.
      */
-    public SwerveModule.DriveRequestType DriveRequestType = SwerveModule.DriveRequestType.OpenLoopVoltage;
+    public SwerveModule.DriveRequestType DriveRequestType =
+            SwerveModule.DriveRequestType.OpenLoopVoltage;
+
     /**
      * The type of control request to use for the steer motor.
      */
-    public SwerveModule.SteerRequestType SteerRequestType = SwerveModule.SteerRequestType.MotionMagic;
-    public PhoenixPIDController TxController = new PhoenixPIDController(0, 0, 0);
+    public SwerveModule.SteerRequestType SteerRequestType =
+            SwerveModule.SteerRequestType.MotionMagic;
+    public PhoenixPIDController TxController =
+            new PhoenixPIDController(0, 0, 0);
 
     @Override
-    public StatusCode apply(SwerveRequest.SwerveControlRequestParameters parameters, SwerveModule... modulesToApply) {
-        double toApplyX = VelocityX;
-        double toApplyY = -TxController.calculate(CurrentTx,
+    public StatusCode apply(
+            SwerveRequest.SwerveControlRequestParameters parameters,
+            SwerveModule... modulesToApply
+    ) {
+        var toApplyX = VelocityX;
+        var toApplyY = -TxController.calculate(CurrentTx,
                 0, parameters.timestamp);
-        double toApplyOmega = RotationalRate;
+        var toApplyOmega = RotationalRate;
+
         if (Math.sqrt(toApplyX * toApplyX + toApplyY * toApplyY) < Deadband) {
             toApplyX = 0;
             toApplyY = 0;
         }
+
         if (Math.abs(toApplyOmega) < RotationalDeadband) {
             toApplyOmega = 0;
         }
 
-        ChassisSpeeds speeds = ChassisSpeeds.discretize(ChassisSpeeds.fromFieldRelativeSpeeds(toApplyX, toApplyY, toApplyOmega,
-                parameters.currentPose.getRotation()), parameters.updatePeriod);
+        var speeds = ChassisSpeeds.discretize(
+                ChassisSpeeds.fromFieldRelativeSpeeds(
+                        toApplyX,
+                        toApplyY,
+                        toApplyOmega,
+                        parameters.currentPose.getRotation()
+                ),
+                parameters.updatePeriod
+        );
 
         var states = parameters.kinematics.toSwerveModuleStates(speeds, new Translation2d());
 
-        for (int i = 0; i < modulesToApply.length; ++i) {
+        for (var i = 0; i < modulesToApply.length; ++i) {
             modulesToApply[i].apply(states[i], DriveRequestType, SteerRequestType);
         }
 
