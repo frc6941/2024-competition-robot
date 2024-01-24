@@ -27,12 +27,18 @@ public class IndicatorSubsystem implements Subsystem {
     public void periodic() {
         switch (robotContainer.getGlobalStateMachine().getCurrentState()) {
             case IDLE -> led.setPattern(Patterns.IDLE.pattern);
+            case PENDING -> led.setPattern(Patterns.PENDING.pattern);
+            case INTAKING -> led.setPattern(Patterns.INTAKING.pattern);
+            case SHOOTING -> led.setPattern(Patterns.SHOOTING.pattern);
         }
     }
 
     private enum Patterns {
         // TODO Make more patterns
-        IDLE(new BlinkingPattern(Color.kRed, 0.2)),;
+        IDLE(new BlinkingPattern(Color.kRed, 0.2)),
+        PENDING(new BlinkingPattern(Color.kRed, 0.2)),
+        INTAKING(new BlinkingPattern(Color.kRed, 0.2)),
+        SHOOTING(new BlinkingPattern(Color.kRed, 0.2));
 
         private final AddressableLEDPattern pattern;
 
