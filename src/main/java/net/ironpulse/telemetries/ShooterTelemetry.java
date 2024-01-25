@@ -9,13 +9,16 @@ public class ShooterTelemetry {
     private final NetworkTableInstance instance = NetworkTableInstance.getDefault();
     private final NetworkTable shooterState = instance.getTable("Shooter");
 
-    private final DoublePublisher fieldShooterVelocity = shooterState
-            .getDoubleTopic("Velocity (r/s)").publish();
+    private final DoublePublisher fieldShooterLeftVelocity = shooterState
+            .getDoubleTopic("Velocity L (r/s)").publish();
+    private final DoublePublisher fieldShooterRightVelocity = shooterState
+            .getDoubleTopic("Velocity R (r/s)").publish();
     private final DoublePublisher fieldShooterPosition = shooterState
             .getDoubleTopic("Position (degrees)").publish();
 
     public void telemeterize(ShooterData shooterData) {
-        fieldShooterVelocity.set(shooterData.shootMotorVelocity().magnitude());
+        fieldShooterLeftVelocity.set(shooterData.shootMotorLeftVelocity().magnitude());
+        fieldShooterRightVelocity.set(shooterData.shootMotorRightVelocity().magnitude());
         fieldShooterPosition.set(shooterData.deployMotorPosition().magnitude());
     }
 }

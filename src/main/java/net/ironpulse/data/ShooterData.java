@@ -6,6 +6,7 @@ import edu.wpi.first.units.Velocity;
 
 public record ShooterData(
         Measure<Angle> deployMotorPosition,
-        Measure<Velocity<Angle>> shootMotorVelocity
+        Measure<Velocity<Angle>> shootMotorLeftVelocity,
+        Measure<Velocity<Angle>> shootMotorRightVelocity
 ) {
 }

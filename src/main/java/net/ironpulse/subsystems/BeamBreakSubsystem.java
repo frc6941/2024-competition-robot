@@ -20,7 +20,8 @@ public class BeamBreakSubsystem implements Subsystem {
 
     private final BeamBreak indexerBeamBreak;
 
-    private final BeamBreak shooterBeamBreak;
+    private final BeamBreak shooterLeftBeamBreak;
+    private final BeamBreak shooterRightBeamBreak;
 
     private final RobotContainer robotContainer;
     private final Consumer<BeamBreakData> telemetryFunction;
@@ -33,7 +34,8 @@ public class BeamBreakSubsystem implements Subsystem {
         this.robotContainer = robotContainer;
         intakerBeamBreak = new BeamBreak(INTAKER_BEAM_BREAK_ID);
         indexerBeamBreak = new BeamBreak(INDEXER_BEAM_BREAK_ID);
-        shooterBeamBreak = new BeamBreak(SHOOTER_BEAM_BREAK_ID);
+        shooterLeftBeamBreak = new BeamBreak(SHOOTER_L_BEAM_BREAK_ID);
+        shooterRightBeamBreak = new BeamBreak(SHOOTER_R_BEAM_BREAK_ID);
     }
 
     @Override
@@ -42,10 +44,16 @@ public class BeamBreakSubsystem implements Subsystem {
                 new BeamBreakData(
                         intakerBeamBreak.get(),
                         indexerBeamBreak.get(),
-                        shooterBeamBreak.get()
+                        shooterLeftBeamBreak.get(),
+                        shooterRightBeamBreak.get()
                 )
         );
-        if (!intakerBeamBreak.get() && indexerBeamBreak.get() && !shooterBeamBreak.get()) {
+
+        if (!intakerBeamBreak.get() &&
+                indexerBeamBreak.get() &&
+                !shooterLeftBeamBreak.get() &&
+                !shooterRightBeamBreak.get()
+        ) {
             robotContainer.getGlobalStateMachine()
                     .transfer(StateMachine.Actions.FINISH_INTAKE);
             robotContainer.getDriverController().getHID()
@@ -53,7 +61,11 @@ public class BeamBreakSubsystem implements Subsystem {
             return;
         }
 
-        if (!intakerBeamBreak.get() && !indexerBeamBreak.get() && !shooterBeamBreak.get()) {
+        if (!intakerBeamBreak.get() &&
+                !indexerBeamBreak.get() &&
+                !shooterLeftBeamBreak.get() &&
+                !shooterRightBeamBreak.get()
+        ) {
             timer.start();
             if (!timer.hasElapsed(0.5)) return;
             robotContainer.getGlobalStateMachine()

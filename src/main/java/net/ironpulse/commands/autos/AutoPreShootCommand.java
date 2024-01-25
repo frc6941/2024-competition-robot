@@ -16,13 +16,16 @@ public class AutoPreShootCommand extends Command {
     @Override
     public void execute() {
         timer.start();
-        shooterSubsystem.getShootMotor()
+        shooterSubsystem.getShootMotorLeft()
+                .setVoltage(Constants.ShooterConstants.shootVoltage.magnitude());
+        shooterSubsystem.getShootMotorRight()
                 .setVoltage(Constants.ShooterConstants.shootVoltage.magnitude());
     }
 
     @Override
     public void end(boolean interrupted) {
-        shooterSubsystem.getShootMotor().setVoltage(0);
+        shooterSubsystem.getShootMotorLeft().setVoltage(0);
+        shooterSubsystem.getShootMotorRight().setVoltage(0);
         timer.stop();
         timer.reset();
     }

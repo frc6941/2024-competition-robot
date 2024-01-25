@@ -11,7 +11,6 @@ public class PreShootCommand extends Command {
     private final ShooterSubsystem shooterSubsystem;
     private final RobotContainer robotContainer;
 
-
     public PreShootCommand(RobotContainer robotContainer, ShooterSubsystem shooterSubsystem) {
         this.shooterSubsystem = shooterSubsystem;
         this.robotContainer = robotContainer;
@@ -19,13 +18,16 @@ public class PreShootCommand extends Command {
 
     @Override
     public void execute() {
-        shooterSubsystem.getShootMotor()
+        shooterSubsystem.getShootMotorLeft()
+                .setVoltage(Constants.ShooterConstants.shootVoltage.magnitude());
+        shooterSubsystem.getShootMotorRight()
                 .setVoltage(Constants.ShooterConstants.shootVoltage.magnitude());
     }
 
     @Override
     public void end(boolean interrupted) {
-        shooterSubsystem.getShootMotor().setVoltage(0);
+        shooterSubsystem.getShootMotorLeft().setVoltage(0);
+        shooterSubsystem.getShootMotorRight().setVoltage(0);
     }
 
     @Override

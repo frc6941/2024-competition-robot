@@ -21,7 +21,7 @@ public class AutoAimingCommand extends Command {
         timer.start();
         if (Limelight.getTarget().isEmpty()) return;
         var target = Limelight.getTarget().get();
-        shooterSubsystem.getDeployMotor().setControl(
+        shooterSubsystem.getArmMotor().setControl(
                 new MotionMagicVoltage(Units.degreesToRotations(90 - target.position().getY())));
     }
 

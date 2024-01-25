@@ -60,7 +60,7 @@ public class SpeakerAimingCommand extends Command {
                                                         swerveSubsystem.getPigeon2().getAngle()) + 180)
                                                 + target.position().getX()))
         ).execute();
-        shooterSubsystem.getDeployMotor()
+        shooterSubsystem.getArmMotor()
                 .setControl(new MotionMagicVoltage(
                         Units.degreesToRotations(90 - target.position().getY())));
     }

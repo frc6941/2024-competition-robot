@@ -46,7 +46,7 @@ public class AmpAimingCommand extends Command {
     @Override
     public void execute() {
         robotContainer.getGlobalStateMachine().transfer(Actions.SHOOT);
-        shooterSubsystem.getDeployMotor().setControl(
+        shooterSubsystem.getArmMotor().setControl(
                 new MotionMagicVoltage(Constants.ShooterConstants.ampDeployAngle.in(Rotations)));
         if (Limelight.getTarget().isEmpty()) return;
         swerveSubsystem.applyRequest(() ->
