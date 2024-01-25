@@ -4,16 +4,20 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.Setter;
 import net.ironpulse.RobotContainer;
 import net.ironpulse.drivers.led.AddressableLEDPattern;
 import net.ironpulse.drivers.led.AddressableLEDWrapper;
-import net.ironpulse.drivers.led.patterns.BlinkingPattern;
+import net.ironpulse.drivers.led.patterns.ScannerPattern;
+import net.ironpulse.drivers.led.patterns.SolidColorPattern;
 import net.ironpulse.state.StateMachine;
 
-import static net.ironpulse.Constants.IndicatorConstants.*;
+import static net.ironpulse.Constants.IndicatorConstants.LED_BUFFER_LENGTH;
+import static net.ironpulse.Constants.IndicatorConstants.LED_PORT;
 
 public class IndicatorSubsystem implements Subsystem {
+    @Getter
     private final AddressableLEDWrapper led =
             new AddressableLEDWrapper(LED_PORT, LED_BUFFER_LENGTH);
 
@@ -57,10 +61,10 @@ public class IndicatorSubsystem implements Subsystem {
     @AllArgsConstructor
     private enum Patterns {
         // TODO Make more patterns
-        IDLE(new BlinkingPattern(Color.kRed, 0.2)),
-        PENDING(new BlinkingPattern(Color.kRed, 0.2)),
-        INTAKING(new BlinkingPattern(Color.kRed, 0.2)),
-        SHOOTING(new BlinkingPattern(Color.kRed, 0.2));
+        IDLE(new SolidColorPattern(Color.kDarkBlue)),
+        PENDING(new SolidColorPattern(Color.kDarkOrange)),
+        INTAKING(new SolidColorPattern(Color.kDarkViolet)),
+        SHOOTING(new ScannerPattern(Color.kRed, 1));
 
         private final AddressableLEDPattern pattern;
     }

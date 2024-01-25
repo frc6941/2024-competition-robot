@@ -52,6 +52,8 @@ public class RobotContainer {
             new ShooterSubsystem(shooterTelemetry::telemeterize);
     private final StateSubsystem stateSubsystem =
             new StateSubsystem(this, stateTelemetry::telemeterize);
+    private final IndicatorSubsystem indicatorSubsystem =
+            new IndicatorSubsystem(this);
 
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             .withDeadband(maxSpeed.magnitude() * 0.1)
@@ -75,6 +77,7 @@ public class RobotContainer {
                     .currentState(States.INTAKING)
                     .nextState(States.PENDING)
                     .action(Actions.FINISH_INTAKE)
+                    .command(new FinishIntakeLEDCommand(indicatorSubsystem))
                     .build(),
             Transition.builder()
                     .currentState(States.INTAKING)
@@ -97,7 +100,10 @@ public class RobotContainer {
                     .currentState(States.SHOOTING)
                     .nextState(States.IDLE)
                     .action(Actions.FINISH_SHOOT)
-                    .command(new ResetShooterCommand(shooterSubsystem))
+                    .command(Commands.sequence(
+                            new ResetShooterCommand(shooterSubsystem),
+                            new FinishShootLEDCommand(indicatorSubsystem)
+                    ))
                     .build()
     );
 
