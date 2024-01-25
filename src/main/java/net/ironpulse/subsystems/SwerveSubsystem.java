@@ -61,6 +61,12 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
                 );
     }
 
+    public void zerotizePosition(){
+            for (var module : Modules) {
+            module.getCANcoder().setPosition(0);
+        }
+    }
+
     private void configurePathPlanner() {
         var driveBaseRadius = 0.0;
         for (var moduleLocation : m_moduleLocations)
