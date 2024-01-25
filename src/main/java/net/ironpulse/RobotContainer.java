@@ -2,6 +2,7 @@ package net.ironpulse;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -10,12 +11,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj.DriverStation;
 import lombok.Getter;
 import net.ironpulse.Constants.OperatorConstants;
 import net.ironpulse.commands.*;
 import net.ironpulse.commands.autos.AutoIntakeCommand;
 import net.ironpulse.commands.autos.AutoShootCommand;
 import net.ironpulse.state.StateMachine;
+import net.ironpulse.state.StateMachine.Actions;
+import net.ironpulse.state.StateMachine.States;
 import net.ironpulse.state.Transition;
 import net.ironpulse.subsystems.*;
 import net.ironpulse.telemetries.*;
@@ -103,7 +107,17 @@ public class RobotContainer {
 
     @Getter
     private final StateMachine globalStateMachine = new StateMachine(States.IDLE, transitions);
-
+    
+    private void SwerveMouduleCoast(){
+        if(DriverStation.isDisabled()){
+                for(int i=0;i<4;++i){
+                        swerveSubsystem.getModule(i).getSteerMotor().setNeutralMode(NeutralModeValue.Coast);
+                        swerveSubsystem.getModule(i).getDriveMotor().setNeutralMode(NeutralModeValue.Coast);
+                        swerveSubsystem.getModule(i).getCANcoder().setPosition(0);
+                }
+        }
+    }
+    
     private void configureKeyBindings() {
         swerveSubsystem.setDefaultCommand(swerveSubsystem
                 .applyRequest(() -> drive.withVelocityX(-driverController.getLeftY() * maxSpeed.magnitude())
@@ -111,7 +125,9 @@ public class RobotContainer {
                         .withRotationalRate(-driverController.getRightX() * maxAngularRate.magnitude()))
                 .ignoringDisable(true));
 
-        driverController.a().whileTrue(swerveSubsystem.applyRequest(() -> brake));
+        driverController
+                .a()
+                .whileTrue(swerveSubsystem.applyRequest(() -> brake));
         driverController
                 .b()
                 .whileTrue(swerveSubsystem.applyRequest(() -> point.withModuleDirection(
@@ -153,9 +169,10 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         return autoChooser.getSelected();
     }
-
+    
     public RobotContainer() {
         configureAutos();
         configureKeyBindings();
+        SwerveMouduleCoast();
     }
 }

@@ -35,9 +35,6 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
     public SwerveSubsystem(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
         super(driveTrainConstants, modules);
         CommandScheduler.getInstance().registerSubsystem(this);
-        for (var module : Modules) {
-            module.getCANcoder().setPosition(0);
-        }
         configurePathPlanner();
         if (!Utils.isSimulation()) return;
         startSimThread();
@@ -62,6 +59,12 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
                                         target.latency().in(Seconds)
                         )
                 );
+    }
+
+    public void zerotizePosition(){
+            for (var module : Modules) {
+            module.getCANcoder().setPosition(0);
+        }
     }
 
     private void configurePathPlanner() {

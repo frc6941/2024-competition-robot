@@ -110,7 +110,7 @@ public final class Constants {
                 .withDriveInertia(DRIVE_INERTIA)
                 .withSteerFrictionVoltage(steerFrictionVoltage.magnitude())
                 .withDriveFrictionVoltage(driveFrictionVoltage.magnitude())
-                .withFeedbackSource(SwerveModuleConstants.SteerFeedbackType.SyncCANcoder)
+                .withFeedbackSource(SwerveModuleConstants.SteerFeedbackType.FusedCANcoder)
                 .withCouplingGearRatio(COUPLE_RATIO)
                 .withSteerMotorInverted(STEER_MOTOR_REVERSED);
 
@@ -118,7 +118,7 @@ public final class Constants {
         private static final int FRONT_LEFT_DRIVE_MOTOR_ID = 5;
         private static final int FRONT_LEFT_STEER_MOTOR_ID = 3;
         private static final int FRONT_LEFT_ENCODER_ID = 9;
-        private static final double FRONT_LEFT_ENCODER_OFFSET = -0.10205078125;
+        private static final double FRONT_LEFT_ENCODER_OFFSET = -0.06396484375;
 
         private static final Measure<Distance> frontLeftXPos = Meters.of(0.5);
         private static final Measure<Distance> frontLeftYPos = Meters.of(0.5);
@@ -127,7 +127,7 @@ public final class Constants {
         private static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 2;
         private static final int FRONT_RIGHT_STEER_MOTOR_ID = 7;
         private static final int FRONT_RIGHT_ENCODER_ID = 21;
-        private static final double FRONT_RIGHT_ENCODER_OFFSET = -0.448974609375;
+        private static final double FRONT_RIGHT_ENCODER_OFFSET = -0.453857421875;
 
         private static final Measure<Distance> frontRightXPos = Meters.of(0.5);
         private static final Measure<Distance> frontRightYPos = Meters.of(-0.5);
@@ -136,7 +136,7 @@ public final class Constants {
         private static final int BACK_LEFT_DRIVE_MOTOR_ID = 15;
         private static final int BACK_LEFT_STEER_MOTOR_ID = 14;
         private static final int BACK_LEFT_ENCODER_ID = 20;
-        private static final double BACK_LEFT_ENCODER_OFFSET = 0.191650390625;
+        private static final double BACK_LEFT_ENCODER_OFFSET = 0.2373046875;
 
         private static final Measure<Distance> backLeftXPos = Meters.of(-0.5);
         private static final Measure<Distance> backLeftYPos = Meters.of(0.5);
