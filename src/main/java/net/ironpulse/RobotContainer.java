@@ -119,7 +119,7 @@ public class RobotContainer {
                 for(int i=0;i<4;++i){
                         swerveSubsystem.getModule(i).getSteerMotor().setNeutralMode(NeutralModeValue.Coast);
                         swerveSubsystem.getModule(i).getDriveMotor().setNeutralMode(NeutralModeValue.Coast);
-                        swerveSubsystem.getModule(i).getCANcoder().setPosition(0);
+                        // swerveSubsystem.getModule(i).getCANcoder().setPosition(0);
                 }
                 intakerSubsystem.getIntakerMotor().setNeutralMode(NeutralModeValue.Coast);
                 shooterSubsystem.getDeployMotor().setNeutralMode(NeutralModeValue.Brake);
