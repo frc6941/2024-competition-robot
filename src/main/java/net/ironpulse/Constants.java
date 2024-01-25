@@ -110,7 +110,7 @@ public final class Constants {
                 .withDriveInertia(DRIVE_INERTIA)
                 .withSteerFrictionVoltage(steerFrictionVoltage.magnitude())
                 .withDriveFrictionVoltage(driveFrictionVoltage.magnitude())
-                .withFeedbackSource(SwerveModuleConstants.SteerFeedbackType.RemoteCANcoder)
+                .withFeedbackSource(SwerveModuleConstants.SteerFeedbackType.SyncCANcoder)
                 .withCouplingGearRatio(COUPLE_RATIO)
                 .withSteerMotorInverted(STEER_MOTOR_REVERSED);
 
