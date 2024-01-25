@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.util.Color;
+import lombok.Getter;
 import lombok.Setter;
 import net.ironpulse.drivers.led.patterns.SolidColorPattern;
 
@@ -13,6 +14,7 @@ public class AddressableLEDWrapper {
     private final AddressableLEDBuffer buffer;
 
     @Setter
+    @Getter
     private AddressableLEDPattern pattern = new SolidColorPattern(Color.kBlack);
     private final Notifier looper = new Notifier(this::update);
 

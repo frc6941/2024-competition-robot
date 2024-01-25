@@ -59,7 +59,7 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
                         addVisionMeasurement(
                                 target.botPose().toPose2d(),
                                 Timer.getFPGATimestamp() -
-                                        Seconds.convertFrom(target.latency().magnitude(), Microseconds)
+                                        target.latency().in(Seconds)
                         )
                 );
     }

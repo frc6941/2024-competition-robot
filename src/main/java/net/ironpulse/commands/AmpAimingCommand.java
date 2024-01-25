@@ -9,7 +9,7 @@ import net.ironpulse.drivers.Limelight;
 import net.ironpulse.state.StateMachine;
 import net.ironpulse.subsystems.ShooterSubsystem;
 import net.ironpulse.subsystems.SwerveSubsystem;
-import net.ironpulse.swerve.FieldCentricTargetTx;
+import net.ironpulse.swerve.RobotCentricTargetTx;
 
 import static edu.wpi.first.units.Units.Rotations;
 import static net.ironpulse.Constants.SwerveConstants.*;
@@ -25,7 +25,7 @@ public class AmpAimingCommand extends Command {
     private final ShooterSubsystem shooterSubsystem;
     private final SwerveSubsystem swerveSubsystem;
     private final RobotContainer robotContainer;
-    private final FieldCentricTargetTx drive = new FieldCentricTargetTx()
+    private final RobotCentricTargetTx drive = new RobotCentricTargetTx()
             .withDeadband(maxSpeed.magnitude() * 0.1)
             .withRotationalDeadband(maxAngularRate.magnitude() * 0.1)
             .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage)

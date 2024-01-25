@@ -8,9 +8,9 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 
 @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
-public class FieldCentricTargetTx implements SwerveRequest {
+public class RobotCentricTargetTx implements SwerveRequest {
     /**
-     * The velocity in the X direction, in m/s.
+     * The velocity in the Y direction, in m/s.
      * X is defined as forward according to WPILib convention,
      * so this determines how fast to travel forward.
      */
@@ -62,7 +62,7 @@ public class FieldCentricTargetTx implements SwerveRequest {
                 0, parameters.timestamp);
         var toApplyOmega = RotationalRate;
 
-        if (Math.sqrt(toApplyX * toApplyX + toApplyY * toApplyY) < Deadband) {
+        if (Math.hypot(toApplyX, toApplyY) < Deadband) {
             toApplyX = 0;
             toApplyY = 0;
         }
@@ -71,15 +71,7 @@ public class FieldCentricTargetTx implements SwerveRequest {
             toApplyOmega = 0;
         }
 
-        var speeds = ChassisSpeeds.discretize(
-                ChassisSpeeds.fromFieldRelativeSpeeds(
-                        toApplyX,
-                        toApplyY,
-                        toApplyOmega,
-                        parameters.currentPose.getRotation()
-                ),
-                parameters.updatePeriod
-        );
+        var speeds = new ChassisSpeeds(toApplyX, toApplyY, toApplyOmega);
 
         var states = parameters.kinematics.toSwerveModuleStates(speeds, new Translation2d());
 
@@ -98,7 +90,7 @@ public class FieldCentricTargetTx implements SwerveRequest {
      * @param velocityX Velocity in the X direction, in m/s
      * @return this request
      */
-    public FieldCentricTargetTx withVelocityX(double velocityX) {
+    public RobotCentricTargetTx withVelocityX(double velocityX) {
         this.VelocityX = velocityX;
         return this;
     }
@@ -112,7 +104,7 @@ public class FieldCentricTargetTx implements SwerveRequest {
      * @param currentTx Desired direction to face
      * @return this request
      */
-    public FieldCentricTargetTx withTargetTx(double currentTx) {
+    public RobotCentricTargetTx withTargetTx(double currentTx) {
         this.CurrentTx = currentTx;
         return this;
     }
@@ -123,7 +115,7 @@ public class FieldCentricTargetTx implements SwerveRequest {
      * @param deadband Allowable deadband of the request
      * @return this request
      */
-    public FieldCentricTargetTx withDeadband(double deadband) {
+    public RobotCentricTargetTx withDeadband(double deadband) {
         this.Deadband = deadband;
         return this;
     }
@@ -133,7 +125,7 @@ public class FieldCentricTargetTx implements SwerveRequest {
      * @param rotationalDeadband Rotational deadband of the request
      * @return this request
      */
-    public FieldCentricTargetTx withRotationalDeadband(double rotationalDeadband) {
+    public RobotCentricTargetTx withRotationalDeadband(double rotationalDeadband) {
         this.RotationalDeadband = rotationalDeadband;
         return this;
     }
@@ -144,7 +136,7 @@ public class FieldCentricTargetTx implements SwerveRequest {
      * @param driveRequestType The type of control request to use for the drive motor
      * @return this request
      */
-    public FieldCentricTargetTx withDriveRequestType(SwerveModule.DriveRequestType driveRequestType) {
+    public RobotCentricTargetTx withDriveRequestType(SwerveModule.DriveRequestType driveRequestType) {
         this.DriveRequestType = driveRequestType;
         return this;
     }
@@ -154,7 +146,7 @@ public class FieldCentricTargetTx implements SwerveRequest {
      * @param steerRequestType The type of control request to use for the steer motor
      * @return this request
      */
-    public FieldCentricTargetTx withSteerRequestType(SwerveModule.SteerRequestType steerRequestType) {
+    public RobotCentricTargetTx withSteerRequestType(SwerveModule.SteerRequestType steerRequestType) {
         this.SteerRequestType = steerRequestType;
         return this;
     }
@@ -167,7 +159,7 @@ public class FieldCentricTargetTx implements SwerveRequest {
      * @param rotationalRate Angular rate to rotate at, in radians per second
      * @return this request
      */
-    public FieldCentricTargetTx withRotationalRate(double rotationalRate) {
+    public RobotCentricTargetTx withRotationalRate(double rotationalRate) {
         this.RotationalRate = rotationalRate;
         return this;
     }
