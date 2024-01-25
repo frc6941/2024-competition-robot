@@ -152,6 +152,13 @@ public class RobotContainer {
         driverController.pov(180).whileTrue(swerveSubsystem.applyRequest(() -> forwardStraight
                 .withVelocityX(-0.5)
                 .withVelocityY(0)));
+        driverController.pov(90).whileTrue(swerveSubsystem.applyRequest(() -> forwardStraight
+                .withVelocityX(0)
+                .withVelocityY(0.5)));
+        driverController.pov(270).whileTrue(swerveSubsystem.applyRequest(() -> forwardStraight
+                .withVelocityX(0)
+                .withVelocityY(0.5)));
+
 
         driverController.rightTrigger().whileTrue(new SpeakerShootCommand(this, swerveSubsystem,
                 shooterSubsystem, indexerSubsystem, () -> driverController.getHID().getAButton()));
