@@ -63,12 +63,6 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
                 );
     }
 
-    public void zerotizePosition(){
-            for (var module : Modules) {
-            module.getCANcoder().setPosition(0);
-        }
-    }
-
     private void showCANCoder(){
         int i=0;
         for (var module : Modules) {
