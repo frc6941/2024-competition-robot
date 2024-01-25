@@ -108,13 +108,17 @@ public class RobotContainer {
     @Getter
     private final StateMachine globalStateMachine = new StateMachine(States.IDLE, transitions);
     
-    private void SwerveMouduleCoast(){
+    private void disableActs(){
         if(DriverStation.isDisabled()){
                 for(int i=0;i<4;++i){
                         swerveSubsystem.getModule(i).getSteerMotor().setNeutralMode(NeutralModeValue.Coast);
                         swerveSubsystem.getModule(i).getDriveMotor().setNeutralMode(NeutralModeValue.Coast);
                         swerveSubsystem.getModule(i).getCANcoder().setPosition(0);
                 }
+                intakerSubsystem.getIntakerMotor().setNeutralMode(NeutralModeValue.Coast);
+                shooterSubsystem.getDeployMotor().setNeutralMode(NeutralModeValue.Brake);
+                shooterSubsystem.getShootMotor().setNeutralMode(NeutralModeValue.Coast);
+                indexerSubsystem.getIndexerMotor().setNeutralMode(NeutralModeValue.Coast);
         }
     }
     
@@ -173,6 +177,6 @@ public class RobotContainer {
     public RobotContainer() {
         configureAutos();
         configureKeyBindings();
-        SwerveMouduleCoast();
+        disableActs();
     }
 }
