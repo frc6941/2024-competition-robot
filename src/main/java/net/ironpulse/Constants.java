@@ -30,11 +30,11 @@ public final class Constants {
 
         // Swerve steering gains
         private static final Slot0Configs steerGains = new Slot0Configs()
-                .withKP(50)
-                .withKI(0)
-                .withKD(0.05)
+                .withKP(100)
+                .withKI(0.2)
+                .withKD(0.005)
                 .withKS(0)
-                .withKV(0.5)
+                .withKV(0)
                 .withKA(0);
 
         // Swerve driving gains
