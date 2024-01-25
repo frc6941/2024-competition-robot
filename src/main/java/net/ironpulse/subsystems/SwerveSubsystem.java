@@ -15,14 +15,17 @@ import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Time;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.math.estimator.PoseEstimator;
 import net.ironpulse.Constants;
+import net.ironpulse.drivers.Limelight;
 
 import java.util.function.Supplier;
 
-import static edu.wpi.first.units.Units.Microsecond;
-import static edu.wpi.first.units.Units.Seconds;
+import static edu.wpi.first.units.Units.*;
 
 public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
     private static final Measure<Time> simLoopPeriod = Microsecond.of(0.005);
@@ -31,7 +34,8 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
 
     public SwerveSubsystem(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
         super(driveTrainConstants, modules);
-        for(var module : Modules){
+        CommandScheduler.getInstance().registerSubsystem(this);
+        for (var module : Modules) {
             module.getCANcoder().setPosition(0);
         }
         configurePathPlanner();
@@ -44,16 +48,20 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
         updatePoseEstimatorFromLimelight();
     }
 
+    /**
+     * Update {@link PoseEstimator} from Limelight Vision
+     */
     private void updatePoseEstimatorFromLimelight() {
-        // TODO Verify this
-//        Limelight
-//                .getTarget()
-//                .ifPresent(target ->
-//                        addVisionMeasurement(
-//                                target.botPose().toPose2d(),
-//                                Timer.getFPGATimestamp() - target.latency().magnitude()
-//                        )
-//                );
+        // TODO: Verify this
+        Limelight
+                .getTarget()
+                .ifPresent(target ->
+                        addVisionMeasurement(
+                                target.botPose().toPose2d(),
+                                Timer.getFPGATimestamp() -
+                                        target.latency().in(Seconds)
+                        )
+                );
     }
 
     private void configurePathPlanner() {
@@ -69,21 +77,37 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
                 new HolonomicPathFollowerConfig(
                         new PIDConstants(10, 0, 0),
                         new PIDConstants(10, 0, 0),
-                        Constants.TunerConstants.speedAt12Volts.magnitude(),
+                        Constants.SwerveConstants.speedAt12Volts.magnitude(),
                         driveBaseRadius,
                         new ReplanningConfig()),
                 () -> false,
-                this);
+                this
+        );
     }
 
+    /**
+     * Apply a {@link SwerveRequest} to the SwerveSubsystem
+     * @param requestSupplier A lambda expression returns {@link SwerveRequest}
+     * @return A {@link Command}
+     */
     public Command applyRequest(Supplier<SwerveRequest> requestSupplier) {
         return run(() -> this.setControl(requestSupplier.get()));
     }
 
-    public Command getAutoPath(String pathName) {
-        return new PathPlannerAuto(pathName);
+    /**
+     * Get an auto created by PathPlanner editor through its name
+     * @param autoName Auto name
+     * @return A {@link Command}
+     */
+    public Command getAuto(String autoName) {
+        return new PathPlannerAuto(autoName);
     }
 
+    /**
+     * Get current chassis speeds of the robot
+     * @return A {@link ChassisSpeeds} object
+     * @see ChassisSpeeds
+     */
     public ChassisSpeeds getCurrentRobotChassisSpeeds() {
         return m_kinematics.toChassisSpeeds(getState().ModuleStates);
     }
@@ -92,7 +116,7 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
         lastSimTime = Seconds.of(Utils.getCurrentTimeSeconds());
 
         @SuppressWarnings("PMD.CloseResource")
-        Notifier simNotifier = new Notifier(() -> {
+        var simNotifier = new Notifier(() -> {
             var currentTime = Seconds.of(Utils.getCurrentTimeSeconds());
             var deltaTime = currentTime.minus(lastSimTime);
             lastSimTime = currentTime;

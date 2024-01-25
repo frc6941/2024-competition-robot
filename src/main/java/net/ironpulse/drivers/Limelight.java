@@ -1,14 +1,17 @@
 package net.ironpulse.drivers;
 
-import edu.wpi.first.math.geometry.*;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import net.ironpulse.models.AprilTagTarget;
+import net.ironpulse.data.AprilTagTarget;
 
 import java.util.Optional;
 
-import static edu.wpi.first.units.Units.Seconds;
+import static edu.wpi.first.units.Units.Microseconds;
 
 public class Limelight {
     private static final NetworkTable limelightTable = NetworkTableInstance
@@ -41,7 +44,7 @@ public class Limelight {
         return Optional.of(
                 new AprilTagTarget(
                     new Translation2d(tx.getDouble(0), ty.getDouble(0)),
-                    Seconds.of(tl.getDouble(0) + cl.getDouble(0)),
+                    Microseconds.of(tl.getDouble(0) + cl.getDouble(0)),
                     new Pose3d(
                             new Translation3d(rawPose[0], rawPose[1], rawPose[2]),
                             new Rotation3d(rawPose[3], rawPose[4], rawPose[5])

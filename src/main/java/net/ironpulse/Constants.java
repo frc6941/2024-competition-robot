@@ -2,24 +2,31 @@ package net.ironpulse;
 
 import static edu.wpi.first.units.Units.*;
 
+import com.ctre.phoenix6.configs.FeedbackConfigs;
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.units.*;
 import net.ironpulse.subsystems.SwerveSubsystem;
 
 public final class Constants {
     public static class OperatorConstants {
         public static final int DRIVER_CONTROLLER_PORT = 0;
+        public static final int OPERATOR_CONTROLLER_PORT = 1;
     }
 
-    public static class TunerConstants {
+    public static class SwerveConstants {
+        // The max speed of the swerve (should not larger than speedAt12Volts)
         public static final Measure<Velocity<Distance>> maxSpeed = MetersPerSecond.of(6);
+        // The max turning speed of the swerve
         public static final Measure<Velocity<Angle>> maxAngularRate = RotationsPerSecond.of(0.5 * Math.PI);
 
-        // Swerve Gains
+        // Swerve steering gains
         private static final Slot0Configs steerGains = new Slot0Configs()
                 .withKP(50)
                 .withKI(0)
@@ -28,6 +35,7 @@ public final class Constants {
                 .withKV(0.5)
                 .withKA(0);
 
+        // Swerve driving gains
         private static final Slot0Configs driveGains = new Slot0Configs()
                 .withKP(2)
                 .withKI(0)
@@ -35,6 +43,18 @@ public final class Constants {
                 .withKS(0)
                 .withKV(0)
                 .withKA(0);
+
+        // The swerve heading (used in SpeakerAimingCommand) gains
+        public static final Slot0Configs headingGains = new Slot0Configs()
+                .withKP(0.1)
+                .withKI(0)
+                .withKD(0);
+
+        // The swerve gains when adjusting tx (used in AmpAimingCommand)
+        public static final Slot0Configs txGains = new Slot0Configs()
+                .withKP(0.1)
+                .withKI(0)
+                .withKD(0);
 
         // The closed-loop output type to use for the steer motors;
         // This affects the PID/FF gains for the steer motors
@@ -66,6 +86,7 @@ public final class Constants {
         private static final String CAN_BUS_NAME = "6941CANivore1";
         private static final int PIGEON_ID = 1;
 
+        // Simulation only
         private static final double STEER_INERTIA = 0.00001;
         private static final double DRIVE_INERTIA = 0.001;
         private static final Measure<Voltage> steerFrictionVoltage = Volts.of(0.25);
@@ -98,7 +119,6 @@ public final class Constants {
         private static final int FRONT_LEFT_STEER_MOTOR_ID = 3;
         private static final int FRONT_LEFT_ENCODER_ID = 9;
         private static final double FRONT_LEFT_ENCODER_OFFSET = -0.10205078125;
-//         private static final double FRONT_LEFT_ENCODER_OFFSET = 0;
 
         private static final Measure<Distance> frontLeftXPos = Meters.of(0.5);
         private static final Measure<Distance> frontLeftYPos = Meters.of(0.5);
@@ -108,7 +128,6 @@ public final class Constants {
         private static final int FRONT_RIGHT_STEER_MOTOR_ID = 7;
         private static final int FRONT_RIGHT_ENCODER_ID = 21;
         private static final double FRONT_RIGHT_ENCODER_OFFSET = -0.448974609375;
-//        private static final double FRONT_RIGHT_ENCODER_OFFSET = 0;
 
         private static final Measure<Distance> frontRightXPos = Meters.of(0.5);
         private static final Measure<Distance> frontRightYPos = Meters.of(-0.5);
@@ -118,7 +137,6 @@ public final class Constants {
         private static final int BACK_LEFT_STEER_MOTOR_ID = 14;
         private static final int BACK_LEFT_ENCODER_ID = 20;
         private static final double BACK_LEFT_ENCODER_OFFSET = 0.191650390625;
-//        private static final double BACK_LEFT_ENCODER_OFFSET = 0;
 
         private static final Measure<Distance> backLeftXPos = Meters.of(-0.5);
         private static final Measure<Distance> backLeftYPos = Meters.of(0.5);
@@ -128,7 +146,6 @@ public final class Constants {
         private static final int BACK_RIGHT_STEER_MOTOR_ID = 6;
         private static final int BACK_RIGHT_ENCODER_ID = 12;
         private static final double BACK_RIGHT_ENCODER_OFFSET = -0.095703125;
-//        private static final double BACK_RIGHT_ENCODER_OFFSET = 0;
 
         private static final Measure<Distance> backRightXPos = Meters.of(-0.5);
         private static final Measure<Distance> backRightYPos = Meters.of(-0.5);
@@ -168,5 +185,57 @@ public final class Constants {
 
         public static final SwerveSubsystem DriveTrain =
                 new SwerveSubsystem(DrivetrainConstants, FrontLeft, FrontRight, BackLeft, BackRight);
+    }
+
+    public static class IndexerConstants {
+        public static final int INDEXER_MOTOR_ID = 0;
+
+        public static final Measure<Voltage> indexVoltage = Volts.of(7);
+    }
+
+    public static class ShooterConstants {
+        public static final int DEPLOY_MOTOR_ID = 0;
+        public static final int SHOOT_MOTOR_ID = 0;
+
+        // Shooter gains when deploying shooter to desired angle
+        public static final Slot0Configs deployGains = new Slot0Configs()
+                .withKP(60)
+                .withKI(0)
+                .withKD(0.1)
+                .withKV(0.12)
+                .withKS(0.25);
+
+        public static final MotionMagicConfigs motionMagicConfigs = new MotionMagicConfigs()
+                .withMotionMagicAcceleration(10)
+                .withMotionMagicJerk(50)
+                .withMotionMagicCruiseVelocity(5);
+        public static final MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs()
+                .withNeutralMode(NeutralModeValue.Brake);
+
+        public static final FeedbackConfigs feedbackConfigs = new FeedbackConfigs()
+                .withSensorToMechanismRatio(1);
+
+        public static final Measure<Voltage> shootVoltage = Volts.of(16);
+
+        public static final Measure<Angle> ampDeployAngle = Degrees.of(0);
+
+        public static final Measure<Voltage> manualAimingVoltage = Volts.of(0);
+    }
+
+    public static class IntakerConstants {
+        public static final int INTAKER_MOTOR_ID = 0;
+
+        public static final Measure<Voltage> intakeVoltage = Volts.of(1);
+    }
+
+    public static class BeamBreakConstants {
+        public static final int INTAKER_BEAM_BREAK_ID = 0;
+        public static final int INDEXER_BEAM_BREAK_ID = 1;
+        public static final int SHOOTER_BEAM_BREAK_ID = 2;
+    }
+
+    public static class IndicatorConstants {
+        public static final int LED_PORT = 0;
+        public static final int LED_BUFFER_LENGTH = 0;
     }
 }
