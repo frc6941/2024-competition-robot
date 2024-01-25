@@ -14,16 +14,18 @@ import static net.ironpulse.Constants.ShooterConstants.*;
 
 @Getter
 public class ShooterSubsystem implements Subsystem {
-    private final TalonFX deployMotor;
-    private final TalonFX shootMotor;
+    private final TalonFX armMotor;
+    private final TalonFX shootMotorLeft;
+    private final TalonFX shootMotorRight;
 
     private final Consumer<ShooterData> telemetryFunction;
 
     public ShooterSubsystem(Consumer<ShooterData> telemetryFunction) {
         CommandScheduler.getInstance().registerSubsystem(this);
         this.telemetryFunction = telemetryFunction;
-        deployMotor = new TalonFX(DEPLOY_MOTOR_ID);
-        shootMotor = new TalonFX(SHOOT_MOTOR_ID);
+        armMotor = new TalonFX(ARM_MOTOR_ID);
+        shootMotorLeft = new TalonFX(SHOOTER_L_MOTOR_ID);
+        shootMotorRight = new TalonFX(SHOOTER_R_MOTOR_ID);
 
         var deployMotorConfig = new TalonFXConfiguration()
                 .withSlot0(deployGains)
@@ -31,20 +33,21 @@ public class ShooterSubsystem implements Subsystem {
                 .withMotorOutput(motorOutputConfigs)
                 .withFeedback(feedbackConfigs);
 
-        var response = deployMotor.getConfigurator().apply(deployMotorConfig);
+        var response = armMotor.getConfigurator().apply(deployMotorConfig);
         if (response.isError())
-            System.out.println("Shooter Deploy TalonFX failed config with error" + response);
+            System.out.println("Shooter Arm TalonFX failed config with error" + response);
 
-        deployMotor.setPosition(0);
+        armMotor.setPosition(0);
     }
 
     @Override
     public void periodic() {
         telemetryFunction.accept(
                 new ShooterData(
-                        Degrees.of(Degrees.convertFrom(deployMotor.getPosition()
+                        Degrees.of(Degrees.convertFrom(armMotor.getPosition()
                                 .getValue(), Rotations)),
-                        RotationsPerSecond.of(shootMotor.getVelocity().getValue())
+                        RotationsPerSecond.of(shootMotorLeft.getVelocity().getValue()),
+                        RotationsPerSecond.of(shootMotorRight.getVelocity().getValue())
                 )
         );
     }

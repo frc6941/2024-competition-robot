@@ -11,15 +11,18 @@ public class BeamBreakTelemetry {
 
     private final BooleanPublisher fieldIntakerBeamBreak = beamBreakState
             .getBooleanTopic("Is Intaker BeamBreak Triggered").publish();
-    private final BooleanPublisher fieldIndexerBeamBreak1 = beamBreakState
-            .getBooleanTopic("Is Indexer Beam Break 1 Triggered").publish();
+    private final BooleanPublisher fieldIndexerBeamBreak = beamBreakState
+            .getBooleanTopic("Is Indexer Beam Break Triggered").publish();
 
-    private final BooleanPublisher fieldIndexerBeamBreak2 = beamBreakState
-            .getBooleanTopic("Is Indexer Beam Break 2 Triggered").publish();
+    private final BooleanPublisher fieldShooterBeamBreakLeft = beamBreakState
+            .getBooleanTopic("Is Shooter Beam Break Left Triggered").publish();
+    private final BooleanPublisher fieldShooterBeamBreakRight = beamBreakState
+            .getBooleanTopic("Is Shooter Beam Break Right Triggered").publish();
 
     public void telemeterize(BeamBreakData beamBreakData) {
         fieldIntakerBeamBreak.set(beamBreakData.intakerBeamBreak());
-        fieldIndexerBeamBreak1.set(beamBreakData.indexerBeamBreak());
-        fieldIndexerBeamBreak2.set(beamBreakData.shooterBeamBreak());
+        fieldIndexerBeamBreak.set(beamBreakData.indexerBeamBreak());
+        fieldShooterBeamBreakLeft.set(beamBreakData.shooterLeftBeamBreak());
+        fieldShooterBeamBreakRight.set(beamBreakData.shooterRightBeamBreak());
     }
 }

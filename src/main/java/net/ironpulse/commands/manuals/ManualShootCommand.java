@@ -14,12 +14,15 @@ public class ManualShootCommand extends Command {
 
     @Override
     public void execute() {
-        shooterSubsystem.getShootMotor()
+        shooterSubsystem.getShootMotorLeft()
+                .setVoltage(Constants.IntakerConstants.intakeVoltage.magnitude());
+        shooterSubsystem.getShootMotorRight()
                 .setVoltage(Constants.IntakerConstants.intakeVoltage.magnitude());
     }
 
     @Override
     public void end(boolean interrupted) {
-        shooterSubsystem.getShootMotor().setVoltage(0);
+        shooterSubsystem.getShootMotorLeft().setVoltage(0);
+        shooterSubsystem.getShootMotorRight().setVoltage(0);
     }
 }

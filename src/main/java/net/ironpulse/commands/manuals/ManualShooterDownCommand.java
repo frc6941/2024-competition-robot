@@ -14,12 +14,12 @@ public class ManualShooterDownCommand extends Command {
 
     @Override
     public void execute() {
-        shooterSubsystem.getDeployMotor()
+        shooterSubsystem.getArmMotor()
                 .setVoltage(Constants.ShooterConstants.manualAimingVoltage.magnitude());
     }
 
     @Override
     public void end(boolean interrupted) {
-        shooterSubsystem.getDeployMotor().setVoltage(0);
+        shooterSubsystem.getArmMotor().setVoltage(0);
     }
 }
