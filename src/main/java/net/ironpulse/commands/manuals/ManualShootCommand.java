@@ -16,7 +16,7 @@ public class ManualShootCommand extends Command {
     @Override
     public void execute() {
         shooterSubsystem.getShootMotorLeft()
-                .setVoltage(Constants.IntakerConstants.intakeVoltage.magnitude());
+                .setVoltage(Constants.ShooterConstants.shootVoltage.magnitude());
         shooterSubsystem.getShootMotorRight()
                 .setControl(
                         new Follower(Constants.ShooterConstants.SHOOTER_L_MOTOR_ID,

@@ -15,6 +15,14 @@ import net.ironpulse.Constants.OperatorConstants;
 import net.ironpulse.commands.*;
 import net.ironpulse.commands.autos.AutoIntakeCommand;
 import net.ironpulse.commands.autos.AutoShootCommand;
+import net.ironpulse.commands.manuals.ManualCleanStateWhileIntake;
+import net.ironpulse.commands.manuals.ManualIndexInCommand;
+import net.ironpulse.commands.manuals.ManualIndexOutCommand;
+import net.ironpulse.commands.manuals.ManualIntakeInCommand;
+import net.ironpulse.commands.manuals.ManualIntakeOutCommand;
+import net.ironpulse.commands.manuals.ManualShootCommand;
+import net.ironpulse.commands.manuals.ManualShooterDownCommand;
+import net.ironpulse.commands.manuals.ManualShooterUpCommand;
 import net.ironpulse.state.StateMachine;
 import net.ironpulse.state.StateMachine.Actions;
 import net.ironpulse.state.StateMachine.States;
@@ -129,18 +137,7 @@ public class RobotContainer {
         driverController.leftBumper().onTrue(swerveSubsystem.runOnce(swerveSubsystem::seedFieldRelative));
         swerveSubsystem.registerTelemetry(swerveTelemetry::telemeterize);
 
-        driverController.pov(0).whileTrue(swerveSubsystem.applyRequest(() -> forwardStraight
-                .withVelocityX(0.5)
-                .withVelocityY(0)));
-        driverController.pov(180).whileTrue(swerveSubsystem.applyRequest(() -> forwardStraight
-                .withVelocityX(-0.5)
-                .withVelocityY(0)));
-        driverController.pov(90).whileTrue(swerveSubsystem.applyRequest(() -> forwardStraight
-                .withVelocityX(0)
-                .withVelocityY(0.5)));
-        driverController.pov(270).whileTrue(swerveSubsystem.applyRequest(() -> forwardStraight
-                .withVelocityX(0)
-                .withVelocityY(0.5)));
+       
 
 
         driverController.rightTrigger().whileTrue(new SpeakerShootCommand(this, swerveSubsystem,
@@ -156,6 +153,17 @@ public class RobotContainer {
         );
 
         // TODO Bind operator manual actions
+        driverController.pov(0).whileTrue(new ManualShooterUpCommand(shooterSubsystem));
+        driverController.pov(180).whileTrue(new ManualShooterDownCommand(shooterSubsystem));
+        driverController.pov(90).whileTrue(Commands.parallel(
+                new ManualIntakeInCommand(intakerSubsystem),
+                new ManualIndexInCommand(indexerSubsystem)));
+        driverController.pov(270).whileTrue(Commands.parallel(
+                new ManualIntakeOutCommand(intakerSubsystem),
+                new ManualIndexOutCommand(indexerSubsystem)));
+
+        driverController.a().whileTrue(new ManualShootCommand(shooterSubsystem));
+        driverController.x().whileTrue(new ManualCleanStateWhileIntake(this));
     }
 
     private void configureAutos() {
