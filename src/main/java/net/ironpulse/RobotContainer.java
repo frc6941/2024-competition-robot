@@ -111,8 +111,8 @@ public class RobotContainer {
     private void disableActs(){
         if(DriverStation.isDisabled()){
                 for(int i=0;i<4;++i){
-                        swerveSubsystem.getModule(i).getSteerMotor().setNeutralMode(NeutralModeValue.Coast);
-                        swerveSubsystem.getModule(i).getDriveMotor().setNeutralMode(NeutralModeValue.Coast);
+                        swerveSubsystem.getModule(i).getSteerMotor().setNeutralMode(NeutralModeValue.Brake);
+                        swerveSubsystem.getModule(i).getDriveMotor().setNeutralMode(NeutralModeValue.Brake);
                         // swerveSubsystem.getModule(i).getCANcoder().setPosition(0);
                 }
                 intakerSubsystem.getIntakerMotor().setNeutralMode(NeutralModeValue.Coast);
