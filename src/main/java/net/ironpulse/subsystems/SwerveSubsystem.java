@@ -10,23 +10,23 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
+import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Time;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import edu.wpi.first.math.estimator.PoseEstimator;
 import net.ironpulse.Constants;
 import net.ironpulse.drivers.Limelight;
 
 import java.util.function.Supplier;
 
-import static edu.wpi.first.units.Units.*;
+import static edu.wpi.first.units.Units.Microsecond;
+import static edu.wpi.first.units.Units.Seconds;
 
 public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
     private static final Measure<Time> simLoopPeriod = Microsecond.of(0.005);
@@ -44,7 +44,6 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
     @Override
     public void periodic() {
         updatePoseEstimatorFromLimelight();
-        showCANCoder();
     }
 
     /**
@@ -61,13 +60,6 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
                                         target.latency().in(Seconds)
                         )
                 );
-    }
-
-    private void showCANCoder(){
-        int i=0;
-        for (var module : Modules) {
-            SmartDashboard.putNumber("CANCoder " + i++, module.getCANcoder().getPosition().getValueAsDouble()*360%360);
-        }
     }
 
     private void configurePathPlanner() {

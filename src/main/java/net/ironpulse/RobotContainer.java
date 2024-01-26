@@ -6,12 +6,12 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj.DriverStation;
 import lombok.Getter;
 import net.ironpulse.Constants.OperatorConstants;
 import net.ironpulse.commands.*;
@@ -28,7 +28,6 @@ import java.util.List;
 
 import static net.ironpulse.Constants.SwerveConstants.maxAngularRate;
 import static net.ironpulse.Constants.SwerveConstants.maxSpeed;
-import static net.ironpulse.state.StateMachine.*;
 
 public class RobotContainer {
     @Getter
@@ -115,17 +114,13 @@ public class RobotContainer {
     private final StateMachine globalStateMachine = new StateMachine(States.IDLE, transitions);
     
     private void disableActs(){
-        if(DriverStation.isDisabled()){
-                for(int i=0;i<4;++i){
-                        swerveSubsystem.getModule(i).getSteerMotor().setNeutralMode(NeutralModeValue.Brake);
-                        swerveSubsystem.getModule(i).getDriveMotor().setNeutralMode(NeutralModeValue.Brake);
-                        // swerveSubsystem.getModule(i).getCANcoder().setPosition(0);
-                }
-                intakerSubsystem.getIntakerMotor().setNeutralMode(NeutralModeValue.Coast);
-                shooterSubsystem.getDeployMotor().setNeutralMode(NeutralModeValue.Brake);
-                shooterSubsystem.getShootMotor().setNeutralMode(NeutralModeValue.Coast);
-                indexerSubsystem.getIndexerMotor().setNeutralMode(NeutralModeValue.Coast);
-        }
+        if (!DriverStation.isDisabled()) return;
+        swerveSubsystem.configNeutralMode(NeutralModeValue.Brake);
+        intakerSubsystem.getIntakerMotor().setNeutralMode(NeutralModeValue.Coast);
+        shooterSubsystem.getArmMotor().setNeutralMode(NeutralModeValue.Brake);
+        shooterSubsystem.getShootMotorRight().setNeutralMode(NeutralModeValue.Coast);
+        shooterSubsystem.getShootMotorLeft().setNeutralMode(NeutralModeValue.Coast);
+        indexerSubsystem.getIndexerMotor().setNeutralMode(NeutralModeValue.Coast);
     }
     
     private void configureKeyBindings() {
