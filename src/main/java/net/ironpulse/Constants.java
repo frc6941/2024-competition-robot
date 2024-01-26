@@ -15,7 +15,8 @@ import edu.wpi.first.units.*;
 import net.ironpulse.subsystems.SwerveSubsystem;
 
 public final class Constants {
-        public static final String CAN_BUS_NAME = "6941CANivore1";
+    public static final String CAN_BUS_NAME = "6941CANivore1";
+
     public static class OperatorConstants {
         public static final int DRIVER_CONTROLLER_PORT = 0;
         public static final int OPERATOR_CONTROLLER_PORT = 1;
@@ -243,7 +244,6 @@ public final class Constants {
         public static final int INTAKER_BEAM_BREAK_ID = 1;
         public static final int INDEXER_BEAM_BREAK_ID = 3;
         public static final int SHOOTER_BEAM_BREAK_ID = 2;
-        public static final int SHOOTER_R_BEAM_BREAK_ID = 0;
     }
 
     public static class IndicatorConstants {

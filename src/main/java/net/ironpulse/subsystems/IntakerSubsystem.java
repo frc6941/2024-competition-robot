@@ -20,7 +20,7 @@ public class IntakerSubsystem implements Subsystem {
 
     public IntakerSubsystem(Consumer<IntakerData> telemetryFunction) {
         CommandScheduler.getInstance().registerSubsystem(this);
-        intakerMotor = new TalonFX(INTAKER_MOTOR_ID,Constants.CAN_BUS_NAME);
+        intakerMotor = new TalonFX(INTAKER_MOTOR_ID, Constants.CAN_BUS_NAME);
 
         this.telemetryFunction = telemetryFunction;
     }
