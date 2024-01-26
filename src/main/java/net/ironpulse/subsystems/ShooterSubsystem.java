@@ -44,7 +44,9 @@ public class ShooterSubsystem implements Subsystem {
 
     @Override
     public void periodic() {
-        SmartDashboard.putData(armMotor);
+        SmartDashboard.putNumber("Arm Stator Current", armMotor.getStatorCurrent().getValueAsDouble());
+        SmartDashboard.putNumber("Arm Supply Current", armMotor.getSupplyCurrent().getValueAsDouble());
+        SmartDashboard.putNumber("Arm Torque Current", armMotor.getTorqueCurrent().getValueAsDouble());
         telemetryFunction.accept(
                 new ShooterData(
                         Degrees.of(Degrees.convertFrom(armMotor.getPosition()
