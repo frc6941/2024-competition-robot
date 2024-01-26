@@ -15,6 +15,7 @@ import edu.wpi.first.units.*;
 import net.ironpulse.subsystems.SwerveSubsystem;
 
 public final class Constants {
+        public static final String CAN_BUS_NAME = "6941CANivore1";
     public static class OperatorConstants {
         public static final int DRIVER_CONTROLLER_PORT = 0;
         public static final int OPERATOR_CONTROLLER_PORT = 1;
@@ -83,7 +84,7 @@ public final class Constants {
         private static final boolean STEER_MOTOR_REVERSED = true;
 
         // private static final String CAN_BUS_NAME = "rio";
-        private static final String CAN_BUS_NAME = "6941CANivore1";
+        
         private static final int PIGEON_ID = 1;
 
         // Simulation only
@@ -200,7 +201,7 @@ public final class Constants {
     public static class ShooterConstants {
         public static final int SHOOTER_L_MOTOR_ID = 41;
         public static final int SHOOTER_R_MOTOR_ID = 42;
-        public static final int ARM_MOTOR_ID = 0;
+        public static final int ARM_MOTOR_ID = 43;
 
         // Shooter gains when deploying shooter to desired angle
         public static final Slot0Configs armGains = new Slot0Configs()
@@ -210,8 +211,8 @@ public final class Constants {
                 .withKV(0.12)
                 .withKS(0.25);
 
-        public static final Measure<Current> armZeroCurrent = Amps.of(12);
-        public static final Measure<Voltage> armZeroVoltage = Volts.of(1);
+        public static final Measure<Current> armZeroCurrent = Amps.of(0.1);
+        public static final Measure<Voltage> armZeroVoltage = Volts.of(-1);
 
         public static final MotionMagicConfigs motionMagicConfigs = new MotionMagicConfigs()
                 .withMotionMagicAcceleration(10)
@@ -234,14 +235,14 @@ public final class Constants {
     public static class IntakerConstants {
         public static final int INTAKER_MOTOR_ID = 30;
 
-        public static final Measure<Voltage> intakeVoltage = Volts.of(1);
+        public static final Measure<Voltage> intakeVoltage = Volts.of(-4);
     }
 
     public static class BeamBreakConstants {
-        public static final int INTAKER_BEAM_BREAK_ID = 30;
-        public static final int INDEXER_BEAM_BREAK_ID = 40;
-        public static final int SHOOTER_BEAM_BREAK_ID = 41;
-        public static final int SHOOTER_R_BEAM_BREAK_ID = 42;
+        public static final int INTAKER_BEAM_BREAK_ID = 1;
+        public static final int INDEXER_BEAM_BREAK_ID = 3;
+        public static final int SHOOTER_BEAM_BREAK_ID = 2;
+        public static final int SHOOTER_R_BEAM_BREAK_ID = 0;
     }
 
     public static class IndicatorConstants {
