@@ -18,6 +18,8 @@ public class ShooterSubsystem implements Subsystem {
     private final TalonFX shootMotorLeft;
     private final TalonFX shootMotorRight;
 
+    private boolean homed = false;
+
     private final Consumer<ShooterData> telemetryFunction;
 
     public ShooterSubsystem(Consumer<ShooterData> telemetryFunction) {
@@ -36,8 +38,6 @@ public class ShooterSubsystem implements Subsystem {
         var response = armMotor.getConfigurator().apply(deployMotorConfig);
         if (response.isError())
             System.out.println("Shooter Arm TalonFX failed config with error" + response);
-
-        armMotor.setPosition(0);
     }
 
     @Override
@@ -50,5 +50,13 @@ public class ShooterSubsystem implements Subsystem {
                         RotationsPerSecond.of(shootMotorRight.getVelocity().getValue())
                 )
         );
+        if (homed) return;
+        if (armMotor.getSupplyCurrent().getValue() > armZeroCurrent.magnitude()) {
+            armMotor.setPosition(0);
+            armMotor.setVoltage(0);
+            homed = true;
+            return;
+        }
+        armMotor.setVoltage(armZeroVoltage.magnitude());
     }
 }
