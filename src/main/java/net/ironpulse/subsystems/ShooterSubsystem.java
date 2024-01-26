@@ -28,7 +28,7 @@ public class ShooterSubsystem implements Subsystem {
         shootMotorRight = new TalonFX(SHOOTER_R_MOTOR_ID);
 
         var deployMotorConfig = new TalonFXConfiguration()
-                .withSlot0(deployGains)
+                .withSlot0(armGains)
                 .withMotionMagic(motionMagicConfigs)
                 .withMotorOutput(motorOutputConfigs)
                 .withFeedback(feedbackConfigs);

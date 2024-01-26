@@ -203,8 +203,8 @@ public final class Constants {
         public static final int ARM_MOTOR_ID = 0;
 
         // Shooter gains when deploying shooter to desired angle
-        public static final Slot0Configs deployGains = new Slot0Configs()
-                .withKP(60)
+        public static final Slot0Configs armGains = new Slot0Configs()
+                .withKP(0.1)
                 .withKI(0)
                 .withKD(0.1)
                 .withKV(0.12)
