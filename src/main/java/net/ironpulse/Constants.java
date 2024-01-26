@@ -240,7 +240,7 @@ public final class Constants {
     public static class BeamBreakConstants {
         public static final int INTAKER_BEAM_BREAK_ID = 30;
         public static final int INDEXER_BEAM_BREAK_ID = 40;
-        public static final int SHOOTER_L_BEAM_BREAK_ID = 41;
+        public static final int SHOOTER_BEAM_BREAK_ID = 41;
         public static final int SHOOTER_R_BEAM_BREAK_ID = 42;
     }
 

@@ -14,15 +14,12 @@ public class BeamBreakTelemetry {
     private final BooleanPublisher fieldIndexerBeamBreak = beamBreakState
             .getBooleanTopic("Is Indexer Beam Break Triggered").publish();
 
-    private final BooleanPublisher fieldShooterBeamBreakLeft = beamBreakState
-            .getBooleanTopic("Is Shooter Beam Break Left Triggered").publish();
-    private final BooleanPublisher fieldShooterBeamBreakRight = beamBreakState
-            .getBooleanTopic("Is Shooter Beam Break Right Triggered").publish();
+    private final BooleanPublisher fieldShooterBeamBreak = beamBreakState
+            .getBooleanTopic("Is Shooter Beam Break Triggered").publish();
 
     public void telemeterize(BeamBreakData beamBreakData) {
         fieldIntakerBeamBreak.set(beamBreakData.intakerBeamBreak());
         fieldIndexerBeamBreak.set(beamBreakData.indexerBeamBreak());
-        fieldShooterBeamBreakLeft.set(beamBreakData.shooterLeftBeamBreak());
-        fieldShooterBeamBreakRight.set(beamBreakData.shooterRightBeamBreak());
+        fieldShooterBeamBreak.set(beamBreakData.shooterBeamBreak());
     }
 }
