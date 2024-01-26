@@ -14,9 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.util.Color8Bit;
-
 import static edu.wpi.first.units.Units.Seconds;
-
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class SwerveTelemetry {
     private final Measure<Velocity<Distance>> maxSpeed;
@@ -97,7 +95,6 @@ public class SwerveTelemetry {
             moduleSpeeds[i].setAngle(state.ModuleStates[i].angle);
             moduleDirections[i].setAngle(state.ModuleStates[i].angle);
             moduleSpeeds[i].setLength(state.ModuleStates[i].speedMetersPerSecond / (2 * maxSpeed.magnitude()));
-
             SmartDashboard.putData("Module " + i, moduleMechanisms[i]);
         }
 
