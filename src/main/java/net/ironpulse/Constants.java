@@ -21,8 +21,6 @@ public final class Constants {
     }
 
     public static class SwerveConstants {
-        public static final MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs()
-                .withNeutralMode(NeutralModeValue.Coast);
         // The max speed of the swerve (should not larger than speedAt12Volts)
         public static final Measure<Velocity<Distance>> maxSpeed = MetersPerSecond.of(6);
         // The max turning speed of the swerve
@@ -217,10 +215,11 @@ public final class Constants {
                 .withMotionMagicJerk(50)
                 .withMotionMagicCruiseVelocity(5);
         public static final MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs()
-                .withNeutralMode(NeutralModeValue.Coast);
+                .withNeutralMode(NeutralModeValue.Brake);
 
         public static final FeedbackConfigs feedbackConfigs = new FeedbackConfigs()
-                .withSensorToMechanismRatio(1);
+                .withSensorToMechanismRatio(1)
+                .withRotorToSensorRatio(1);
 
         public static final Measure<Voltage> shootVoltage = Volts.of(16);
 

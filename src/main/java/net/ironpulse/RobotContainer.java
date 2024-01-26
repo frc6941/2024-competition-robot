@@ -2,11 +2,9 @@ package net.ironpulse;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
-import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -113,16 +111,6 @@ public class RobotContainer {
     @Getter
     private final StateMachine globalStateMachine = new StateMachine(States.IDLE, transitions);
     
-    private void disableActs(){
-        if (!DriverStation.isDisabled()) return;
-        swerveSubsystem.configNeutralMode(NeutralModeValue.Brake);
-        intakerSubsystem.getIntakerMotor().setNeutralMode(NeutralModeValue.Coast);
-        shooterSubsystem.getArmMotor().setNeutralMode(NeutralModeValue.Brake);
-        shooterSubsystem.getShootMotorRight().setNeutralMode(NeutralModeValue.Coast);
-        shooterSubsystem.getShootMotorLeft().setNeutralMode(NeutralModeValue.Coast);
-        indexerSubsystem.getIndexerMotor().setNeutralMode(NeutralModeValue.Coast);
-    }
-    
     private void configureKeyBindings() {
         swerveSubsystem.setDefaultCommand(swerveSubsystem
                 .applyRequest(() -> drive.withVelocityX(-driverController.getLeftY() * maxSpeed.magnitude())
@@ -185,6 +173,5 @@ public class RobotContainer {
     public RobotContainer() {
         configureAutos();
         configureKeyBindings();
-        disableActs();
     }
 }
