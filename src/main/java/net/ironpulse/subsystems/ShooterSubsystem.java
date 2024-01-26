@@ -2,8 +2,6 @@ package net.ironpulse.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.ControlModeValue;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Subsystem;
@@ -12,7 +10,6 @@ import net.ironpulse.Constants;
 import net.ironpulse.data.ShooterData;
 
 import java.util.function.Consumer;
-import java.util.function.ToDoubleBiFunction;
 
 import static edu.wpi.first.units.Units.*;
 import static net.ironpulse.Constants.ShooterConstants.*;
@@ -30,12 +27,9 @@ public class ShooterSubsystem implements Subsystem {
     public ShooterSubsystem(Consumer<ShooterData> telemetryFunction) {
         CommandScheduler.getInstance().registerSubsystem(this);
         this.telemetryFunction = telemetryFunction;
-        armMotor = new TalonFX(ARM_MOTOR_ID,Constants.CAN_BUS_NAME);
-        shootMotorLeft = new TalonFX(SHOOTER_L_MOTOR_ID,Constants.CAN_BUS_NAME);
-        shootMotorRight = new TalonFX(SHOOTER_R_MOTOR_ID,Constants.CAN_BUS_NAME);
-        //TODO: set follower motor
-
-
+        armMotor = new TalonFX(ARM_MOTOR_ID, Constants.CAN_BUS_NAME);
+        shootMotorLeft = new TalonFX(SHOOTER_L_MOTOR_ID, Constants.CAN_BUS_NAME);
+        shootMotorRight = new TalonFX(SHOOTER_R_MOTOR_ID, Constants.CAN_BUS_NAME);
 
         var deployMotorConfig = new TalonFXConfiguration()
                 .withSlot0(armGains)
