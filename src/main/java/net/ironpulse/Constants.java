@@ -224,12 +224,13 @@ public final class Constants {
         public static final FeedbackConfigs feedbackConfigs = new FeedbackConfigs()
                 .withSensorToMechanismRatio(1)
                 .withRotorToSensorRatio(1);
-
-        public static final Measure<Voltage> shootVoltage = Volts.of(16);
+        
+        //TODO: change shooter voltage
+        public static final Measure<Voltage> shootVoltage = Volts.of(1);
 
         public static final Measure<Angle> ampDeployAngle = Degrees.of(0);
 
-        public static final Measure<Voltage> manualAimingVoltage = Volts.of(0);
+        public static final Measure<Voltage> manualAimingVoltage = Volts.of(1);
     }
 
     public static class IntakerConstants {
