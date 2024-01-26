@@ -19,7 +19,7 @@ public class IndexerSubsystem implements Subsystem {
 
     public IndexerSubsystem(Consumer<IndexerData> telemetryFunction) {
         CommandScheduler.getInstance().registerSubsystem(this);
-        indexerMotor = new TalonFX(Constants.IndexerConstants.INDEXER_MOTOR_ID);
+        indexerMotor = new TalonFX(Constants.IndexerConstants.INDEXER_MOTOR_ID,Constants.CAN_BUS_NAME);
 
         this.telemetryFunction = telemetryFunction;
     }
