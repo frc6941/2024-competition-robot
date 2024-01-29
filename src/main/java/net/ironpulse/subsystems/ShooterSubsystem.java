@@ -2,7 +2,6 @@ package net.ironpulse.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import lombok.Getter;
@@ -32,7 +31,8 @@ public class ShooterSubsystem implements Subsystem {
         shootMotorRight = new TalonFX(SHOOTER_R_MOTOR_ID, Constants.CAN_BUS_NAME);
 
         var deployMotorConfig = new TalonFXConfiguration()
-                .withSlot0(armGains)
+                .withSlot0(armGainsUp)
+                .withSlot1(armGainsDown)
                 .withMotionMagic(motionMagicConfigs)
                 .withMotorOutput(motorOutputConfigs)
                 .withFeedback(feedbackConfigs);
@@ -44,15 +44,13 @@ public class ShooterSubsystem implements Subsystem {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Arm Stator Current", armMotor.getStatorCurrent().getValueAsDouble());
-        SmartDashboard.putNumber("Arm Supply Current", armMotor.getSupplyCurrent().getValueAsDouble());
-        SmartDashboard.putNumber("Arm Torque Current", armMotor.getTorqueCurrent().getValueAsDouble());
         telemetryFunction.accept(
                 new ShooterData(
-                        Degrees.of(Degrees.convertFrom(armMotor.getPosition()
-                                .getValue(), Rotations)),
+                        Degrees.of(Rotations.of(armMotor.getPosition()
+                                .getValue()).in(Degrees)),
                         RotationsPerSecond.of(shootMotorLeft.getVelocity().getValue()),
-                        RotationsPerSecond.of(shootMotorRight.getVelocity().getValue())
+                        RotationsPerSecond.of(shootMotorRight.getVelocity().getValue()),
+                        Amps.of(armMotor.getSupplyCurrent().getValue())
                 )
         );
         if (homed) return;

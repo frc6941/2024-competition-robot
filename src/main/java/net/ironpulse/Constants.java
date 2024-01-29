@@ -2,10 +2,7 @@ package net.ironpulse;
 
 import static edu.wpi.first.units.Units.*;
 
-import com.ctre.phoenix6.configs.FeedbackConfigs;
-import com.ctre.phoenix6.configs.MotionMagicConfigs;
-import com.ctre.phoenix6.configs.MotorOutputConfigs;
-import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.*;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
@@ -48,7 +45,7 @@ public final class Constants {
 
         // The swerve heading (used in SpeakerAimingCommand) gains
         public static final Slot0Configs headingGains = new Slot0Configs()
-                .withKP(0.1)
+                .withKP(0.05)
                 .withKI(0)
                 .withKD(0);
 
@@ -196,7 +193,10 @@ public final class Constants {
     public static class IndexerConstants {
         public static final int INDEXER_MOTOR_ID = 40;
 
-        public static final Measure<Voltage> indexVoltage = Volts.of(7);
+        public static MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs()
+                .withNeutralMode(NeutralModeValue.Brake);
+
+        public static final Measure<Voltage> indexVoltage = Volts.of(4);
     }
 
     public static class ShooterConstants {
@@ -205,31 +205,37 @@ public final class Constants {
         public static final int ARM_MOTOR_ID = 43;
 
         // Shooter gains when deploying shooter to desired angle
-        public static final Slot0Configs armGains = new Slot0Configs()
-                .withKP(0.1)
+        public static final Slot0Configs armGainsUp = new Slot0Configs()
+                .withKP(100)
                 .withKI(0)
-                .withKD(0.1)
+                .withKD(0.8)
                 .withKV(0.12)
                 .withKS(0.25);
 
-        public static final Measure<Current> armZeroCurrent = Amps.of(0.1);
-        public static final Measure<Voltage> armZeroVoltage = Volts.of(-1);
+        // Shooter gains when deploying shooter to desired angle
+        public static final Slot1Configs armGainsDown = new Slot1Configs()
+                .withKP(50)
+                .withKI(0)
+                .withKD(0);
+
+        public static final Measure<Current> armZeroCurrent = Amps.of(6);
+        public static final Measure<Voltage> armZeroVoltage = Volts.of(-4);
 
         public static final MotionMagicConfigs motionMagicConfigs = new MotionMagicConfigs()
-                .withMotionMagicAcceleration(10)
-                .withMotionMagicJerk(50)
-                .withMotionMagicCruiseVelocity(5);
+                .withMotionMagicAcceleration(12000)
+                .withMotionMagicJerk(4600)
+                .withMotionMagicCruiseVelocity(24000);
         public static final MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs()
                 .withNeutralMode(NeutralModeValue.Brake);
 
         public static final FeedbackConfigs feedbackConfigs = new FeedbackConfigs()
-                .withSensorToMechanismRatio(1)
-                .withRotorToSensorRatio(1);
+                .withSensorToMechanismRatio(90d / 24 * 90 / 24 * 84 / 14);
         
         //TODO: change shooter voltage
-        public static final Measure<Voltage> shootVoltage = Volts.of(1);
+        public static final Measure<Voltage> shootVoltage = Volts.of(-16);
 
-        public static final Measure<Angle> ampDeployAngle = Degrees.of(0);
+        public static final Measure<Angle> ampDeployAngle = Degrees.of(168);
+        public static final Measure<Angle> shooterDeployOffset = Degrees.of(5);
 
         public static final Measure<Voltage> manualAimingVoltage = Volts.of(1);
     }
@@ -237,6 +243,8 @@ public final class Constants {
     public static class IntakerConstants {
         public static final int INTAKER_MOTOR_ID = 30;
 
+        public static MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs()
+                .withNeutralMode(NeutralModeValue.Brake);
         public static final Measure<Voltage> intakeVoltage = Volts.of(-4);
     }
 

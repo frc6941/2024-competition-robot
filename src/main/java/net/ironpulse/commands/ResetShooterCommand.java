@@ -14,6 +14,7 @@ public class ResetShooterCommand extends Command {
 
     @Override
     public void execute() {
-        shooterSubsystem.getArmMotor().setControl(new MotionMagicVoltage(0));
+        shooterSubsystem.getArmMotor()
+                .setControl(new MotionMagicVoltage(0).withSlot(1));
     }
 }

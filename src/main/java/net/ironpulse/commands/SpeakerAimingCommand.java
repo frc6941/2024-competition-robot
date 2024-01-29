@@ -2,15 +2,15 @@ package net.ironpulse.commands;
 
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
+import net.ironpulse.Constants;
 import net.ironpulse.RobotContainer;
 import net.ironpulse.drivers.Limelight;
-import net.ironpulse.maths.Angle;
+import net.ironpulse.state.StateMachine;
 import net.ironpulse.subsystems.ShooterSubsystem;
 import net.ironpulse.subsystems.SwerveSubsystem;
+import net.ironpulse.swerve.RobotCentricTargetHeading;
 
 import java.util.function.Supplier;
 
@@ -21,7 +21,7 @@ public class SpeakerAimingCommand extends Command {
     private final SwerveSubsystem swerveSubsystem;
     private final ShooterSubsystem shooterSubsystem;
     private final RobotContainer robotContainer;
-    private final SwerveRequest.FieldCentricFacingAngle drive = new SwerveRequest.FieldCentricFacingAngle()
+    private final RobotCentricTargetHeading drive = new RobotCentricTargetHeading()
             .withDeadband(maxSpeed.magnitude() * 0.1)
             .withRotationalDeadband(maxAngularRate.magnitude() * 0.1)
             .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage)
@@ -45,24 +45,21 @@ public class SpeakerAimingCommand extends Command {
     @Override
     public void execute() {
         robotContainer.getGlobalStateMachine().transfer(Actions.SHOOT);
-        if (Limelight.getTarget().isEmpty()) return;
-        var target = Limelight.getTarget().get();
+        var targetOptional = Limelight.getTarget();
+        if (targetOptional.isEmpty()) return;
+        var target = targetOptional.get();
         swerveSubsystem.applyRequest(() ->
                 drive
                         .withVelocityX(-robotContainer.getDriverController().getLeftY()
                                 * maxSpeed.magnitude())
                         .withVelocityY(-robotContainer.getDriverController().getLeftX()
                                 * maxSpeed.magnitude())
-                        .withTargetDirection(
-                                Rotation2d.fromDegrees(
-                                        Angle.continuousToPositive360(
-                                                Angle.continuousToPositive360(
-                                                        swerveSubsystem.getPigeon2().getAngle()) + 180)
-                                                + target.position().getX()))
+                        .withCurrentTx(target.position().getX())
         ).execute();
         shooterSubsystem.getArmMotor()
                 .setControl(new MotionMagicVoltage(
-                        Units.degreesToRotations(90 - target.position().getY())));
+                        Units.degreesToRotations(90 - target.position().getY() +
+                                Constants.ShooterConstants.shooterDeployOffset.magnitude())));
     }
 
     @Override
@@ -73,6 +70,6 @@ public class SpeakerAimingCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        return confirmation.get();
+        return robotContainer.getGlobalStateMachine().getCurrentState() == StateMachine.States.IDLE;
     }
 }

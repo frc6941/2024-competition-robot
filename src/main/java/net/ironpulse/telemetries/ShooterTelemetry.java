@@ -16,9 +16,13 @@ public class ShooterTelemetry {
     private final DoublePublisher fieldShooterPosition = shooterState
             .getDoubleTopic("Position (degrees)").publish();
 
+    private final DoublePublisher fieldArmSupplyCurrent = shooterState
+            .getDoubleTopic("Supply Current (amps)").publish();
+
     public void telemeterize(ShooterData shooterData) {
         fieldShooterLeftVelocity.set(shooterData.shootMotorLeftVelocity().magnitude());
         fieldShooterRightVelocity.set(shooterData.shootMotorRightVelocity().magnitude());
         fieldShooterPosition.set(shooterData.deployMotorPosition().magnitude());
+        fieldArmSupplyCurrent.set(shooterData.armMotorSupplyCurrent().magnitude());
     }
 }

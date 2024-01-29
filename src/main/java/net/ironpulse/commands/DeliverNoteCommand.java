@@ -28,9 +28,6 @@ public class DeliverNoteCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        if (interrupted) {
-            robotContainer.getGlobalStateMachine().transfer(Actions.INTERRUPT_SHOOT);
-        }
         indexerSubsystem.getIndexerMotor().setVoltage(0);
     }
 

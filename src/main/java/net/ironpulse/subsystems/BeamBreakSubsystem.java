@@ -1,6 +1,5 @@
 package net.ironpulse.subsystems;
 
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Subsystem;
@@ -52,8 +51,8 @@ public class BeamBreakSubsystem implements Subsystem {
         ) {
             robotContainer.getGlobalStateMachine()
                     .transfer(StateMachine.Actions.FINISH_INTAKE);
-            robotContainer.getDriverController().getHID()
-                    .setRumble(GenericHID.RumbleType.kBothRumble, 1);
+//            robotContainer.getDriverController().getHID()
+//                    .setRumble(GenericHID.RumbleType.kBothRumble, 1);
             return;
         }
 
@@ -62,11 +61,11 @@ public class BeamBreakSubsystem implements Subsystem {
                 !shooterLeftBeamBreak.get()
         ) {
             timer.start();
-            if (!timer.hasElapsed(0.5)) return;
+            if (!timer.hasElapsed(1)) return;
             robotContainer.getGlobalStateMachine()
                     .transfer(StateMachine.Actions.FINISH_SHOOT);
-            robotContainer.getDriverController().getHID()
-                    .setRumble(GenericHID.RumbleType.kBothRumble, 1);
+//            robotContainer.getDriverController().getHID()
+//                    .setRumble(GenericHID.RumbleType.kBothRumble, 1);
             timer.stop();
             timer.reset();
         }

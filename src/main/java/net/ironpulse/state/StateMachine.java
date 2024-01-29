@@ -1,7 +1,8 @@
 package net.ironpulse.state;
 
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Command;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +14,7 @@ public class StateMachine {
     private final List<Transition> transitions;
 
     @Getter
+    @Setter
     private States currentState;
 
     public StateMachine(States initialState, List<Transition> transitions) {
@@ -34,11 +36,7 @@ public class StateMachine {
         if (transition.isEmpty()) return;
         currentState = transition.get().getNextState();
         Optional.ofNullable(transition.get().getCommand())
-                .ifPresent(command ->
-                        CommandScheduler
-                                .getInstance()
-                                .schedule(command)
-                );
+                .ifPresent(Command::execute);
     }
 
     public enum States {

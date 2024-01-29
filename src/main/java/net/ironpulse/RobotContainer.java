@@ -15,14 +15,7 @@ import net.ironpulse.Constants.OperatorConstants;
 import net.ironpulse.commands.*;
 import net.ironpulse.commands.autos.AutoIntakeCommand;
 import net.ironpulse.commands.autos.AutoShootCommand;
-import net.ironpulse.commands.manuals.ManualCleanStateWhileIntake;
-import net.ironpulse.commands.manuals.ManualIndexInCommand;
-import net.ironpulse.commands.manuals.ManualIndexOutCommand;
-import net.ironpulse.commands.manuals.ManualIntakeInCommand;
-import net.ironpulse.commands.manuals.ManualIntakeOutCommand;
-import net.ironpulse.commands.manuals.ManualShootCommand;
-import net.ironpulse.commands.manuals.ManualShooterDownCommand;
-import net.ironpulse.commands.manuals.ManualShooterUpCommand;
+import net.ironpulse.commands.manuals.*;
 import net.ironpulse.state.StateMachine;
 import net.ironpulse.state.StateMachine.Actions;
 import net.ironpulse.state.StateMachine.States;
@@ -109,10 +102,6 @@ public class RobotContainer {
                     .currentState(States.SHOOTING)
                     .nextState(States.IDLE)
                     .action(Actions.FINISH_SHOOT)
-                    .command(Commands.sequence(
-                            new ResetShooterCommand(shooterSubsystem),
-                            new FinishShootLEDCommand(indicatorSubsystem)
-                    ))
                     .build()
     );
 
@@ -126,9 +115,9 @@ public class RobotContainer {
                         .withRotationalRate(-driverController.getRightX() * maxAngularRate.magnitude()))
                 .ignoringDisable(true));
 
-        driverController
-                .a()
-                .whileTrue(swerveSubsystem.applyRequest(() -> brake));
+//        driverController
+//                .a()
+//                .whileTrue(swerveSubsystem.applyRequest(() -> brake));
         driverController
                 .b()
                 .whileTrue(swerveSubsystem.applyRequest(() -> point.withModuleDirection(
@@ -162,7 +151,6 @@ public class RobotContainer {
                 new ManualIntakeOutCommand(intakerSubsystem),
                 new ManualIndexOutCommand(indexerSubsystem)));
 
-        driverController.a().whileTrue(new ManualShootCommand(shooterSubsystem));
         driverController.x().whileTrue(new ManualCleanStateWhileIntake(this));
     }
 
