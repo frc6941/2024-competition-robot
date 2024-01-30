@@ -24,8 +24,8 @@ public class AmpShootCommand extends ParallelCommandGroup {
             Supplier<Boolean> confirmation
     ) {
         addCommands(
-                new AmpAimingCommand(shooterSubsystem, robotContainer),
-                new PreShootCommand(robotContainer, shooterSubsystem),
+                new AmpAimingCommand(shooterSubsystem),
+                new PreShootCommand(shooterSubsystem),
                 Commands.sequence(
                         new WaitUntilCommand(confirmation::get),
                         new DeliverNoteCommand(indexerSubsystem, robotContainer)

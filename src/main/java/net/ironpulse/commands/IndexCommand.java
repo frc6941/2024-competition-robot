@@ -9,7 +9,10 @@ public class IndexCommand extends Command {
     private final IndexerSubsystem indexerSubsystem;
     private final RobotContainer robotContainer;
 
-    public IndexCommand(RobotContainer robotContainer, IndexerSubsystem indexerSubsystem) {
+    public IndexCommand(
+            RobotContainer robotContainer,
+            IndexerSubsystem indexerSubsystem
+    ) {
         this.indexerSubsystem = indexerSubsystem;
         this.robotContainer = robotContainer;
         addRequirements(indexerSubsystem);

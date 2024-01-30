@@ -33,14 +33,14 @@ public class ShooterSubsystem implements Subsystem {
         shootMotorLeft = new TalonFX(SHOOTER_L_MOTOR_ID, Constants.CAN_BUS_NAME);
         shootMotorRight = new TalonFX(SHOOTER_R_MOTOR_ID, Constants.CAN_BUS_NAME);
 
-        var deployMotorConfig = new TalonFXConfiguration()
+        var armMotorConfig = new TalonFXConfiguration()
                 .withSlot0(armGainsUp)
                 .withSlot1(armGainsDown)
                 .withMotionMagic(motionMagicConfigs)
                 .withMotorOutput(motorOutputConfigs)
                 .withFeedback(feedbackConfigs);
 
-        var response = armMotor.getConfigurator().apply(deployMotorConfig);
+        var response = armMotor.getConfigurator().apply(armMotorConfig);
         if (response.isError())
             System.out.println("Shooter Arm TalonFX failed config with error" + response);
     }

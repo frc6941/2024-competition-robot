@@ -9,7 +9,10 @@ public class IntakeCommand extends Command {
     private final IntakerSubsystem intakerSubsystem;
     private final RobotContainer robotContainer;
 
-    public IntakeCommand(RobotContainer robotContainer, IntakerSubsystem intakerSubsystem) {
+    public IntakeCommand(
+            RobotContainer robotContainer,
+            IntakerSubsystem intakerSubsystem
+    ) {
         this.intakerSubsystem = intakerSubsystem;
         this.robotContainer = robotContainer;
         addRequirements(intakerSubsystem);

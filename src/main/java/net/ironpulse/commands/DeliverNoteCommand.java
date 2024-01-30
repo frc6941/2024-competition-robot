@@ -12,7 +12,10 @@ public class DeliverNoteCommand extends Command {
     private final IndexerSubsystem indexerSubsystem;
     private final RobotContainer robotContainer;
 
-    public DeliverNoteCommand(IndexerSubsystem indexerSubsystem, RobotContainer robotContainer) {
+    public DeliverNoteCommand(
+            IndexerSubsystem indexerSubsystem,
+            RobotContainer robotContainer
+    ) {
         this.indexerSubsystem = indexerSubsystem;
         this.robotContainer = robotContainer;
         addRequirements(indexerSubsystem);

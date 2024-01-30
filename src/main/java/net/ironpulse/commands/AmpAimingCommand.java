@@ -3,7 +3,6 @@ package net.ironpulse.commands;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import edu.wpi.first.wpilibj2.command.Command;
 import net.ironpulse.Constants;
-import net.ironpulse.RobotContainer;
 import net.ironpulse.subsystems.ShooterSubsystem;
 
 import static edu.wpi.first.units.Units.Rotations;
@@ -16,14 +15,9 @@ import static edu.wpi.first.units.Units.Rotations;
  */
 public class AmpAimingCommand extends Command {
     private final ShooterSubsystem shooterSubsystem;
-    private final RobotContainer robotContainer;
 
-    public AmpAimingCommand(
-            ShooterSubsystem shooterSubsystem,
-            RobotContainer robotContainer
-    ) {
+    public AmpAimingCommand(ShooterSubsystem shooterSubsystem) {
         this.shooterSubsystem = shooterSubsystem;
-        this.robotContainer = robotContainer;
     }
 
     @Override

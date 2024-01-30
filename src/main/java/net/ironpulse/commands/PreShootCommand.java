@@ -3,13 +3,12 @@ package net.ironpulse.commands;
 import com.ctre.phoenix6.controls.Follower;
 import edu.wpi.first.wpilibj2.command.Command;
 import net.ironpulse.Constants;
-import net.ironpulse.RobotContainer;
 import net.ironpulse.subsystems.ShooterSubsystem;
 
 public class PreShootCommand extends Command {
     private final ShooterSubsystem shooterSubsystem;
 
-    public PreShootCommand(RobotContainer robotContainer, ShooterSubsystem shooterSubsystem) {
+    public PreShootCommand(ShooterSubsystem shooterSubsystem) {
         this.shooterSubsystem = shooterSubsystem;
     }
 
