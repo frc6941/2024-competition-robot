@@ -8,6 +8,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.units.*;
 import net.ironpulse.subsystems.SwerveSubsystem;
 
@@ -23,7 +24,10 @@ public final class Constants {
         // The max speed of the swerve (should not larger than speedAt12Volts)
         public static final Measure<Velocity<Distance>> maxSpeed = MetersPerSecond.of(6);
         // The max turning speed of the swerve
-        public static final Measure<Velocity<Angle>> maxAngularRate = RotationsPerSecond.of(Math.PI);
+        public static final Measure<Velocity<Angle>> maxAngularRate = RotationsPerSecond.of(1.5 * Math.PI);
+
+        public static final SlewRateLimiter xLimiter = new SlewRateLimiter(1.25);
+        public static final SlewRateLimiter yLimiter = new SlewRateLimiter(1.25);
 
         // Swerve steering gains
         private static final Slot0Configs steerGains = new Slot0Configs()
@@ -36,8 +40,8 @@ public final class Constants {
 
         // Swerve driving gains
         private static final Slot0Configs driveGains = new Slot0Configs()
-                .withKP(2)
-                .withKI(0)
+                .withKP(1.5)
+                .withKI(0.4)
                 .withKD(0)
                 .withKS(0)
                 .withKV(0)
@@ -46,12 +50,6 @@ public final class Constants {
         // The swerve heading (used in SpeakerAimingCommand) gains
         public static final Slot0Configs headingGains = new Slot0Configs()
                 .withKP(0.05)
-                .withKI(0)
-                .withKD(0);
-
-        // The swerve gains when adjusting tx (used in AmpAimingCommand)
-        public static final Slot0Configs txGains = new Slot0Configs()
-                .withKP(0.1)
                 .withKI(0)
                 .withKD(0);
 
@@ -218,7 +216,7 @@ public final class Constants {
                 .withKI(0)
                 .withKD(0);
 
-        public static final Measure<Current> armZeroCurrent = Amps.of(1);
+        public static final Measure<Current> armZeroCurrent = Amps.of(0.3);
         public static final Measure<Voltage> armZeroVoltage = Volts.of(-2);
 
         public static final MotionMagicConfigs motionMagicConfigs = new MotionMagicConfigs()

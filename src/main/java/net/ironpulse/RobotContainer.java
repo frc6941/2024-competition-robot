@@ -4,7 +4,6 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -21,8 +20,7 @@ import net.ironpulse.telemetries.*;
 
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Rotations;
-import static net.ironpulse.Constants.SwerveConstants.maxAngularRate;
-import static net.ironpulse.Constants.SwerveConstants.maxSpeed;
+import static net.ironpulse.Constants.SwerveConstants.*;
 
 public class RobotContainer {
     @Getter
@@ -64,15 +62,12 @@ public class RobotContainer {
     
     private void configureKeyBindings() {
         swerveSubsystem.setDefaultCommand(swerveSubsystem
-                .applyRequest(() -> drive.withVelocityX(-driverController.getLeftY() * maxSpeed.magnitude())
-                        .withVelocityY(-driverController.getLeftX() * maxSpeed.magnitude())
+                .applyRequest(() -> drive.withVelocityX(yLimiter.calculate(-driverController.getLeftY()) * maxSpeed.magnitude())
+                        .withVelocityY(xLimiter.calculate(-driverController.getLeftX()) * maxSpeed.magnitude())
                         .withRotationalRate(-driverController.getRightX() * maxAngularRate.magnitude()))
                 .ignoringDisable(true));
 
-        driverController
-                .b()
-                .whileTrue(swerveSubsystem.applyRequest(() -> point.withModuleDirection(
-                        new Rotation2d(-driverController.getLeftY(), -driverController.getLeftX()))));
+        driverController.b().whileTrue(swerveSubsystem.applyRequest(() -> brake));
 
         driverController.start().onTrue(swerveSubsystem.runOnce(swerveSubsystem::seedFieldRelative));
         swerveSubsystem.registerTelemetry(swerveTelemetry::telemeterize);
@@ -89,8 +84,8 @@ public class RobotContainer {
                 )
         );
 
-        operatorController.pov(0).whileTrue(new ManualShooterUpCommand(shooterSubsystem));
-        operatorController.pov(180).whileTrue(new ManualShooterDownCommand(shooterSubsystem))
+        operatorController.pov(180).whileTrue(new ManualShooterUpCommand(shooterSubsystem));
+        operatorController.pov(0).whileTrue(new ManualShooterDownCommand(shooterSubsystem))
                 .and(() -> Rotations.of(shooterSubsystem.getArmMotor().getPosition().getValue()).in(Degrees) > 15);
         driverController.leftTrigger().whileTrue(Commands.parallel(
                 new ManualIntakeInCommand(intakerSubsystem),
