@@ -194,7 +194,7 @@ public final class Constants {
         public static MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs()
                 .withNeutralMode(NeutralModeValue.Brake);
 
-        public static final Measure<Voltage> indexVoltage = Volts.of(4);
+        public static final Measure<Voltage> indexVoltage = Volts.of(5);
     }
 
     public static class ShooterConstants {
@@ -212,7 +212,7 @@ public final class Constants {
 
         // Shooter gains when deploying shooter to desired angle
         public static final Slot1Configs armGainsDown = new Slot1Configs()
-                .withKP(5)
+                .withKP(15)
                 .withKI(0)
                 .withKD(0);
 
@@ -228,12 +228,11 @@ public final class Constants {
 
         public static final FeedbackConfigs feedbackConfigs = new FeedbackConfigs()
                 .withSensorToMechanismRatio(90d / 24 * 90 / 24 * 84 / 14);
-        
-        //TODO: change shooter voltage
+
         public static final Measure<Voltage> shootVoltage = Volts.of(-4);
 
         public static final Measure<Angle> ampDeployAngle = Degrees.of(190);
-        public static final Measure<Angle> shooterDeployOffset = Degrees.of(5);
+        public static final Measure<Angle> speakerOffset = Degrees.of(5);
 
         public static final Measure<Voltage> manualAimingVoltage = Volts.of(2);
     }

@@ -1,6 +1,7 @@
 package net.ironpulse.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Subsystem;
@@ -57,11 +58,11 @@ public class ShooterSubsystem implements Subsystem {
         );
         if (homed) return;
         if (armMotor.getSupplyCurrent().getValue() > armZeroCurrent.magnitude()) {
+            armMotor.setControl(new VoltageOut(0));
             armMotor.setPosition(0);
-            armMotor.setVoltage(0);
             homed = true;
             return;
         }
-        armMotor.setVoltage(armZeroVoltage.magnitude());
+        armMotor.setControl(new VoltageOut(armZeroVoltage.magnitude()));
     }
 }

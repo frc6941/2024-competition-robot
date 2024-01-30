@@ -53,9 +53,6 @@ public class RobotContainer {
             .withRotationalDeadband(maxAngularRate.magnitude() * 0.1)
             .withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo);
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
-    private final SwerveRequest.RobotCentric forwardStraight = new SwerveRequest.RobotCentric()
-            .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage);
-    private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
     private final SendableChooser<Command> autoChooser =
             AutoBuilder.buildAutoChooser("M 1 Note Auto");

@@ -50,7 +50,7 @@ public class SpeakerAimingCommand extends Command {
         shooterSubsystem.getArmMotor()
                 .setControl(new MotionMagicVoltage(
                         Units.degreesToRotations(90 - target.position().getY() +
-                                Constants.ShooterConstants.shooterDeployOffset.magnitude())));
+                                Constants.ShooterConstants.speakerOffset.magnitude())));
     }
 
     @Override

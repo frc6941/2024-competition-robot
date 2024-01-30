@@ -10,7 +10,6 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
-import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Time;
@@ -37,27 +36,6 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
         configurePathPlanner();
         if (!Utils.isSimulation()) return;
         startSimThread();
-    }
-
-    @Override
-    public void periodic() {
-        updatePoseEstimatorFromLimelight();
-    }
-
-    /**
-     * Update {@link PoseEstimator} from Limelight Vision
-     */
-    private void updatePoseEstimatorFromLimelight() {
-        // TODO: Verify this
-//        Limelight
-//                .getTarget()
-//                .ifPresent(target ->
-//                        addVisionMeasurement(
-//                                target.botPose().toPose2d(),
-//                                Timer.getFPGATimestamp() -
-//                                        target.latency().in(Seconds)
-//                        )
-//                );
     }
 
     private void configurePathPlanner() {
