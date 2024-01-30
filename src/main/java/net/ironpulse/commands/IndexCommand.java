@@ -5,8 +5,6 @@ import net.ironpulse.Constants;
 import net.ironpulse.RobotContainer;
 import net.ironpulse.subsystems.IndexerSubsystem;
 
-import static net.ironpulse.state.StateMachine.*;
-
 public class IndexCommand extends Command {
     private final IndexerSubsystem indexerSubsystem;
     private final RobotContainer robotContainer;
@@ -31,6 +29,7 @@ public class IndexCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        return robotContainer.getGlobalStateMachine().getCurrentState() == States.PENDING;
+        return robotContainer.getBeamBreakSubsystem().getIndexerBeamBreak().get() &&
+                !robotContainer.getBeamBreakSubsystem().getIntakerBeamBreak().get();
     }
 }

@@ -7,7 +7,6 @@ import lombok.Getter;
 import net.ironpulse.RobotContainer;
 import net.ironpulse.data.BeamBreakData;
 import net.ironpulse.drivers.BeamBreak;
-import net.ironpulse.state.StateMachine;
 
 import java.util.function.Consumer;
 
@@ -44,30 +43,5 @@ public class BeamBreakSubsystem implements Subsystem {
                         shooterLeftBeamBreak.get()
                 )
         );
-
-        if (!intakerBeamBreak.get() &&
-                indexerBeamBreak.get() &&
-                !shooterLeftBeamBreak.get()
-        ) {
-            robotContainer.getGlobalStateMachine()
-                    .transfer(StateMachine.Actions.FINISH_INTAKE);
-//            robotContainer.getDriverController().getHID()
-//                    .setRumble(GenericHID.RumbleType.kBothRumble, 1);
-            return;
-        }
-
-        if (!intakerBeamBreak.get() &&
-                !indexerBeamBreak.get() &&
-                !shooterLeftBeamBreak.get()
-        ) {
-            timer.start();
-            if (!timer.hasElapsed(1)) return;
-            robotContainer.getGlobalStateMachine()
-                    .transfer(StateMachine.Actions.FINISH_SHOOT);
-//            robotContainer.getDriverController().getHID()
-//                    .setRumble(GenericHID.RumbleType.kBothRumble, 1);
-            timer.stop();
-            timer.reset();
-        }
     }
 }

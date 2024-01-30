@@ -5,6 +5,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import lombok.Getter;
+import lombok.Setter;
 import net.ironpulse.Constants;
 import net.ironpulse.data.ShooterData;
 
@@ -19,6 +20,7 @@ public class ShooterSubsystem implements Subsystem {
     private final TalonFX shootMotorLeft;
     private final TalonFX shootMotorRight;
 
+    @Setter
     private boolean homed = false;
 
     private final Consumer<ShooterData> telemetryFunction;

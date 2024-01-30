@@ -16,15 +16,11 @@ import net.ironpulse.commands.*;
 import net.ironpulse.commands.autos.AutoIntakeCommand;
 import net.ironpulse.commands.autos.AutoShootCommand;
 import net.ironpulse.commands.manuals.*;
-import net.ironpulse.state.StateMachine;
-import net.ironpulse.state.StateMachine.Actions;
-import net.ironpulse.state.StateMachine.States;
-import net.ironpulse.state.Transition;
 import net.ironpulse.subsystems.*;
 import net.ironpulse.telemetries.*;
 
-import java.util.List;
-
+import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.Rotations;
 import static net.ironpulse.Constants.SwerveConstants.maxAngularRate;
 import static net.ironpulse.Constants.SwerveConstants.maxSpeed;
 
@@ -41,21 +37,18 @@ public class RobotContainer {
     private final IntakerTelemetry intakerTelemetry = new IntakerTelemetry();
     private final ShooterTelemetry shooterTelemetry = new ShooterTelemetry();
     private final BeamBreakTelemetry beamBreakTelemetry = new BeamBreakTelemetry();
-    private final StateTelemetry stateTelemetry = new StateTelemetry();
 
     public final SwerveSubsystem swerveSubsystem = Constants.SwerveConstants.DriveTrain;
     public final IndexerSubsystem indexerSubsystem =
             new IndexerSubsystem(indexerTelemetry::telemeterize);
+
+    @Getter
     public final BeamBreakSubsystem beamBreakSubsystem =
             new BeamBreakSubsystem(this, beamBreakTelemetry::telemeterize);
     private final IntakerSubsystem intakerSubsystem =
             new IntakerSubsystem(intakerTelemetry::telemeterize);
     private final ShooterSubsystem shooterSubsystem =
             new ShooterSubsystem(shooterTelemetry::telemeterize);
-    private final StateSubsystem stateSubsystem =
-            new StateSubsystem(this, stateTelemetry::telemeterize);
-    private final IndicatorSubsystem indicatorSubsystem =
-            new IndicatorSubsystem(this);
 
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             .withDeadband(maxSpeed.magnitude() * 0.1)
@@ -68,45 +61,6 @@ public class RobotContainer {
 
     private final SendableChooser<Command> autoChooser =
             AutoBuilder.buildAutoChooser("M 1 Note Auto");
-
-    private final List<Transition> transitions = List.of(
-            Transition.builder()
-                    .currentState(States.IDLE)
-                    .nextState(States.INTAKING)
-                    .action(Actions.INTAKE)
-                    .build(),
-            Transition.builder()
-                    .currentState(States.INTAKING)
-                    .nextState(States.PENDING)
-                    .action(Actions.FINISH_INTAKE)
-                    .command(new FinishIntakeLEDCommand(indicatorSubsystem))
-                    .build(),
-            Transition.builder()
-                    .currentState(States.INTAKING)
-                    .nextState(States.IDLE)
-                    .action(Actions.INTERRUPT_INTAKE)
-                    .command(new ResetIntakerCommand(intakerSubsystem))
-                    .build(),
-            Transition.builder()
-                    .currentState(States.PENDING)
-                    .nextState(States.SHOOTING)
-                    .action(Actions.SHOOT)
-                    .build(),
-            Transition.builder()
-                    .currentState(States.SHOOTING)
-                    .nextState(States.PENDING)
-                    .action(Actions.INTERRUPT_SHOOT)
-                    .command(new ResetShooterCommand(shooterSubsystem))
-                    .build(),
-            Transition.builder()
-                    .currentState(States.SHOOTING)
-                    .nextState(States.IDLE)
-                    .action(Actions.FINISH_SHOOT)
-                    .build()
-    );
-
-    @Getter
-    private final StateMachine globalStateMachine = new StateMachine(States.IDLE, transitions);
     
     private void configureKeyBindings() {
         swerveSubsystem.setDefaultCommand(swerveSubsystem
@@ -115,24 +69,18 @@ public class RobotContainer {
                         .withRotationalRate(-driverController.getRightX() * maxAngularRate.magnitude()))
                 .ignoringDisable(true));
 
-//        driverController
-//                .a()
-//                .whileTrue(swerveSubsystem.applyRequest(() -> brake));
         driverController
                 .b()
                 .whileTrue(swerveSubsystem.applyRequest(() -> point.withModuleDirection(
                         new Rotation2d(-driverController.getLeftY(), -driverController.getLeftX()))));
 
-        driverController.leftBumper().onTrue(swerveSubsystem.runOnce(swerveSubsystem::seedFieldRelative));
+        driverController.start().onTrue(swerveSubsystem.runOnce(swerveSubsystem::seedFieldRelative));
         swerveSubsystem.registerTelemetry(swerveTelemetry::telemeterize);
 
-       
-
-
-        driverController.rightTrigger().whileTrue(new SpeakerShootCommand(this, swerveSubsystem,
-                shooterSubsystem, indexerSubsystem, () -> driverController.getHID().getAButton()));
-        driverController.leftTrigger().whileTrue(new AmpShootCommand(this,
-                shooterSubsystem, indexerSubsystem, swerveSubsystem, () -> driverController.getHID().getAButton()));
+        operatorController.rightTrigger().whileTrue(new SpeakerShootCommand(this, swerveSubsystem,
+                shooterSubsystem, indexerSubsystem, () -> operatorController.getHID().getAButton()));
+        operatorController.leftTrigger().whileTrue(new AmpShootCommand(this,
+                shooterSubsystem, indexerSubsystem, () -> operatorController.getHID().getAButton()));
 
         driverController.rightBumper().whileTrue(
                 Commands.parallel(
@@ -141,17 +89,17 @@ public class RobotContainer {
                 )
         );
 
-        // TODO Bind operator manual actions
-        driverController.pov(0).whileTrue(new ManualShooterUpCommand(shooterSubsystem));
-        driverController.pov(180).whileTrue(new ManualShooterDownCommand(shooterSubsystem));
-        driverController.pov(90).whileTrue(Commands.parallel(
+        operatorController.pov(0).whileTrue(new ManualShooterUpCommand(shooterSubsystem));
+        operatorController.pov(180).whileTrue(new ManualShooterDownCommand(shooterSubsystem))
+                .and(() -> Rotations.of(shooterSubsystem.getArmMotor().getPosition().getValue()).in(Degrees) > 15);
+        driverController.leftTrigger().whileTrue(Commands.parallel(
                 new ManualIntakeInCommand(intakerSubsystem),
                 new ManualIndexInCommand(indexerSubsystem)));
-        driverController.pov(270).whileTrue(Commands.parallel(
+        driverController.rightTrigger().whileTrue(Commands.parallel(
                 new ManualIntakeOutCommand(intakerSubsystem),
                 new ManualIndexOutCommand(indexerSubsystem)));
 
-        driverController.x().whileTrue(new ManualCleanStateWhileIntake(this));
+        operatorController.start().onTrue(new ResetArmCommand(shooterSubsystem));
     }
 
     private void configureAutos() {

@@ -7,15 +7,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import net.ironpulse.Constants;
 import net.ironpulse.RobotContainer;
 import net.ironpulse.drivers.Limelight;
-import net.ironpulse.state.StateMachine;
 import net.ironpulse.subsystems.ShooterSubsystem;
 import net.ironpulse.subsystems.SwerveSubsystem;
 import net.ironpulse.swerve.FieldCentricTargetHeading;
 
-import java.util.function.Supplier;
-
 import static net.ironpulse.Constants.SwerveConstants.*;
-import static net.ironpulse.state.StateMachine.Actions;
 
 public class SpeakerAimingCommand extends Command {
     private final SwerveSubsystem swerveSubsystem;
@@ -26,27 +22,20 @@ public class SpeakerAimingCommand extends Command {
             .withRotationalDeadband(maxAngularRate.magnitude() * 0.1)
             .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage)
             .withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo);
-    private final Supplier<Boolean> confirmation;
 
     public SpeakerAimingCommand(
             RobotContainer robotContainer,
             ShooterSubsystem shooterSubsystem,
-            SwerveSubsystem swerveSubsystem,
-            Supplier<Boolean> confirmation
+            SwerveSubsystem swerveSubsystem
     ) {
         this.swerveSubsystem = swerveSubsystem;
         this.shooterSubsystem = shooterSubsystem;
         this.robotContainer = robotContainer;
-        this.confirmation = confirmation;
         drive.HeadingController.setPID(headingGains.kP, headingGains.kI, headingGains.kD);
-        addRequirements(swerveSubsystem);
     }
 
     @Override
     public void execute() {
-        if (isFinished()) return;
-
-        robotContainer.getGlobalStateMachine().transfer(Actions.SHOOT);
         var targetOptional = Limelight.getTarget();
         if (targetOptional.isEmpty()) return;
         var target = targetOptional.get();
@@ -66,12 +55,13 @@ public class SpeakerAimingCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        if (!interrupted) return;
-        robotContainer.getGlobalStateMachine().transfer(Actions.INTERRUPT_SHOOT);
+        shooterSubsystem.getArmMotor()
+                .setControl(new MotionMagicVoltage(0).withSlot(1));
     }
 
     @Override
     public boolean isFinished() {
-        return robotContainer.getGlobalStateMachine().getCurrentState() == StateMachine.States.IDLE;
+        return !robotContainer.getBeamBreakSubsystem().getIndexerBeamBreak().get() &&
+                !robotContainer.getBeamBreakSubsystem().getShooterLeftBeamBreak().get();
     }
 }

@@ -23,7 +23,7 @@ public final class Constants {
         // The max speed of the swerve (should not larger than speedAt12Volts)
         public static final Measure<Velocity<Distance>> maxSpeed = MetersPerSecond.of(6);
         // The max turning speed of the swerve
-        public static final Measure<Velocity<Angle>> maxAngularRate = RotationsPerSecond.of(0.5 * Math.PI);
+        public static final Measure<Velocity<Angle>> maxAngularRate = RotationsPerSecond.of(Math.PI);
 
         // Swerve steering gains
         private static final Slot0Configs steerGains = new Slot0Configs()
@@ -218,8 +218,8 @@ public final class Constants {
                 .withKI(0)
                 .withKD(0);
 
-        public static final Measure<Current> armZeroCurrent = Amps.of(6);
-        public static final Measure<Voltage> armZeroVoltage = Volts.of(-4);
+        public static final Measure<Current> armZeroCurrent = Amps.of(1);
+        public static final Measure<Voltage> armZeroVoltage = Volts.of(-2);
 
         public static final MotionMagicConfigs motionMagicConfigs = new MotionMagicConfigs()
                 .withMotionMagicAcceleration(10)
@@ -232,12 +232,12 @@ public final class Constants {
                 .withSensorToMechanismRatio(90d / 24 * 90 / 24 * 84 / 14);
         
         //TODO: change shooter voltage
-        public static final Measure<Voltage> shootVoltage = Volts.of(-12);
+        public static final Measure<Voltage> shootVoltage = Volts.of(-4);
 
-        public static final Measure<Angle> ampDeployAngle = Degrees.of(168);
+        public static final Measure<Angle> ampDeployAngle = Degrees.of(190);
         public static final Measure<Angle> shooterDeployOffset = Degrees.of(5);
 
-        public static final Measure<Voltage> manualAimingVoltage = Volts.of(1);
+        public static final Measure<Voltage> manualAimingVoltage = Volts.of(2);
     }
 
     public static class IntakerConstants {
