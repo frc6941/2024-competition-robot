@@ -58,10 +58,4 @@ public class SpeakerAimingCommand extends Command {
         shooterSubsystem.getArmMotor()
                 .setControl(new MotionMagicVoltage(0).withSlot(1));
     }
-
-    @Override
-    public boolean isFinished() {
-        return !robotContainer.getBeamBreakSubsystem().getIndexerBeamBreak().get() &&
-                !robotContainer.getBeamBreakSubsystem().getShooterLeftBeamBreak().get();
-    }
 }
