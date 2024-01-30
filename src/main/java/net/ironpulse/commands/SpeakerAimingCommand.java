@@ -39,6 +39,13 @@ public class SpeakerAimingCommand extends Command {
         var targetOptional = Limelight.getTarget();
         if (targetOptional.isEmpty()) return;
         var target = targetOptional.get();
+        shooterSubsystem.getArmMotor()
+                .setControl(new MotionMagicVoltage(
+                        Units.degreesToRotations(90 - target.position().getY() +
+                                Constants.ShooterConstants.speakerOffset.magnitude())));
+        if (robotContainer.getDriverController().getLeftY() != 0
+                || robotContainer.getDriverController().getLeftX() != 0)
+            return;
         swerveSubsystem.applyRequest(() ->
                 drive
                         .withVelocityX(-robotContainer.getDriverController().getLeftY()
@@ -47,10 +54,6 @@ public class SpeakerAimingCommand extends Command {
                                 * maxSpeed.magnitude())
                         .withCurrentTx(target.position().getX())
         ).execute();
-        shooterSubsystem.getArmMotor()
-                .setControl(new MotionMagicVoltage(
-                        Units.degreesToRotations(90 - target.position().getY() +
-                                Constants.ShooterConstants.speakerOffset.magnitude())));
     }
 
     @Override
