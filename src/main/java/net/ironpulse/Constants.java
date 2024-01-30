@@ -206,15 +206,15 @@ public final class Constants {
 
         // Shooter gains when deploying shooter to desired angle
         public static final Slot0Configs armGainsUp = new Slot0Configs()
-                .withKP(100)
-                .withKI(0)
-                .withKD(0.8)
+                .withKP(30)
+                .withKI(0.01)
+                .withKD(0.2)
                 .withKV(0.12)
                 .withKS(0.25);
 
         // Shooter gains when deploying shooter to desired angle
         public static final Slot1Configs armGainsDown = new Slot1Configs()
-                .withKP(50)
+                .withKP(5)
                 .withKI(0)
                 .withKD(0);
 
@@ -222,9 +222,9 @@ public final class Constants {
         public static final Measure<Voltage> armZeroVoltage = Volts.of(-4);
 
         public static final MotionMagicConfigs motionMagicConfigs = new MotionMagicConfigs()
-                .withMotionMagicAcceleration(12000)
-                .withMotionMagicJerk(4600)
-                .withMotionMagicCruiseVelocity(24000);
+                .withMotionMagicAcceleration(10)
+                .withMotionMagicJerk(50)
+                .withMotionMagicCruiseVelocity(5);
         public static final MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs()
                 .withNeutralMode(NeutralModeValue.Brake);
 
@@ -232,7 +232,7 @@ public final class Constants {
                 .withSensorToMechanismRatio(90d / 24 * 90 / 24 * 84 / 14);
         
         //TODO: change shooter voltage
-        public static final Measure<Voltage> shootVoltage = Volts.of(-16);
+        public static final Measure<Voltage> shootVoltage = Volts.of(-12);
 
         public static final Measure<Angle> ampDeployAngle = Degrees.of(168);
         public static final Measure<Angle> shooterDeployOffset = Degrees.of(5);
@@ -245,7 +245,7 @@ public final class Constants {
 
         public static MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs()
                 .withNeutralMode(NeutralModeValue.Brake);
-        public static final Measure<Voltage> intakeVoltage = Volts.of(-4);
+        public static final Measure<Voltage> intakeVoltage = Volts.of(-8);
     }
 
     public static class BeamBreakConstants {

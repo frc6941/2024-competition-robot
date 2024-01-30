@@ -10,7 +10,7 @@ import net.ironpulse.drivers.Limelight;
 import net.ironpulse.state.StateMachine;
 import net.ironpulse.subsystems.ShooterSubsystem;
 import net.ironpulse.subsystems.SwerveSubsystem;
-import net.ironpulse.swerve.RobotCentricTargetHeading;
+import net.ironpulse.swerve.FieldCentricTargetHeading;
 
 import java.util.function.Supplier;
 
@@ -21,7 +21,7 @@ public class SpeakerAimingCommand extends Command {
     private final SwerveSubsystem swerveSubsystem;
     private final ShooterSubsystem shooterSubsystem;
     private final RobotContainer robotContainer;
-    private final RobotCentricTargetHeading drive = new RobotCentricTargetHeading()
+    private final FieldCentricTargetHeading drive = new FieldCentricTargetHeading()
             .withDeadband(maxSpeed.magnitude() * 0.1)
             .withRotationalDeadband(maxAngularRate.magnitude() * 0.1)
             .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage)
@@ -44,6 +44,8 @@ public class SpeakerAimingCommand extends Command {
 
     @Override
     public void execute() {
+        if (isFinished()) return;
+
         robotContainer.getGlobalStateMachine().transfer(Actions.SHOOT);
         var targetOptional = Limelight.getTarget();
         if (targetOptional.isEmpty()) return;

@@ -8,7 +8,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 
 @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
-public class RobotCentricTargetHeading implements SwerveRequest {
+public class FieldCentricTargetHeading implements SwerveRequest {
     /**
      * The velocity in the Y direction, in m/s.
      * X is defined as forward according to WPILib convention,
@@ -71,7 +71,8 @@ public class RobotCentricTargetHeading implements SwerveRequest {
             toApplyOmega = 0;
         }
 
-        var speeds = new ChassisSpeeds(toApplyX, toApplyY, toApplyOmega);
+        var speeds = ChassisSpeeds.discretize(ChassisSpeeds.fromFieldRelativeSpeeds(toApplyX, toApplyY, toApplyOmega,
+                parameters.currentPose.getRotation()), parameters.updatePeriod);
 
         var states = parameters.kinematics.toSwerveModuleStates(speeds, new Translation2d());
 
@@ -90,7 +91,7 @@ public class RobotCentricTargetHeading implements SwerveRequest {
      * @param velocityX Velocity in the X direction, in m/s
      * @return this request
      */
-    public RobotCentricTargetHeading withVelocityX(double velocityX) {
+    public FieldCentricTargetHeading withVelocityX(double velocityX) {
         this.VelocityX = velocityX;
         return this;
     }
@@ -104,7 +105,7 @@ public class RobotCentricTargetHeading implements SwerveRequest {
      * @param velocityY Desired direction to face
      * @return this request
      */
-    public RobotCentricTargetHeading withVelocityY(double velocityY) {
+    public FieldCentricTargetHeading withVelocityY(double velocityY) {
         this.VelocityY = velocityY;
         return this;
     }
@@ -115,7 +116,7 @@ public class RobotCentricTargetHeading implements SwerveRequest {
      * @param deadband Allowable deadband of the request
      * @return this request
      */
-    public RobotCentricTargetHeading withDeadband(double deadband) {
+    public FieldCentricTargetHeading withDeadband(double deadband) {
         this.Deadband = deadband;
         return this;
     }
@@ -125,7 +126,7 @@ public class RobotCentricTargetHeading implements SwerveRequest {
      * @param rotationalDeadband Rotational deadband of the request
      * @return this request
      */
-    public RobotCentricTargetHeading withRotationalDeadband(double rotationalDeadband) {
+    public FieldCentricTargetHeading withRotationalDeadband(double rotationalDeadband) {
         this.RotationalDeadband = rotationalDeadband;
         return this;
     }
@@ -136,7 +137,7 @@ public class RobotCentricTargetHeading implements SwerveRequest {
      * @param driveRequestType The type of control request to use for the drive motor
      * @return this request
      */
-    public RobotCentricTargetHeading withDriveRequestType(SwerveModule.DriveRequestType driveRequestType) {
+    public FieldCentricTargetHeading withDriveRequestType(SwerveModule.DriveRequestType driveRequestType) {
         this.DriveRequestType = driveRequestType;
         return this;
     }
@@ -146,7 +147,7 @@ public class RobotCentricTargetHeading implements SwerveRequest {
      * @param steerRequestType The type of control request to use for the steer motor
      * @return this request
      */
-    public RobotCentricTargetHeading withSteerRequestType(SwerveModule.SteerRequestType steerRequestType) {
+    public FieldCentricTargetHeading withSteerRequestType(SwerveModule.SteerRequestType steerRequestType) {
         this.SteerRequestType = steerRequestType;
         return this;
     }
@@ -159,7 +160,7 @@ public class RobotCentricTargetHeading implements SwerveRequest {
      * @param currentTx Angular rate to rotate at, in radians per second
      * @return this request
      */
-    public RobotCentricTargetHeading withCurrentTx(double currentTx) {
+    public FieldCentricTargetHeading withCurrentTx(double currentTx) {
         this.CurrentTX = currentTx;
         return this;
     }
