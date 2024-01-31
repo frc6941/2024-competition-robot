@@ -60,7 +60,8 @@ public class RobotContainer {
 
     private final SendableChooser<Command> autoChooser =
             AutoBuilder.buildAutoChooser("M 1 Note Auto");
-    
+
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     private void configureKeyBindings() {
         var speedX = Math.abs(driverController.getLeftY());
         var directionX = MathMisc.sign(-driverController.getLeftY());
