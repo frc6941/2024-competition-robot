@@ -22,9 +22,6 @@ public class Limelight {
     private static final NetworkTableEntry tx = limelightTable.getEntry("tx");
     private static final NetworkTableEntry ty = limelightTable.getEntry("ty");
 
-    private static final NetworkTableEntry tl = limelightTable.getEntry("tl");
-    private static final NetworkTableEntry cl = limelightTable.getEntry("cl");
-
     private static final NetworkTableEntry botPose = limelightTable.getEntry("botpose");
 
     /**
@@ -40,13 +37,13 @@ public class Limelight {
      */
     public static Optional<AprilTagTarget> getTarget() {
         if (!hasTarget()) return Optional.empty();
-        var rawPose = botPose.getDoubleArray(new double[6]);
+        var rawPose = botPose.getDoubleArray(new double[7]);
         return Optional.of(
                 new AprilTagTarget(
                     new Translation2d(tx.getDouble(0), ty.getDouble(0)),
-                    Microseconds.of(tl.getDouble(0) + cl.getDouble(0)),
+                    Microseconds.of(rawPose[6]),
                     new Pose3d(
-                            new Translation3d(rawPose[0], rawPose[1], rawPose[2]),
+                            new Translation3d(rawPose[0] + 8.27, -rawPose[1] + 4.105, rawPose[2]),
                             new Rotation3d(rawPose[3], rawPose[4], rawPose[5])
                     )
                 )

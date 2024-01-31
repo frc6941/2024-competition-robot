@@ -98,7 +98,7 @@ public final class Constants {
         private static final SwerveModuleConstantsFactory ConstantCreator = new SwerveModuleConstantsFactory()
                 .withDriveMotorGearRatio(DRIVE_GEAR_RATIO)
                 .withSteerMotorGearRatio(STEER_GEAR_RATIO)
-                .withWheelRadius(wheelRadius.in(Meters))
+                .withWheelRadius(wheelRadius.in(Inches))
                 .withSlipCurrent(slipCurrent.magnitude())
                 .withSteerMotorGains(steerGains)
                 .withDriveMotorGains(driveGains)

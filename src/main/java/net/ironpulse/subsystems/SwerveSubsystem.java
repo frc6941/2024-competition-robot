@@ -13,12 +13,14 @@ import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Time;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import net.ironpulse.Constants;
+import net.ironpulse.drivers.Limelight;
 
 import java.util.function.Supplier;
 
@@ -33,9 +35,25 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
     public SwerveSubsystem(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
         super(driveTrainConstants, modules);
         CommandScheduler.getInstance().registerSubsystem(this);
+        var targetOptional = Limelight.getTarget();
+        if (targetOptional.isEmpty()) return;
+        var target = targetOptional.get();
+        m_odometry.resetPosition(getPigeon2().getRotation2d(), m_modulePositions,
+                target.botPose().toPose2d());
         configurePathPlanner();
         if (!Utils.isSimulation()) return;
         startSimThread();
+    }
+
+    @Override
+    public void periodic() {
+        var targetOptional = Limelight.getTarget();
+        if (targetOptional.isEmpty()) return;
+        var target = targetOptional.get();
+        addVisionMeasurement(
+                target.botPose().toPose2d(),
+                target.latency().in(Seconds)
+        );
     }
 
     private void configurePathPlanner() {
@@ -54,9 +72,14 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
                         Constants.SwerveConstants.speedAt12Volts.magnitude(),
                         driveBaseRadius,
                         new ReplanningConfig()),
-                () -> false,
+                this::flip,
                 this
         );
+    }
+
+    private boolean flip() {
+        var alliance = DriverStation.getAlliance();
+        return alliance.filter(value -> value == DriverStation.Alliance.Red).isPresent();
     }
 
     /**
