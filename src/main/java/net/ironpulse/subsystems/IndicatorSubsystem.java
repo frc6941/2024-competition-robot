@@ -42,10 +42,19 @@ public class IndicatorSubsystem implements Subsystem {
     }
 
     public void setPattern(Patterns pattern) {
+        if (pattern == Patterns.NORMAL) {
+            lastPattern = currentPattern;
+            currentPattern = pattern;
+            led.setPattern(new SolidColorPattern(allianceColor()));
+            return;
+        }
         lastPattern = currentPattern;
         currentPattern = pattern;
         led.setPattern(pattern.pattern);
-        timer.start();
+        switch (pattern) {
+            case FINISH_INTAKE, FINISH_SHOOT -> timer.start();
+            default -> {}
+        }
     }
 
     @Override
@@ -68,7 +77,7 @@ public class IndicatorSubsystem implements Subsystem {
     }
 
     public enum Patterns {
-        NORMAL(new SolidColorPattern(allianceColor())),
+        NORMAL(null),
         FINISH_INTAKE(new BlinkingPattern(Color.kGreen, 0.5)),
         SHOOTING(new ScannerPattern(Color.kRed, 2)),
         FINISH_SHOOT(new BlinkingPattern(Color.kRed, 0.5));

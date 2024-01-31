@@ -3,6 +3,7 @@ package net.ironpulse.drivers.led;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.Notifier;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import lombok.Getter;
 import lombok.Setter;
@@ -52,6 +53,7 @@ public class AddressableLEDWrapper {
                     originalColor.blue * intensity
             );
             buffer.setLED(i, intensityAdjustedColor);
+            SmartDashboard.putString("Buffer", buffer.getLED(0).toHexString());
         }
         addressableLED.setData(buffer);
     }

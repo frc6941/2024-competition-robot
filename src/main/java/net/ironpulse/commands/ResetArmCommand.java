@@ -11,7 +11,12 @@ public class ResetArmCommand extends Command {
     }
 
     @Override
-    public void execute() {
+    public void initialize() {
         shooterSubsystem.setHomed(false);
+    }
+
+    @Override
+    public boolean isFinished() {
+        return shooterSubsystem.isHomed();
     }
 }

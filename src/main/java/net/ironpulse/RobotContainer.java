@@ -63,13 +63,10 @@ public class RobotContainer {
 
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     private void configureKeyBindings() {
-        var speedX = Math.abs(driverController.getLeftY());
-        var directionX = MathMisc.sign(-driverController.getLeftY());
-        var speedY = Math.abs(driverController.getLeftX());
-        var directionY = MathMisc.sign(-driverController.getLeftX());
         swerveSubsystem.setDefaultCommand(swerveSubsystem
-                .applyRequest(() -> drive.withVelocityX(directionX * xLimiter.calculate(speedX) * maxSpeed.magnitude())
-                        .withVelocityY(directionY * yLimiter.calculate(speedY) * maxSpeed.magnitude())
+                .applyRequest(() -> drive.withVelocityX(MathMisc.sign(-driverController.getLeftY())
+                                * xLimiter.calculate(Math.abs(driverController.getLeftY())) * maxSpeed.magnitude())
+                        .withVelocityY(MathMisc.sign(-driverController.getLeftX()) * yLimiter.calculate(Math.abs(driverController.getLeftX())) * maxSpeed.magnitude())
                         .withRotationalRate(-driverController.getRightX() * maxAngularRate.magnitude()))
                 .ignoringDisable(true));
 
@@ -120,5 +117,6 @@ public class RobotContainer {
     public RobotContainer() {
         configureAutos();
         configureKeyBindings();
+        indicatorSubsystem.setPattern(IndicatorSubsystem.Patterns.NORMAL);
     }
 }

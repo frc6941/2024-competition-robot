@@ -27,9 +27,9 @@ public final class Constants {
         public static final Measure<Velocity<Angle>> maxAngularRate = RotationsPerSecond.of(1.5 * Math.PI);
 
         public static final SlewRateLimiter xLimiter =
-                new SlewRateLimiter(1, 0, 0);
+                new SlewRateLimiter(1, -1.25, 0);
         public static final SlewRateLimiter yLimiter =
-                new SlewRateLimiter(1, 0, 0);
+                new SlewRateLimiter(1, -1.25, 0);
 
         // Swerve steering gains
         private static final Slot0Configs steerGains = new Slot0Configs()
@@ -218,7 +218,7 @@ public final class Constants {
                 .withKI(0)
                 .withKD(0);
 
-        public static final Measure<Current> armZeroCurrent = Amps.of(0.3);
+        public static final Measure<Current> armZeroCurrent = Amps.of(1.5);
         public static final Measure<Voltage> armZeroVoltage = Volts.of(-2);
 
         public static final MotionMagicConfigs motionMagicConfigs = new MotionMagicConfigs()
@@ -255,6 +255,6 @@ public final class Constants {
 
     public static class IndicatorConstants {
         public static final int LED_PORT = 0;
-        public static final int LED_BUFFER_LENGTH = 0;
+        public static final int LED_BUFFER_LENGTH = 15;
     }
 }

@@ -3,6 +3,7 @@ package net.ironpulse.subsystems;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import lombok.Getter;
@@ -47,6 +48,7 @@ public class ShooterSubsystem implements Subsystem {
 
     @Override
     public void periodic() {
+        SmartDashboard.putBoolean("Homed", homed);
         telemetryFunction.accept(
                 new ShooterData(
                         Degrees.of(Rotations.of(armMotor.getPosition()
