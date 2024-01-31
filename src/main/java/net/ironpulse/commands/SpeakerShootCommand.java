@@ -19,7 +19,7 @@ public class SpeakerShootCommand extends ParallelCommandGroup {
     ) {
         addCommands(
                 new SpeakerAimingCommand(robotContainer, shooterSubsystem, swerveSubsystem),
-                new PreShootCommand(shooterSubsystem),
+                new PreShootCommand(shooterSubsystem, robotContainer),
                 Commands.sequence(
                         new WaitUntilCommand(confirmation::get),
                         new DeliverNoteCommand(indexerSubsystem, robotContainer)

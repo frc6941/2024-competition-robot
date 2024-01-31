@@ -15,6 +15,7 @@ import net.ironpulse.commands.*;
 import net.ironpulse.commands.autos.AutoIntakeCommand;
 import net.ironpulse.commands.autos.AutoShootCommand;
 import net.ironpulse.commands.manuals.*;
+import net.ironpulse.maths.MathMisc;
 import net.ironpulse.subsystems.*;
 import net.ironpulse.telemetries.*;
 
@@ -48,6 +49,9 @@ public class RobotContainer {
     private final ShooterSubsystem shooterSubsystem =
             new ShooterSubsystem(shooterTelemetry::telemeterize);
 
+    @Getter
+    private final IndicatorSubsystem indicatorSubsystem = new IndicatorSubsystem();
+
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             .withDeadband(maxSpeed.magnitude() * 0.1)
             .withRotationalDeadband(maxAngularRate.magnitude() * 0.1)
@@ -58,9 +62,13 @@ public class RobotContainer {
             AutoBuilder.buildAutoChooser("M 1 Note Auto");
     
     private void configureKeyBindings() {
+        var speedX = Math.abs(driverController.getLeftY());
+        var directionX = MathMisc.sign(-driverController.getLeftY());
+        var speedY = Math.abs(driverController.getLeftX());
+        var directionY = MathMisc.sign(-driverController.getLeftX());
         swerveSubsystem.setDefaultCommand(swerveSubsystem
-                .applyRequest(() -> drive.withVelocityX(yLimiter.calculate(-driverController.getLeftY()) * maxSpeed.magnitude())
-                        .withVelocityY(xLimiter.calculate(-driverController.getLeftX()) * maxSpeed.magnitude())
+                .applyRequest(() -> drive.withVelocityX(directionX * xLimiter.calculate(speedX) * maxSpeed.magnitude())
+                        .withVelocityY(directionY * yLimiter.calculate(speedY) * maxSpeed.magnitude())
                         .withRotationalRate(-driverController.getRightX() * maxAngularRate.magnitude()))
                 .ignoringDisable(true));
 
@@ -90,6 +98,8 @@ public class RobotContainer {
         driverController.rightTrigger().whileTrue(Commands.parallel(
                 new ManualIntakeOutCommand(intakerSubsystem),
                 new ManualIndexOutCommand(indexerSubsystem)));
+
+        operatorController.rightBumper().onTrue(new ManualShootCommand(shooterSubsystem));
 
         operatorController.start().onTrue(new ResetArmCommand(shooterSubsystem));
     }

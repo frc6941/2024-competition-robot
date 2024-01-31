@@ -26,8 +26,10 @@ public final class Constants {
         // The max turning speed of the swerve
         public static final Measure<Velocity<Angle>> maxAngularRate = RotationsPerSecond.of(1.5 * Math.PI);
 
-        public static final SlewRateLimiter xLimiter = new SlewRateLimiter(1.25);
-        public static final SlewRateLimiter yLimiter = new SlewRateLimiter(1.25);
+        public static final SlewRateLimiter xLimiter =
+                new SlewRateLimiter(1, 0, 0);
+        public static final SlewRateLimiter yLimiter =
+                new SlewRateLimiter(1, 0, 0);
 
         // Swerve steering gains
         private static final Slot0Configs steerGains = new Slot0Configs()

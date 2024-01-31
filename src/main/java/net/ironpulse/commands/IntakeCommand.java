@@ -1,8 +1,10 @@
 package net.ironpulse.commands;
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 import net.ironpulse.Constants;
 import net.ironpulse.RobotContainer;
+import net.ironpulse.subsystems.IndicatorSubsystem;
 import net.ironpulse.subsystems.IntakerSubsystem;
 
 public class IntakeCommand extends Command {
@@ -29,6 +31,10 @@ public class IntakeCommand extends Command {
     public void end(boolean interrupted) {
         intakerSubsystem.getIntakerMotor()
                 .setVoltage(0);
+        robotContainer.getDriverController().getHID()
+                .setRumble(GenericHID.RumbleType.kBothRumble, 1);
+        robotContainer.getIndicatorSubsystem()
+                .setPattern(IndicatorSubsystem.Patterns.FINISH_INTAKE);
     }
 
     @Override
