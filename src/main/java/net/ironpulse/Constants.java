@@ -42,8 +42,8 @@ public final class Constants {
 
         // Swerve driving gains
         private static final Slot0Configs driveGains = new Slot0Configs()
-                .withKP(1.5)
-                .withKI(0.4)
+                .withKP(0.01)
+                .withKI(0)
                 .withKD(0)
                 .withKS(0)
                 .withKV(0)
@@ -51,7 +51,7 @@ public final class Constants {
 
         // The swerve heading (used in SpeakerAimingCommand) gains
         public static final Slot0Configs headingGains = new Slot0Configs()
-                .withKP(0.05)
+                .withKP(0.07)
                 .withKI(0)
                 .withKD(0);
 
@@ -206,15 +206,15 @@ public final class Constants {
 
         // Shooter gains when deploying shooter to desired angle
         public static final Slot0Configs armGainsUp = new Slot0Configs()
-                .withKP(30)
+                .withKP(60)
                 .withKI(0.01)
-                .withKD(0.2)
+                .withKD(0.02)
                 .withKV(0.12)
                 .withKS(0.25);
 
         // Shooter gains when deploying shooter to desired angle
         public static final Slot1Configs armGainsDown = new Slot1Configs()
-                .withKP(15)
+                .withKP(30)
                 .withKI(0)
                 .withKD(0);
 
@@ -224,17 +224,18 @@ public final class Constants {
         public static final MotionMagicConfigs motionMagicConfigs = new MotionMagicConfigs()
                 .withMotionMagicAcceleration(10)
                 .withMotionMagicJerk(50)
-                .withMotionMagicCruiseVelocity(5);
+                .withMotionMagicCruiseVelocity(10);
         public static final MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs()
                 .withNeutralMode(NeutralModeValue.Brake);
 
         public static final FeedbackConfigs feedbackConfigs = new FeedbackConfigs()
                 .withSensorToMechanismRatio(90d / 24 * 90 / 24 * 84 / 14);
 
-        public static final Measure<Voltage> shootVoltage = Volts.of(-4);
+        public static final Measure<Voltage> shootVoltage = Volts.of(-10);
 
         public static final Measure<Angle> ampDeployAngle = Degrees.of(190);
-        public static final Measure<Angle> speakerOffset = Degrees.of(5);
+
+        public static final Measure<Angle> speakerArmOffset = Degrees.of(-20);
 
         public static final Measure<Voltage> manualAimingVoltage = Volts.of(2);
     }

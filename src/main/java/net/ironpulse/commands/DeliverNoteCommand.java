@@ -37,6 +37,8 @@ public class DeliverNoteCommand extends Command {
                 .setPattern(IndicatorSubsystem.Patterns.FINISH_SHOOT);
         robotContainer.getDriverController().getHID()
                 .setRumble(GenericHID.RumbleType.kBothRumble, 1);
+        robotContainer.getDriverController().getHID()
+                .setRumble(GenericHID.RumbleType.kBothRumble, 0);
     }
 
     @Override

@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import net.ironpulse.Constants;
 import net.ironpulse.RobotContainer;
 import net.ironpulse.drivers.Limelight;
+import net.ironpulse.maths.Compare;
 import net.ironpulse.subsystems.ShooterSubsystem;
 import net.ironpulse.subsystems.SwerveSubsystem;
 import net.ironpulse.swerve.FieldCentricTargetHeading;
@@ -19,7 +20,7 @@ public class SpeakerAimingCommand extends Command {
     private final RobotContainer robotContainer;
     private final FieldCentricTargetHeading drive = new FieldCentricTargetHeading()
             .withDeadband(maxSpeed.magnitude() * 0.1)
-            .withRotationalDeadband(maxAngularRate.magnitude() * 0.1)
+            .withRotationalDeadband(0)
             .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage)
             .withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo);
 
@@ -39,13 +40,17 @@ public class SpeakerAimingCommand extends Command {
         var targetOptional = Limelight.getTarget();
         if (targetOptional.isEmpty()) return;
         var target = targetOptional.get();
-        shooterSubsystem.getArmMotor()
-                .setControl(new MotionMagicVoltage(
-                        Units.degreesToRotations(90 - target.position().getY() +
-                                Constants.ShooterConstants.speakerOffset.magnitude())));
-        if (robotContainer.getDriverController().getLeftY() != 0
-                || robotContainer.getDriverController().getLeftX() != 0)
-            return;
+        if (!new Compare(90 - target.position().getY()
+                + Constants.ShooterConstants.speakerArmOffset.magnitude(),
+                shooterSubsystem.getArmMotor().getPosition().getValue())
+                .epsilonEqual(1)
+        ) {
+            shooterSubsystem.getArmMotor()
+                    .setControl(new MotionMagicVoltage(
+                            Units.degreesToRotations(90 - target.position().getY() +
+                                    Constants.ShooterConstants.speakerArmOffset.magnitude())));
+        }
+
         swerveSubsystem.applyRequest(() ->
                 drive
                         .withVelocityX(-robotContainer.getDriverController().getLeftY()

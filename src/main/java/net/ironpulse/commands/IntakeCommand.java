@@ -35,6 +35,8 @@ public class IntakeCommand extends Command {
                 .setRumble(GenericHID.RumbleType.kBothRumble, 1);
         robotContainer.getIndicatorSubsystem()
                 .setPattern(IndicatorSubsystem.Patterns.FINISH_INTAKE);
+        robotContainer.getDriverController().getHID()
+                .setRumble(GenericHID.RumbleType.kBothRumble, 0);
     }
 
     @Override
