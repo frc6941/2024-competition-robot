@@ -6,10 +6,10 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Time;
@@ -88,13 +88,12 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
         return run(() -> this.setControl(requestSupplier.get()));
     }
 
-    /**
-     * Get an auto created by PathPlanner editor through its name
-     * @param autoName Auto name
-     * @return A {@link Command}
-     */
-    public Command getAuto(String autoName) {
-        return new PathPlannerAuto(autoName);
+    public void resetOdometry(Pose2d pose) {
+        m_odometry.resetPosition(
+                m_pigeon2.getRotation2d(),
+                m_modulePositions,
+                pose
+        );
     }
 
     /**
