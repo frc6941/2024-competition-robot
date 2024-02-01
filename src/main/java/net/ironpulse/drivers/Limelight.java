@@ -11,7 +11,9 @@ import net.ironpulse.data.AprilTagTarget;
 
 import java.util.Optional;
 
+import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Microseconds;
+import static edu.wpi.first.units.Units.Radians;
 
 public class Limelight {
     private static final NetworkTable limelightTable = NetworkTableInstance
@@ -43,8 +45,10 @@ public class Limelight {
                     new Translation2d(tx.getDouble(0), ty.getDouble(0)),
                     Microseconds.of(rawPose[6]),
                     new Pose3d(
-                            new Translation3d(rawPose[0] + 8.27, -rawPose[1] + 4.105, rawPose[2]),
-                            new Rotation3d(rawPose[3], rawPose[4], rawPose[5])
+                            new Translation3d(rawPose[0] + 8.27, rawPose[1] + 4.105, rawPose[2]),
+                            new Rotation3d(Radians.convertFrom(rawPose[3], Degrees),
+                            Radians.convertFrom(rawPose[4], Degrees), 
+                            Radians.convertFrom(rawPose[5], Degrees))
                     )
                 )
         );

@@ -16,6 +16,7 @@ import edu.wpi.first.units.Time;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Subsystem;
@@ -47,7 +48,8 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
         var target = targetOptional.get();
         addVisionMeasurement(
                 target.botPose().toPose2d(),
-                target.latency().in(Seconds)
+                Timer.getFPGATimestamp() - target.latency().in(Seconds),
+                Constants.SwerveConstants.visionStdDevs
         );
     }
 
