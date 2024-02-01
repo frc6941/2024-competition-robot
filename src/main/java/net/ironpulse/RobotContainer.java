@@ -97,8 +97,6 @@ public class RobotContainer {
                 new ManualIntakeOutCommand(intakerSubsystem),
                 new ManualIndexOutCommand(indexerSubsystem)));
 
-        operatorController.rightBumper().onTrue(new ManualShootCommand(shooterSubsystem));
-
         operatorController.start().onTrue(new ResetArmCommand(shooterSubsystem));
     }
 

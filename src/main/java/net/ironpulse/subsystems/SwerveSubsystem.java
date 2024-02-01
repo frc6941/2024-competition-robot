@@ -35,11 +35,6 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
     public SwerveSubsystem(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
         super(driveTrainConstants, modules);
         CommandScheduler.getInstance().registerSubsystem(this);
-        var targetOptional = Limelight.getTarget();
-        if (targetOptional.isEmpty()) return;
-        var target = targetOptional.get();
-        m_odometry.resetPosition(getPigeon2().getRotation2d(), m_modulePositions,
-                target.botPose().toPose2d());
         configurePathPlanner();
         if (!Utils.isSimulation()) return;
         startSimThread();
