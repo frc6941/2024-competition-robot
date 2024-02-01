@@ -5,6 +5,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -20,11 +21,14 @@ import net.ironpulse.maths.MathMisc;
 import net.ironpulse.subsystems.*;
 import net.ironpulse.telemetries.*;
 
+import java.util.HashMap;
+
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Rotations;
 import static net.ironpulse.Constants.SwerveConstants.*;
 
 public class RobotContainer {
+    public final HashMap<String, Command> addedResetOdometryCommands = new HashMap<>();
     @Getter
     private final CommandXboxController driverController =
             new CommandXboxController(OperatorConstants.DRIVER_CONTROLLER_PORT);
@@ -111,13 +115,29 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() {
         var selected = autoChooser.getSelected();
-        return selected.beforeStarting(
-                Commands.runOnce(() ->
-                        swerveSubsystem.resetOdometry(
-                                PathPlannerAuto.getStaringPoseFromAutoFile(selected.getName())))
-        );
+        Pose2d pose = null;
+        try {
+            pose = PathPlannerAuto.getStaringPoseFromAutoFile(selected.getName());
+        } catch (RuntimeException ignored) {
+            // startingPose is null
+        } catch (Exception e) {
+            // bad things happened.
+            System.out.println("getAutonomousCommand exception: " + e);
+        }
+        if (!addedResetOdometryCommands.containsKey(selected.getName())) {
+            if (pose != null) {
+                Pose2d finalPose = pose;
+                addedResetOdometryCommands.put(selected.getName(), selected.beforeStarting(
+                        Commands.runOnce(() -> swerveSubsystem.resetOdometry(finalPose))
+                ));
+            } else {
+                // no startingPose available
+                addedResetOdometryCommands.put(selected.getName(), selected);
+            }
+        }
+        return addedResetOdometryCommands.get(selected.getName());
     }
-    
+
     public RobotContainer() {
         configureAutos();
         configureKeyBindings();
