@@ -30,8 +30,7 @@ public final class Constants {
         // The max turning speed of the swerve
         public static final Measure<Velocity<Angle>> maxAngularRate = RotationsPerSecond.of(1.5 * Math.PI);
 
-        public static final Vector<N3> stateStdDevs = VecBuilder.fill(0.9,0.9,0.9);
-        public static final Vector<N3> visionStdDevs = VecBuilder.fill(0,0,0.9);
+        public static final Vector<N3> visionStdDevs = VecBuilder.fill(0.1, 0.1, 0.9);
 
         public static final SlewRateLimiter xLimiter =
                 new SlewRateLimiter(1, -1.25, 0);
@@ -200,7 +199,7 @@ public final class Constants {
     public static class IndexerConstants {
         public static final int INDEXER_MOTOR_ID = 40;
 
-        public static MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs()
+        public static final MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs()
                 .withNeutralMode(NeutralModeValue.Brake);
 
         public static final Measure<Voltage> indexVoltage = Volts.of(5);
@@ -250,7 +249,7 @@ public final class Constants {
     public static class IntakerConstants {
         public static final int INTAKER_MOTOR_ID = 30;
 
-        public static MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs()
+        public static final MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs()
                 .withNeutralMode(NeutralModeValue.Brake);
         public static final Measure<Voltage> intakeVoltage = Volts.of(-8);
     }

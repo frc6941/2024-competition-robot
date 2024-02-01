@@ -46,9 +46,11 @@ public class Limelight {
                     Microseconds.of(rawPose[6]),
                     new Pose3d(
                             new Translation3d(rawPose[0] + 8.27, rawPose[1] + 4.105, rawPose[2]),
-                            new Rotation3d(Radians.convertFrom(rawPose[3], Degrees),
-                            Radians.convertFrom(rawPose[4], Degrees), 
-                            Radians.convertFrom(rawPose[5], Degrees))
+                            new Rotation3d(
+                                    Radians.convertFrom(rawPose[3], Degrees),
+                                    Radians.convertFrom(rawPose[4], Degrees),
+                                    Radians.convertFrom(rawPose[5], Degrees)
+                            )
                     )
                 )
         );
