@@ -14,11 +14,13 @@ import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Time;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import net.ironpulse.Constants;
 import net.ironpulse.RobotContainer;
+import net.ironpulse.drivers.Limelight;
 
 import java.util.function.Supplier;
 
@@ -36,6 +38,17 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
         configurePathPlanner();
         if (!Utils.isSimulation()) return;
         startSimThread();
+    }
+
+    @Override
+    public void periodic() {
+        Limelight.getTarget().ifPresent(target ->
+                addVisionMeasurement(
+                        target.botPose().toPose2d(),
+                        Timer.getFPGATimestamp() -
+                                target.latency().in(Seconds)
+                )
+        );
     }
 
     private void configurePathPlanner() {
