@@ -16,8 +16,12 @@ public class AutoDeliverNoteCommand extends Command {
     }
 
     @Override
+    public void initialize() {
+        timer.restart();
+    }
+
+    @Override
     public void execute() {
-        timer.start();
         indexerSubsystem.getIndexerMotor()
                 .setVoltage(Constants.IndexerConstants.indexVoltage.magnitude());
     }
@@ -25,8 +29,6 @@ public class AutoDeliverNoteCommand extends Command {
     @Override
     public void end(boolean interrupted) {
         indexerSubsystem.getIndexerMotor().setVoltage(0);
-        timer.stop();
-        timer.reset();
     }
 
     @Override

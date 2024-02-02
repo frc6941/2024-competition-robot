@@ -15,8 +15,12 @@ public class AutoPreShootCommand extends Command {
     }
 
     @Override
+    public void initialize() {
+        timer.restart();
+    }
+
+    @Override
     public void execute() {
-        timer.start();
         shooterSubsystem.getShootMotorLeft()
                 .setVoltage(Constants.ShooterConstants.shootVoltage.magnitude());
         shooterSubsystem.getShootMotorRight()
@@ -29,8 +33,6 @@ public class AutoPreShootCommand extends Command {
     @Override
     public void end(boolean interrupted) {
         shooterSubsystem.getShootMotorLeft().setVoltage(0);
-        timer.stop();
-        timer.reset();
     }
 
     @Override

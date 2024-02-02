@@ -15,7 +15,7 @@ public class AutoShootCommand extends ParallelCommandGroup {
                 new AutoAimingCommand(shooterSubsystem),
                 new AutoPreShootCommand(shooterSubsystem),
                 Commands.sequence(
-                        new WaitCommand(2),
+                        new WaitCommand(1.5),
                         new AutoDeliverNoteCommand(indexerSubsystem)
                 )
         );

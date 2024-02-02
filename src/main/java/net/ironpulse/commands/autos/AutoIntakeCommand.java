@@ -11,7 +11,11 @@ public class AutoIntakeCommand extends Command {
     private final IndexerSubsystem indexerSubsystem;
     private final BeamBreakSubsystem beamBreakSubsystem;
 
-    public AutoIntakeCommand(IntakerSubsystem intakerSubsystem, IndexerSubsystem indexerSubsystem, BeamBreakSubsystem beamBreakSubsystem) {
+    public AutoIntakeCommand(
+            IntakerSubsystem intakerSubsystem,
+            IndexerSubsystem indexerSubsystem,
+            BeamBreakSubsystem beamBreakSubsystem
+    ) {
         this.intakerSubsystem = intakerSubsystem;
         this.indexerSubsystem = indexerSubsystem;
         this.beamBreakSubsystem = beamBreakSubsystem;

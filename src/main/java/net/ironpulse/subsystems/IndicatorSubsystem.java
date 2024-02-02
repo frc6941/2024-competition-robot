@@ -52,7 +52,7 @@ public class IndicatorSubsystem implements Subsystem {
         currentPattern = pattern;
         led.setPattern(pattern.pattern);
         switch (pattern) {
-            case FINISH_INTAKE, FINISH_SHOOT -> timer.start();
+            case FINISH_INTAKE, FINISH_SHOOT -> timer.restart();
             default -> {}
         }
     }
@@ -68,8 +68,6 @@ public class IndicatorSubsystem implements Subsystem {
     private void resetLed() {
         if (!timer.hasElapsed(2)) return;
         setPattern(Patterns.NORMAL);
-        timer.stop();
-        timer.reset();
     }
 
     public void resetToLastPattern() {
