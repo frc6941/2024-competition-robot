@@ -1,13 +1,4 @@
 {
-  "HALProvider": {
-    "Other Devices": {
-      "Talon FX (v6)[7]": {
-        "header": {
-          "open": true
-        }
-      }
-    }
-  },
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
@@ -26,6 +17,26 @@
         "right": 2961,
         "top": 79,
         "width": 16.541748046875,
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/Module 0": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/Module 1": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/Module 2": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/Module 3": {
         "window": {
           "visible": true
         }
@@ -70,6 +81,9 @@
     }
   },
   "NetworkTables Info": {
+    "Server": {
+      "open": true
+    },
     "visible": true
   },
   "NetworkTables View": {

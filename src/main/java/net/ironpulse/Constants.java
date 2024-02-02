@@ -30,7 +30,7 @@ public final class Constants {
         // The max turning speed of the swerve
         public static final Measure<Velocity<Angle>> maxAngularRate = RotationsPerSecond.of(1.5 * Math.PI);
 
-        public static final Vector<N3> visionStdDevs = VecBuilder.fill(0.1, 0.1, 0.9);
+        public static final Vector<N3> visionStdDevs = VecBuilder.fill(0.1, 0.1, 5);
 
         public static final SlewRateLimiter xLimiter =
                 new SlewRateLimiter(1, -1.25, 0);

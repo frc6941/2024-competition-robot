@@ -333,3 +333,4 @@ bin/
 # End entries from WPI Lib team
 
 ctre_sim
+logs

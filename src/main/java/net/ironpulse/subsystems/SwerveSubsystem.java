@@ -13,15 +13,13 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Time;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import net.ironpulse.Constants;
-import net.ironpulse.drivers.Limelight;
+import net.ironpulse.RobotContainer;
 
 import java.util.function.Supplier;
 
@@ -29,7 +27,7 @@ import static edu.wpi.first.units.Units.Microsecond;
 import static edu.wpi.first.units.Units.Seconds;
 
 public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
-    private static final Measure<Time> simLoopPeriod = Microsecond.of(0.005);
+    private static final Measure<Time> simLoopPeriod = Microsecond.of(5);
     private Measure<Time> lastSimTime = Seconds.of(0);
     private final SwerveRequest.ApplyChassisSpeeds autoRequest = new SwerveRequest.ApplyChassisSpeeds();
 
@@ -39,18 +37,6 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
         configurePathPlanner();
         if (!Utils.isSimulation()) return;
         startSimThread();
-    }
-
-    @Override
-    public void periodic() {
-        var targetOptional = Limelight.getTarget();
-        if (targetOptional.isEmpty()) return;
-        var target = targetOptional.get();
-        addVisionMeasurement(
-                target.botPose().toPose2d(),
-                Timer.getFPGATimestamp() - target.latency().in(Seconds),
-                Constants.SwerveConstants.visionStdDevs
-        );
     }
 
     private void configurePathPlanner() {
@@ -69,14 +55,9 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
                         Constants.SwerveConstants.speedAt12Volts.magnitude(),
                         driveBaseRadius,
                         new ReplanningConfig()),
-                this::flip,
+                RobotContainer::flip,
                 this
         );
-    }
-
-    private boolean flip() {
-        var alliance = DriverStation.getAlliance();
-        return alliance.filter(value -> value == DriverStation.Alliance.Red).isPresent();
     }
 
     /**
@@ -108,7 +89,6 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
     private void startSimThread() {
         lastSimTime = Seconds.of(Utils.getCurrentTimeSeconds());
 
-        @SuppressWarnings("PMD.CloseResource")
         var simNotifier = new Notifier(() -> {
             var currentTime = Seconds.of(Utils.getCurrentTimeSeconds());
             var deltaTime = currentTime.minus(lastSimTime);
@@ -116,6 +96,6 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
 
             updateSimState(deltaTime.magnitude(), RobotController.getBatteryVoltage());
         });
-        simNotifier.startPeriodic(simLoopPeriod.magnitude());
+        simNotifier.startPeriodic(simLoopPeriod.in(Seconds));
     }
 }

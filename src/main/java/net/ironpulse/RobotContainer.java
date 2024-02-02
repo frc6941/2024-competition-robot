@@ -5,6 +5,9 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.util.GeometryUtil;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -16,12 +19,12 @@ import net.ironpulse.commands.*;
 import net.ironpulse.commands.autos.AutoIntakeCommand;
 import net.ironpulse.commands.autos.AutoShootCommand;
 import net.ironpulse.commands.manuals.*;
+import net.ironpulse.drivers.Limelight;
 import net.ironpulse.maths.MathMisc;
 import net.ironpulse.subsystems.*;
 import net.ironpulse.telemetries.*;
 
-import static edu.wpi.first.units.Units.Degrees;
-import static edu.wpi.first.units.Units.Rotations;
+import static edu.wpi.first.units.Units.*;
 import static net.ironpulse.Constants.SwerveConstants.*;
 
 public class RobotContainer {
@@ -62,7 +65,8 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser =
             AutoBuilder.buildAutoChooser("M 1 Note Auto");
 
-    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
+    private Command autoCommand = null;
+
     private void configureKeyBindings() {
         swerveSubsystem.setDefaultCommand(swerveSubsystem
                 .applyRequest(() -> drive.withVelocityX(MathMisc.sign(-driverController.getLeftY())
@@ -110,12 +114,41 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
+        if (autoCommand != null
+                && autoCommand.getName().equals(autoChooser.getSelected().getName() + " Decorator"))
+            return autoCommand;
         var selected = autoChooser.getSelected();
-        return selected.beforeStarting(
-                Commands.runOnce(() ->
-                        swerveSubsystem.resetOdometry(
-                                PathPlannerAuto.getStaringPoseFromAutoFile(selected.getName())))
+        autoCommand = selected.beforeStarting(
+                Commands.runOnce(() -> resetOdometryWithAutoName(selected.getName()))
+                        .andThen(Commands.runOnce(this::addLimelightMeasurement)));
+        autoCommand.setName(selected.getName() + " Decorator");
+        return autoCommand;
+    }
+
+    private void addLimelightMeasurement() {
+        var targetOptional = Limelight.getTarget();
+        if (targetOptional.isEmpty()) return;
+        var target = targetOptional.get();
+        swerveSubsystem.addVisionMeasurement(
+                target.botPose().toPose2d(),
+                Timer.getFPGATimestamp() - target.latency().in(Seconds),
+                Constants.SwerveConstants.visionStdDevs
         );
+    }
+
+    private void resetOdometryWithAutoName(String autoName) {
+        var startPose = PathPlannerAuto
+                .getPathGroupFromAutoFile(autoName)
+                .get(0)
+                .getPreviewStartingHolonomicPose();
+        swerveSubsystem.resetOdometry(flip() ?
+                GeometryUtil.flipFieldPose(startPose) :
+                startPose);
+    }
+
+    public static boolean flip() {
+        var alliance = DriverStation.getAlliance();
+        return alliance.filter(value -> value == DriverStation.Alliance.Red).isPresent();
     }
     
     public RobotContainer() {

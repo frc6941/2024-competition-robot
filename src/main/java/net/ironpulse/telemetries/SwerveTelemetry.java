@@ -28,6 +28,7 @@ public class SwerveTelemetry {
      */
     public SwerveTelemetry(Measure<Velocity<Distance>> maxSpeed) {
         this.maxSpeed = maxSpeed;
+        SignalLogger.start();
     }
 
     private final NetworkTableInstance inst = NetworkTableInstance.getDefault();
@@ -78,7 +79,7 @@ public class SwerveTelemetry {
     public void telemeterize(SwerveDrivetrain.SwerveDriveState state) {
         var pose = state.Pose;
         fieldTypePub.set("Field2d");
-        fieldPub.set(new double[] {pose.getX(), pose.getY(), pose.getRotation().getDegrees()});
+        fieldPub.set(new double[] { pose.getX(), pose.getY(), pose.getRotation().getDegrees() });
 
         var currentTime = Seconds.of(Utils.getCurrentTimeSeconds());
         var diffTime = currentTime.minus(lastTime);
