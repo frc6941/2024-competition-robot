@@ -61,8 +61,7 @@ public class RobotContainer {
             .withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo);
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
 
-    private final SendableChooser<Command> autoChooser =
-            AutoBuilder.buildAutoChooser("M 1 Note Auto");
+    private final SendableChooser<Command> autoChooser;
 
     private Command autoCommand = null;
 
@@ -109,7 +108,6 @@ public class RobotContainer {
                 new AutoShootCommand(shooterSubsystem, indexerSubsystem));
         NamedCommands.registerCommand("Intake",
                 new AutoIntakeCommand(intakerSubsystem, indexerSubsystem, beamBreakSubsystem));
-        SmartDashboard.putData("Auto Chooser", autoChooser);
     }
 
     public Command getAutonomousCommand() {
@@ -137,10 +135,12 @@ public class RobotContainer {
         var alliance = DriverStation.getAlliance();
         return alliance.filter(value -> value == DriverStation.Alliance.Red).isPresent();
     }
-    
+
     public RobotContainer() {
         configureAutos();
         configureKeyBindings();
         indicatorSubsystem.setPattern(IndicatorSubsystem.Patterns.NORMAL);
+        autoChooser = AutoBuilder.buildAutoChooser("M 1 Note Auto");
+        SmartDashboard.putData("Auto Chooser", autoChooser);
     }
 }
