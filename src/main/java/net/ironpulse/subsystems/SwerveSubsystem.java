@@ -9,17 +9,18 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Time;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import net.ironpulse.Constants;
 import net.ironpulse.RobotContainer;
+import net.ironpulse.drivers.Limelight;
 
 import java.util.function.Supplier;
 
@@ -39,6 +40,18 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
         startSimThread();
     }
 
+    @Override
+    public void periodic() {
+        var targetOptional = Limelight.getTarget();
+        if (targetOptional.isEmpty()) return;
+        var target = targetOptional.get();
+        addVisionMeasurement(
+                target.botPose().toPose2d(),
+                Timer.getFPGATimestamp() - target.latency().in(Seconds),
+                Constants.SwerveConstants.visionStdDevs
+        );
+    }
+
     private void configurePathPlanner() {
         var driveBaseRadius = 0.0;
         for (var moduleLocation : m_moduleLocations)
@@ -50,8 +63,8 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
                 this::getCurrentRobotChassisSpeeds,
                 speeds -> this.setControl(autoRequest.withSpeeds(speeds)),
                 new HolonomicPathFollowerConfig(
-                        new PIDConstants(10, 0, 0),
-                        new PIDConstants(10, 0, 0),
+                        new PIDConstants(0.01, 0, 0),
+                        new PIDConstants(50, 0, 0),
                         Constants.SwerveConstants.speedAt12Volts.magnitude(),
                         driveBaseRadius,
                         new ReplanningConfig()),
@@ -67,14 +80,6 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
      */
     public Command applyRequest(Supplier<SwerveRequest> requestSupplier) {
         return run(() -> this.setControl(requestSupplier.get()));
-    }
-
-    public void resetOdometry(Pose2d pose) {
-        m_odometry.resetPosition(
-                m_pigeon2.getRotation2d(),
-                m_modulePositions,
-                pose
-        );
     }
 
     /**

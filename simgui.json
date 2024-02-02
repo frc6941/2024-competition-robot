@@ -20,26 +20,6 @@
         "window": {
           "visible": true
         }
-      },
-      "/SmartDashboard/Module 0": {
-        "window": {
-          "visible": true
-        }
-      },
-      "/SmartDashboard/Module 1": {
-        "window": {
-          "visible": true
-        }
-      },
-      "/SmartDashboard/Module 2": {
-        "window": {
-          "visible": true
-        }
-      },
-      "/SmartDashboard/Module 3": {
-        "window": {
-          "visible": true
-        }
       }
     }
   },
@@ -81,7 +61,19 @@
     }
   },
   "NetworkTables Info": {
+    "Clients": {
+      "open": true
+    },
+    "Connections": {
+      "open": true
+    },
     "Server": {
+      "Publishers": {
+        "open": true
+      },
+      "Subscribers": {
+        "open": true
+      },
       "open": true
     },
     "visible": true

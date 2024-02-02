@@ -7,7 +7,6 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.util.GeometryUtil;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -19,12 +18,12 @@ import net.ironpulse.commands.*;
 import net.ironpulse.commands.autos.AutoIntakeCommand;
 import net.ironpulse.commands.autos.AutoShootCommand;
 import net.ironpulse.commands.manuals.*;
-import net.ironpulse.drivers.Limelight;
 import net.ironpulse.maths.MathMisc;
 import net.ironpulse.subsystems.*;
 import net.ironpulse.telemetries.*;
 
-import static edu.wpi.first.units.Units.*;
+import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.Rotations;
 import static net.ironpulse.Constants.SwerveConstants.*;
 
 public class RobotContainer {
@@ -119,21 +118,9 @@ public class RobotContainer {
             return autoCommand;
         var selected = autoChooser.getSelected();
         autoCommand = selected.beforeStarting(
-                Commands.runOnce(() -> resetOdometryWithAutoName(selected.getName()))
-                        .andThen(Commands.runOnce(this::addLimelightMeasurement)));
+                Commands.runOnce(() -> resetOdometryWithAutoName(selected.getName())));
         autoCommand.setName(selected.getName() + " Decorator");
         return autoCommand;
-    }
-
-    private void addLimelightMeasurement() {
-        var targetOptional = Limelight.getTarget();
-        if (targetOptional.isEmpty()) return;
-        var target = targetOptional.get();
-        swerveSubsystem.addVisionMeasurement(
-                target.botPose().toPose2d(),
-                Timer.getFPGATimestamp() - target.latency().in(Seconds),
-                Constants.SwerveConstants.visionStdDevs
-        );
     }
 
     private void resetOdometryWithAutoName(String autoName) {
@@ -141,7 +128,7 @@ public class RobotContainer {
                 .getPathGroupFromAutoFile(autoName)
                 .get(0)
                 .getPreviewStartingHolonomicPose();
-        swerveSubsystem.resetOdometry(flip() ?
+        swerveSubsystem.seedFieldRelative(flip() ?
                 GeometryUtil.flipFieldPose(startPose) :
                 startPose);
     }

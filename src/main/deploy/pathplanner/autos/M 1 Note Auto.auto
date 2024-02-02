@@ -10,18 +10,6 @@
           "data": {
             "pathName": "M Drive To Note"
           }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Intake"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AutoSpeakerShoot"
-          }
         }
       ]
     }
