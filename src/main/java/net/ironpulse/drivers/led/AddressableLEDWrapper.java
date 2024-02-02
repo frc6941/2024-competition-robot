@@ -3,11 +3,11 @@ package net.ironpulse.drivers.led;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.Notifier;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import lombok.Getter;
 import lombok.Setter;
 import net.ironpulse.drivers.led.patterns.SolidColorPattern;
+import org.littletonrobotics.junction.networktables.LoggedDashboardString;
 
 @SuppressWarnings("PMD")
 public class AddressableLEDWrapper {
@@ -23,6 +23,8 @@ public class AddressableLEDWrapper {
     private double intensity = 0.1;
 
     private double period = 0.05;
+
+    private final LoggedDashboardString dashboardBuffer = new LoggedDashboardString("Buffer");
 
     public AddressableLEDWrapper(int port, int length) {
         addressableLED = new AddressableLED(port);
@@ -53,7 +55,7 @@ public class AddressableLEDWrapper {
                     originalColor.blue * intensity
             );
             buffer.setLED(i, intensityAdjustedColor);
-            SmartDashboard.putString("Buffer", buffer.getLED(0).toHexString());
+            dashboardBuffer.set(buffer.getLED(0).toHexString());
         }
         addressableLED.setData(buffer);
     }
