@@ -86,6 +86,7 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
         return m_kinematics.toChassisSpeeds(getState().ModuleStates);
     }
 
+    @SuppressWarnings("PMD.CloseResource")
     private void startSimThread() {
         lastSimTime = Seconds.of(Utils.getCurrentTimeSeconds());
 
