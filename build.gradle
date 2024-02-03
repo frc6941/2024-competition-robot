@@ -3,6 +3,7 @@ plugins {
     id "edu.wpi.first.GradleRIO" version "2024.2.1"
     id "idea"
     id "pmd"
+    id "com.peterabeles.gversion" version "1.10"
 }
 
 def javaVersion = JavaVersion.VERSION_17
@@ -156,4 +157,14 @@ pmd {
     toolVersion = "6.55.0"
     consoleOutput = true
     reportsDir = file("build/reports/pmd")
+}
+
+project.compileJava.dependsOn(createVersionFile)
+gversion {
+    srcDir = "src/main/java/"
+    classPackage = "net.ironpulse"
+    className = "BuildConstants"
+    dateFormat = "yyyy-MM-dd HH:mm:ss z"
+    timeZone = "Asia/Shanghai"
+    indent = "  "
 }
