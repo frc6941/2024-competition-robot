@@ -1,28 +1,13 @@
 package net.ironpulse.telemetries;
 
-import edu.wpi.first.networktables.DoublePublisher;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import net.ironpulse.data.ShooterData;
+import org.littletonrobotics.junction.Logger;
 
 public class ShooterTelemetry {
-    private final NetworkTableInstance instance = NetworkTableInstance.getDefault();
-    private final NetworkTable shooterState = instance.getTable("Shooter");
-
-    private final DoublePublisher fieldShooterLeftVelocity = shooterState
-            .getDoubleTopic("Velocity L (r/s)").publish();
-    private final DoublePublisher fieldShooterRightVelocity = shooterState
-            .getDoubleTopic("Velocity R (r/s)").publish();
-    private final DoublePublisher fieldShooterPosition = shooterState
-            .getDoubleTopic("Position (degrees)").publish();
-
-    private final DoublePublisher fieldArmSupplyCurrent = shooterState
-            .getDoubleTopic("Supply Current (amps)").publish();
-
     public void telemeterize(ShooterData shooterData) {
-        fieldShooterLeftVelocity.set(shooterData.shootMotorLeftVelocity().magnitude());
-        fieldShooterRightVelocity.set(shooterData.shootMotorRightVelocity().magnitude());
-        fieldShooterPosition.set(shooterData.deployMotorPosition().magnitude());
-        fieldArmSupplyCurrent.set(shooterData.armMotorSupplyCurrent().magnitude());
+        Logger.recordOutput("Shooter/Velocity L (rps)", shooterData.shootMotorLeftVelocity().magnitude());
+        Logger.recordOutput("Shooter/Velocity R (rps)", shooterData.shootMotorRightVelocity().magnitude());
+        Logger.recordOutput("Shooter/Position (degrees)", shooterData.deployMotorPosition().magnitude());
+        Logger.recordOutput("Shooter/Supply Current (amps)", shooterData.armMotorSupplyCurrent().magnitude());
     }
 }

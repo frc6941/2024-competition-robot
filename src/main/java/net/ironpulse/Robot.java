@@ -1,16 +1,35 @@
 package net.ironpulse;
 
-import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import org.littletonrobotics.junction.LoggedRobot;
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.networktables.NT4Publisher;
 
-public class Robot extends TimedRobot {
+public class Robot extends LoggedRobot {
     private Command autonomousCommand;
 
     private RobotContainer robotContainer;
 
+    public void configureLogger() {
+        Logger.recordMetadata("ProjectName", "2024-competition-robot");
+        Logger.addDataReceiver(new NT4Publisher());
+        if (isReal()) {
+            // Initialize PowerDistribution logging
+            new PowerDistribution(1, PowerDistribution.ModuleType.kAutomatic);
+        } else {
+            // Run as fast as possible
+            setUseTiming(false);
+        }
+        // Detailed swerve logging not implemented;
+        // see https://github.com/Mechanical-Advantage/AdvantageKit/blob/main/docs/COMMON-ISSUES.md#non-deterministic-data-sources
+        Logger.start();
+    }
+
     @Override
     public void robotInit() {
+        configureLogger();
         robotContainer = new RobotContainer();
         robotContainer.swerveSubsystem.getDaqThread().setThreadPriority(99);
     }
@@ -21,7 +40,8 @@ public class Robot extends TimedRobot {
     }
 
     @Override
-    public void disabledPeriodic() {}
+    public void disabledPeriodic() {
+    }
 
     @Override
     public void autonomousInit() {
@@ -32,7 +52,8 @@ public class Robot extends TimedRobot {
     }
 
     @Override
-    public void autonomousPeriodic() {}
+    public void autonomousPeriodic() {
+    }
 
     @Override
     public void teleopInit() {
@@ -41,7 +62,8 @@ public class Robot extends TimedRobot {
     }
 
     @Override
-    public void teleopPeriodic() {}
+    public void teleopPeriodic() {
+    }
 
     @Override
     public void testInit() {
@@ -49,8 +71,10 @@ public class Robot extends TimedRobot {
     }
 
     @Override
-    public void testPeriodic() {}
+    public void testPeriodic() {
+    }
 
     @Override
-    public void simulationPeriodic() {}
+    public void simulationPeriodic() {
+    }
 }

@@ -3,13 +3,13 @@ package net.ironpulse.subsystems;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import lombok.Getter;
 import lombok.Setter;
 import net.ironpulse.Constants;
 import net.ironpulse.data.ShooterData;
+import org.littletonrobotics.junction.networktables.LoggedDashboardBoolean;
 
 import java.util.function.Consumer;
 
@@ -26,6 +26,8 @@ public class ShooterSubsystem implements Subsystem {
     private boolean homed = false;
 
     private final Consumer<ShooterData> telemetryFunction;
+
+    private final LoggedDashboardBoolean dashboardHomed = new LoggedDashboardBoolean("Homed", false);
 
     public ShooterSubsystem(Consumer<ShooterData> telemetryFunction) {
         CommandScheduler.getInstance().registerSubsystem(this);
@@ -48,7 +50,7 @@ public class ShooterSubsystem implements Subsystem {
 
     @Override
     public void periodic() {
-        SmartDashboard.putBoolean("Homed", homed);
+        dashboardHomed.set(homed);
         telemetryFunction.accept(
                 new ShooterData(
                         Degrees.of(Rotations.of(armMotor.getPosition()
