@@ -42,7 +42,7 @@ public class FieldCentricHeadingCorrect implements SwerveRequest {
      */
     public double RotationalRate = 0;
 
-    public PhoenixPIDController HeadingController = new PhoenixPIDController(0, 0, 0);
+    public PhoenixPIDController HeadingController = new PhoenixPIDController(0.07, 0, 0);
 
     /**
      * The allowable deadband of the request.
