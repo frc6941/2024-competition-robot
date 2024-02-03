@@ -30,7 +30,7 @@ public class RobotContainer {
     @Getter
     private final CommandXboxController driverController =
             new CommandXboxController(OperatorConstants.DRIVER_CONTROLLER_PORT);
-
+        //hahaha
     private final CommandXboxController operatorController =
             new CommandXboxController(OperatorConstants.OPERATOR_CONTROLLER_PORT);
 
