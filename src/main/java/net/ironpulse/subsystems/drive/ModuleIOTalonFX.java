@@ -64,7 +64,6 @@ public class ModuleIOTalonFX implements ModuleIO {
     private final StatusSignal<Double> turnAppliedVolts;
     private final StatusSignal<Double> turnCurrent;
 
-    private final boolean isTurnMotorInverted = true;
     private final Rotation2d absoluteEncoderOffset;
 
     public ModuleIOTalonFX(int index) {
@@ -118,21 +117,13 @@ public class ModuleIOTalonFX implements ModuleIO {
         driveConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         driveConfig.MotorOutput.Inverted = (index == 1 || index == 3) ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
         driveConfig.Feedback.FeedbackRemoteSensorID = canCoderId;
-        driveConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.SyncCANcoder;
-        driveConfig.Feedback.RotorToSensorRatio = STEER_GEAR_RATIO;
-
-        driveConfig.MotionMagic.MotionMagicCruiseVelocity = 100.0 / STEER_GEAR_RATIO;
-        driveConfig.MotionMagic.MotionMagicAcceleration = driveConfig.MotionMagic.MotionMagicCruiseVelocity / 0.100;
-        driveConfig.MotionMagic.MotionMagicExpo_kV = 0.12 * STEER_GEAR_RATIO;
-        driveConfig.MotionMagic.MotionMagicExpo_kA = 0.1;
-
-        driveConfig.ClosedLoopGeneral.ContinuousWrap = true;
+        driveConfig.TorqueCurrent.PeakForwardTorqueCurrent = slipCurrent.magnitude();
+        driveConfig.TorqueCurrent.PeakReverseTorqueCurrent = -slipCurrent.magnitude();
+        driveConfig.CurrentLimits.StatorCurrentLimit = slipCurrent.magnitude();
+        driveConfig.CurrentLimits.StatorCurrentLimitEnable = true;
         driveTalon.getConfigurator().apply(driveConfig);
-        setDriveBrakeMode(true);
 
         var turnConfig = new TalonFXConfiguration();
-        turnConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-        turnConfig.MotorOutput.Inverted = (index == 1 || index == 3) ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
         turnConfig.Feedback.FeedbackRemoteSensorID = canCoderId;
         turnConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.SyncCANcoder;
         turnConfig.Feedback.RotorToSensorRatio = STEER_GEAR_RATIO;
@@ -247,7 +238,7 @@ public class ModuleIOTalonFX implements ModuleIO {
     public void setTurnBrakeMode(boolean enable) {
         var config = new MotorOutputConfigs();
         config.Inverted =
-                isTurnMotorInverted
+                STEER_MOTOR_REVERSED
                         ? InvertedValue.Clockwise_Positive
                         : InvertedValue.CounterClockwise_Positive;
         config.NeutralMode = enable ? NeutralModeValue.Brake : NeutralModeValue.Coast;
