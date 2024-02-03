@@ -14,7 +14,6 @@ import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Time;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Subsystem;
@@ -46,9 +45,9 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
             if (target.botPose().getX() != 0 && target.botPose().getY() != 0 &&
                     Math.abs(m_odometry.getEstimatedPosition().getX() - target.botPose().getX()) < 1 &&
                     Math.abs(m_odometry.getEstimatedPosition().getY() - target.botPose().getY()) < 1) {
-                addVisionMeasurement(
-                        target.botPose().toPose2d(),
-                        Timer.getFPGATimestamp() - target.latency().in(Seconds));
+//                addVisionMeasurement(
+//                        target.botPose().toPose2d(),
+//                        Timer.getFPGATimestamp() - target.latency().in(Seconds));
             }
         });
     }
@@ -76,6 +75,7 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
 
     /**
      * Apply a {@link SwerveRequest} to the SwerveSubsystem
+     *
      * @param requestSupplier A lambda expression returns {@link SwerveRequest}
      * @return A {@link Command}
      */
@@ -85,6 +85,7 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
 
     /**
      * Get current chassis speeds of the robot
+     *
      * @return A {@link ChassisSpeeds} object
      * @see ChassisSpeeds
      */

@@ -9,13 +9,14 @@ import net.ironpulse.RobotContainer;
 import net.ironpulse.drivers.Limelight;
 import net.ironpulse.maths.Compare;
 import net.ironpulse.subsystems.ShooterSubsystem;
-import net.ironpulse.subsystems.SwerveSubsystem;
+import net.ironpulse.subsystems.drive.Drive;
 import net.ironpulse.swerve.FieldCentricTargetHeading;
 
-import static net.ironpulse.Constants.SwerveConstants.*;
+import static net.ironpulse.Constants.SwerveConstants.headingGains;
+import static net.ironpulse.Constants.SwerveConstants.maxSpeed;
 
 public class SpeakerAimingCommand extends Command {
-    private final SwerveSubsystem swerveSubsystem;
+    private final Drive swerveSubsystem;
     private final ShooterSubsystem shooterSubsystem;
     private final RobotContainer robotContainer;
     private final FieldCentricTargetHeading drive = new FieldCentricTargetHeading()
@@ -27,7 +28,7 @@ public class SpeakerAimingCommand extends Command {
     public SpeakerAimingCommand(
             RobotContainer robotContainer,
             ShooterSubsystem shooterSubsystem,
-            SwerveSubsystem swerveSubsystem
+            Drive swerveSubsystem
     ) {
         this.swerveSubsystem = swerveSubsystem;
         this.shooterSubsystem = shooterSubsystem;
@@ -50,15 +51,15 @@ public class SpeakerAimingCommand extends Command {
                             Units.degreesToRotations(90 - target.position().getY() +
                                     Constants.ShooterConstants.speakerArmOffset.magnitude())));
         }
-
-        swerveSubsystem.applyRequest(() ->
-                drive
-                        .withVelocityX(-robotContainer.getDriverController().getLeftY()
-                                * maxSpeed.magnitude())
-                        .withVelocityY(-robotContainer.getDriverController().getLeftX()
-                                * maxSpeed.magnitude())
-                        .withCurrentTx(target.position().getX())
-        ).execute();
+//
+//        swerveSubsystem.(() ->
+//                drive
+//                        .withVelocityX(-robotContainer.getDriverController().getLeftY()
+//                                * maxSpeed.magnitude())
+//                        .withVelocityY(-robotContainer.getDriverController().getLeftX()
+//                                * maxSpeed.magnitude())
+//                        .withCurrentTx(target.position().getX())
+//        ).execute();
     }
 
     @Override
