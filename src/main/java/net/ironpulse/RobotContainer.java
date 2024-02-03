@@ -18,6 +18,7 @@ import net.ironpulse.commands.autos.AutoShootCommand;
 import net.ironpulse.commands.manuals.*;
 import net.ironpulse.maths.MathMisc;
 import net.ironpulse.subsystems.*;
+import net.ironpulse.swerve.FieldCentricHeadingCorrect;
 import net.ironpulse.telemetries.*;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
@@ -54,7 +55,7 @@ public class RobotContainer {
     @Getter
     private final IndicatorSubsystem indicatorSubsystem = new IndicatorSubsystem();
 
-    private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
+    private final FieldCentricHeadingCorrect drive = new FieldCentricHeadingCorrect()
             .withDeadband(maxSpeed.magnitude() * 0.1)
             .withRotationalDeadband(maxAngularRate.magnitude() * 0.1)
             .withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo);
@@ -121,8 +122,13 @@ public class RobotContainer {
     }
 
     private void resetOdometryWithAutoName(String autoName) {
-        var startPose = PathPlannerAuto
-                .getPathGroupFromAutoFile(autoName)
+        var pathGroup = PathPlannerAuto
+                .getPathGroupFromAutoFile(autoName);
+        if (pathGroup.isEmpty()) {
+            // no path in auto
+            return;
+        }
+        var startPose = pathGroup
                 .get(0)
                 .getPreviewStartingHolonomicPose();
         swerveSubsystem.seedFieldRelative(flip() ?
