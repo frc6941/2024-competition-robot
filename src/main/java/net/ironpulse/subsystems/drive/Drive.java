@@ -44,6 +44,7 @@ import static edu.wpi.first.units.Units.Volts;
 import static net.ironpulse.Constants.SwerveConstants.maxAngularRate;
 import static net.ironpulse.Constants.SwerveConstants.speedAt12Volts;
 
+@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
 public class Drive extends SubsystemBase {
     private static final double TRACK_WIDTH_X = Meters.of(1.0).magnitude();
     private static final double TRACK_WIDTH_Y = Meters.of(1.0).magnitude();
@@ -126,6 +127,7 @@ public class Drive extends SubsystemBase {
     }
 
     public void periodic() {
+        // TODO VisionMeasurement?
         odometryLock.lock(); // Prevents odometry updates while reading data
         gyroIO.updateInputs(gyroInputs);
         for (var module : modules) {

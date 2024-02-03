@@ -66,6 +66,7 @@ public class ModuleIOTalonFX implements ModuleIO {
 
     private final Rotation2d absoluteEncoderOffset;
 
+    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public ModuleIOTalonFX(int index) {
         int canCoderId;
         switch (index) {
