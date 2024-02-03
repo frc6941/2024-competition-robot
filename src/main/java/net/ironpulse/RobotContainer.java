@@ -122,8 +122,13 @@ public class RobotContainer {
     }
 
     private void resetOdometryWithAutoName(String autoName) {
-        var startPose = PathPlannerAuto
-                .getPathGroupFromAutoFile(autoName)
+        var pathGroup = PathPlannerAuto
+                .getPathGroupFromAutoFile(autoName);
+        if (pathGroup.isEmpty()) {
+            // no path in auto
+            return;
+        }
+        var startPose = pathGroup
                 .get(0)
                 .getPreviewStartingHolonomicPose();
         swerveSubsystem.seedFieldRelative(flip() ?
