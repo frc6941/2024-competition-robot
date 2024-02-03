@@ -1,20 +1,16 @@
 package net.ironpulse;
 
-import static edu.wpi.first.units.Units.*;
-
 import com.ctre.phoenix6.configs.*;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-
-import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.units.*;
 import net.ironpulse.subsystems.SwerveSubsystem;
+
+import static edu.wpi.first.units.Units.*;
 
 public final class Constants {
     public static final String CAN_BUS_NAME = "6941CANivore1";
@@ -26,11 +22,9 @@ public final class Constants {
 
     public static class SwerveConstants {
         // The max speed of the swerve (should not larger than speedAt12Volts)
-        public static final Measure<Velocity<Distance>> maxSpeed = MetersPerSecond.of(6);
+        public static final Measure<Velocity<Distance>> maxSpeed = MetersPerSecond.of(4.5);
         // The max turning speed of the swerve
         public static final Measure<Velocity<Angle>> maxAngularRate = RotationsPerSecond.of(1.5 * Math.PI);
-
-        public static final Vector<N3> visionStdDevs = VecBuilder.fill(0.1, 0.1, 5);
 
         public static final SlewRateLimiter xLimiter =
                 new SlewRateLimiter(1, -1.25, 0);
@@ -74,7 +68,7 @@ public final class Constants {
         private static final Measure<Current> slipCurrent = Amps.of(300.0);
 
         // Theoretical free speed (m/s) at 12v applied output;
-        public static final Measure<Velocity<Distance>> speedAt12Volts = MetersPerSecond.of(5.0);
+        public static final Measure<Velocity<Distance>> speedAt12Volts = MetersPerSecond.of(4.5);
 
         // Every 1 rotation of the azimuth results in COUPLE_RATIO drive motor turns;
         private static final double COUPLE_RATIO = 3.5;
