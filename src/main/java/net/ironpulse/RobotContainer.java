@@ -4,6 +4,8 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.util.GeometryUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -144,19 +146,18 @@ public class RobotContainer {
     }
 
     private void resetOdometryWithAutoName(String autoName) {
-        return;
-//        var pathGroup = PathPlannerAuto
-//                .getPathGroupFromAutoFile(autoName);
-//        if (pathGroup.isEmpty()) {
-//            // no path in auto
-//            return;
-//        }
-//        var startPose = pathGroup
-//                .get(0)
-//                .getPreviewStartingHolonomicPose();
-//        swerveSubsystem.seedFieldRelative(flip() ?
-//                GeometryUtil.flipFieldPose(startPose) :
-//                startPose);
+        var pathGroup = PathPlannerAuto
+                .getPathGroupFromAutoFile(autoName);
+        if (pathGroup.isEmpty()) {
+            // no path in auto
+            return;
+        }
+        var startPose = pathGroup
+                .get(0)
+                .getPreviewStartingHolonomicPose();
+        swerveSubsystem.setPose(flip() ?
+                GeometryUtil.flipFieldPose(startPose) :
+                startPose);
     }
 
     public static boolean flip() {
@@ -168,14 +169,6 @@ public class RobotContainer {
         switch (Constants.currentMode) {
             case REAL:
                 // Real robot, instantiate hardware IO implementations
-//                swerveSubsystem =
-//                        new Drive(
-//                                new GyroIOPigeon2(false),
-//                                new ModuleIOSparkMax(0),
-//                                new ModuleIOSparkMax(1),
-//                                new ModuleIOSparkMax(2),
-//                                new ModuleIOSparkMax(3));
-//                flywheel = new Flywheel(new FlywheelIOSparkMax());
                 swerveSubsystem = new Drive(
                         new GyroIOPigeon2(true),
                         new ModuleIOTalonFX(0),

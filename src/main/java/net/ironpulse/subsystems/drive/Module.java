@@ -18,11 +18,11 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.util.Units;
 import net.ironpulse.Constants;
 
+import static net.ironpulse.Constants.SwerveConstants.wheelRadius;
+
 public class Module {
-    private static final double WHEEL_RADIUS = Units.inchesToMeters(2.0);
     static final double ODOMETRY_FREQUENCY = 250.0;
 
     private final ModuleIO io;
@@ -45,6 +45,10 @@ public class Module {
         // separate robot with different tuning)
         switch (Constants.currentMode) {
             case REAL:
+                driveFeedforward = new SimpleMotorFeedforward(0.0, 0.0);
+                driveFeedback = new PIDController(0.01, 0.0, 0.0);
+                turnFeedback = new PIDController(100, 0.2, 0.005);
+                break;
             case REPLAY:
                 driveFeedforward = new SimpleMotorFeedforward(0.1, 0.13);
                 driveFeedback = new PIDController(0.05, 0.0, 0.0);
@@ -99,7 +103,7 @@ public class Module {
                 double adjustSpeedSetpoint = speedSetpoint * Math.cos(turnFeedback.getPositionError());
 
                 // Run drive controller
-                double velocityRadPerSec = adjustSpeedSetpoint / WHEEL_RADIUS;
+                double velocityRadPerSec = adjustSpeedSetpoint / wheelRadius.magnitude();
                 io.setDriveVoltage(
                         driveFeedforward.calculate(velocityRadPerSec)
                                 + driveFeedback.calculate(inputs.driveVelocityRadPerSec, velocityRadPerSec));
@@ -110,7 +114,7 @@ public class Module {
         int sampleCount = inputs.odometryTimestamps.length; // All signals are sampled together
         odometryPositions = new SwerveModulePosition[sampleCount];
         for (int i = 0; i < sampleCount; i++) {
-            double positionMeters = inputs.odometryDrivePositionsRad[i] * WHEEL_RADIUS;
+            double positionMeters = inputs.odometryDrivePositionsRad[i] * wheelRadius.magnitude();
             Rotation2d angle =
                     inputs.odometryTurnPositions[i].plus(
                             turnRelativeOffset != null ? turnRelativeOffset : new Rotation2d());
@@ -180,14 +184,14 @@ public class Module {
      * Returns the current drive position of the module in meters.
      */
     public double getPositionMeters() {
-        return inputs.drivePositionRad * WHEEL_RADIUS;
+        return inputs.drivePositionRad * wheelRadius.magnitude();
     }
 
     /**
      * Returns the current drive velocity of the module in meters per second.
      */
     public double getVelocityMetersPerSec() {
-        return inputs.driveVelocityRadPerSec * WHEEL_RADIUS;
+        return inputs.driveVelocityRadPerSec * wheelRadius.magnitude();
     }
 
     /**
