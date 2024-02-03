@@ -18,29 +18,43 @@ public class Robot extends LoggedRobot {
     private RobotContainer robotContainer;
 
     public void configureLogger() {
-//        Logger.recordMetadata("ProjectName", "2024-competition-robot");
-//        Logger.addDataReceiver(new NT4Publisher());
-//        if (!isReal()) {
-//            // Run as fast as possible
-//            setUseTiming(false);
-//        }
+        // Record metadata
+        Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
+        Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
+        Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
+        Logger.recordMetadata("GitDate", BuildConstants.GIT_DATE);
+        Logger.recordMetadata("GitBranch", BuildConstants.GIT_BRANCH);
+        switch (BuildConstants.DIRTY) {
+            case 0:
+                Logger.recordMetadata("GitDirty", "All changes committed");
+                break;
+            case 1:
+                Logger.recordMetadata("GitDirty", "Uncomitted changes");
+                break;
+            default:
+                Logger.recordMetadata("GitDirty", "Unknown");
+                break;
+        }
 
         // Set up data receivers & replay source
         switch (Constants.currentMode) {
-            case REAL, SIM:
+            case REAL:
+                Logger.addDataReceiver(new WPILOGWriter());
+                Logger.addDataReceiver(new NT4Publisher());
+                break;
+
+            case SIM:
                 Logger.addDataReceiver(new NT4Publisher());
                 break;
 
             case REPLAY:
                 // Replaying a log, set up replay source
-                setUseTiming(false); // Run as fast as possible
+                setUseTiming(false);
                 String logPath = LogFileUtil.findReplayLog();
                 Logger.setReplaySource(new WPILOGReader(logPath));
                 Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim")));
                 break;
         }
-        // Detailed swerve logging not implemented;
-        // see https://github.com/Mechanical-Advantage/AdvantageKit/blob/main/docs/COMMON-ISSUES.md#non-deterministic-data-sources
         Logger.start();
     }
 
@@ -49,7 +63,6 @@ public class Robot extends LoggedRobot {
         Pathfinding.setPathfinder(new LocalADStarAK());
         configureLogger();
         robotContainer = new RobotContainer();
-//        robotContainer.swerveSubsystem.getDaqThread().setThreadPriority(99);
     }
 
     @Override
