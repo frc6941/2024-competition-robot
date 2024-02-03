@@ -68,15 +68,19 @@ public class FieldCentricHeadingCorrect implements SwerveRequest {
     protected Rotation2d lastDesiredHead = new Rotation2d();
 
     public StatusCode apply(SwerveControlRequestParameters parameters, SwerveModule... modulesToApply) {
-        if (RotationalRate != 0) {
+        if (Math.abs(RotationalRate) >= 0.3) {
             lastDesiredHead = parameters.currentPose.getRotation();
         }
         double toApplyX = VelocityX;
         double toApplyY = VelocityY;
-        double toApplyOmega = RotationalRate + HeadingController.calculate(
+        double toApplyOmega = RotationalRate;
+
+        if (Math.abs(RotationalRate) <= 0.3) {
+            toApplyOmega += HeadingController.calculate(
                 parameters.currentPose.getRotation().getDegrees(),
                 lastDesiredHead.getDegrees(),
-                parameters.updatePeriod);
+                parameters.timestamp);
+        }
         if (Math.sqrt(toApplyX * toApplyX + toApplyY * toApplyY) < Deadband) {
             toApplyX = 0;
             toApplyY = 0;
