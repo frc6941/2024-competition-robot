@@ -37,4 +37,10 @@ public class AutoAimingCommand extends Command {
     public boolean isFinished() {
         return timer.hasElapsed(2);
     }
+
+    @Override
+    public void end(boolean interrupted) {
+        shooterSubsystem.getArmMotor()
+                .setControl(new MotionMagicVoltage(0).withSlot(1));
+    }
 }

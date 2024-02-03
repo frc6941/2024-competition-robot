@@ -20,8 +20,20 @@
                 "data": {
                   "pathName": "L-N1"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoShoot"
           }
         },
         {
@@ -33,8 +45,20 @@
                 "data": {
                   "pathName": "N1-N2"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoShoot"
           }
         },
         {
@@ -46,19 +70,6 @@
                 "data": {
                   "pathName": "N2-N3"
                 }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "N3-NE"
-                }
               },
               {
                 "type": "named",
@@ -67,6 +78,12 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoShoot"
           }
         }
       ]

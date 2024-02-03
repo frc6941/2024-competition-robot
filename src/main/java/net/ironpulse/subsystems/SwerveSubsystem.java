@@ -42,13 +42,13 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
 
     @Override
     public void periodic() {
-        Limelight.getTarget().ifPresent(target ->
+        /*Limelight.getTarget().ifPresent(target ->
                 addVisionMeasurement(
                         target.botPose().toPose2d(),
                         Timer.getFPGATimestamp() -
                                 target.latency().in(Seconds)
                 )
-        );
+        );*/
     }
 
     private void configurePathPlanner() {
