@@ -109,6 +109,7 @@ public class LocalADStarAK implements Pathfinder {
         public List<PathPoint> currentPathPoints = Collections.emptyList();
 
         @Override
+        @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
         public void toLog(LogTable table) {
             table.put("IsNewPathAvailable", isNewPathAvailable);
 

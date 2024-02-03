@@ -77,6 +77,7 @@ public class SparkMaxOdometryThread {
         return queue;
     }
 
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     private void periodic() {
         Drive.odometryLock.lock();
         double timestamp = Logger.getRealTimestamp() / 1e6;

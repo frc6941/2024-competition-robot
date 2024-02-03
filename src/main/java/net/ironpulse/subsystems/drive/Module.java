@@ -37,6 +37,7 @@ public class Module {
     private Rotation2d turnRelativeOffset = null; // Relative + Offset = Absolute
     private SwerveModulePosition[] odometryPositions = new SwerveModulePosition[]{};
 
+    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public Module(ModuleIO io, int index) {
         this.io = io;
         this.index = index;
@@ -140,6 +141,7 @@ public class Module {
     /**
      * Runs the module with the specified voltage while controlling to zero degrees.
      */
+    @SuppressWarnings("PMD.NullAssignment")
     public void runCharacterization(double volts) {
         // Closed loop turn control
         angleSetpoint = new Rotation2d();
@@ -152,6 +154,7 @@ public class Module {
     /**
      * Disables all outputs to motors.
      */
+    @SuppressWarnings("PMD.NullAssignment")
     public void stop() {
         io.setTurnVoltage(0.0);
         io.setDriveVoltage(0.0);

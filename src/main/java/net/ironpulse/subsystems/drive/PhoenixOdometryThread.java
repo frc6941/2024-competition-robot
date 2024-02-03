@@ -92,6 +92,7 @@ public class PhoenixOdometryThread extends Thread {
         return queue;
     }
 
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     @Override
     public void run() {
         while (true) {
