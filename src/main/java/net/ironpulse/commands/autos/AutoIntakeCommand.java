@@ -1,5 +1,6 @@
 package net.ironpulse.commands.autos;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import net.ironpulse.Constants;
 import net.ironpulse.subsystems.BeamBreakSubsystem;
@@ -11,6 +12,8 @@ public class AutoIntakeCommand extends Command {
     private final IndexerSubsystem indexerSubsystem;
     private final BeamBreakSubsystem beamBreakSubsystem;
 
+    private final Timer timer = new Timer();
+
     public AutoIntakeCommand(
             IntakerSubsystem intakerSubsystem,
             IndexerSubsystem indexerSubsystem,
@@ -20,6 +23,11 @@ public class AutoIntakeCommand extends Command {
         this.indexerSubsystem = indexerSubsystem;
         this.beamBreakSubsystem = beamBreakSubsystem;
         addRequirements(intakerSubsystem, indexerSubsystem, beamBreakSubsystem);
+    }
+
+    @Override
+    public void initialize() {
+        timer.restart();
     }
 
     @Override
@@ -39,6 +47,6 @@ public class AutoIntakeCommand extends Command {
     @Override
     public boolean isFinished() {
         return beamBreakSubsystem.getIndexerBeamBreak().get() &&
-                !beamBreakSubsystem.getIntakerBeamBreak().get();
+                !beamBreakSubsystem.getIntakerBeamBreak().get() || timer.hasElapsed(2);
     }
 }

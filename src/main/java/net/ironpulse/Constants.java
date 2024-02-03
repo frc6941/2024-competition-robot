@@ -66,31 +66,31 @@ public final class Constants {
         public static final int PIGEON_ID = 1;
 
         // Front Left
-        public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 5;
-        public static final int FRONT_LEFT_STEER_MOTOR_ID = 3;
-        public static final int FRONT_LEFT_ENCODER_ID = 9;
-        public static final double FRONT_LEFT_ENCODER_OFFSET = 0.179688;
+        private static final int FRONT_LEFT_DRIVE_MOTOR_ID = 5;
+        private static final int FRONT_LEFT_STEER_MOTOR_ID = 3;
+        private static final int FRONT_LEFT_ENCODER_ID = 9;
+        private static final double FRONT_LEFT_ENCODER_OFFSET = 0.186035; // TODO
         // private static final double FRONT_LEFT_ENCODER_OFFSET = 0;
 
         // Front Right
-        public static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 2;
-        public static final int FRONT_RIGHT_STEER_MOTOR_ID = 7;
-        public static final int FRONT_RIGHT_ENCODER_ID = 21;
-        public static final double FRONT_RIGHT_ENCODER_OFFSET = 0.376709;
+        private static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 2;
+        private static final int FRONT_RIGHT_STEER_MOTOR_ID = 7;
+        private static final int FRONT_RIGHT_ENCODER_ID = 21;
+        private static final double FRONT_RIGHT_ENCODER_OFFSET = 0.379395; // TODO
         // private static final double FRONT_RIGHT_ENCODER_OFFSET = 0;
 
         // Back Left
-        public static final int BACK_LEFT_DRIVE_MOTOR_ID = 15;
-        public static final int BACK_LEFT_STEER_MOTOR_ID = 14;
-        public static final int BACK_LEFT_ENCODER_ID = 20;
-        public static final double BACK_LEFT_ENCODER_OFFSET = 0.167969;
+        private static final int BACK_LEFT_DRIVE_MOTOR_ID = 15;
+        private static final int BACK_LEFT_STEER_MOTOR_ID = 14;
+        private static final int BACK_LEFT_ENCODER_ID = 20;
+        private static final double BACK_LEFT_ENCODER_OFFSET = 0.165771; // TODO
         // private static final double BACK_LEFT_ENCODER_OFFSET = 0;
 
         // Back Right
-        public static final int BACK_RIGHT_DRIVE_MOTOR_ID = 10;
-        public static final int BACK_RIGHT_STEER_MOTOR_ID = 6;
-        public static final int BACK_RIGHT_ENCODER_ID = 12;
-        public static final double BACK_RIGHT_ENCODER_OFFSET = 0.431641;
+        private static final int BACK_RIGHT_DRIVE_MOTOR_ID = 10;
+        private static final int BACK_RIGHT_STEER_MOTOR_ID = 6;
+        private static final int BACK_RIGHT_ENCODER_ID = 12;
+        private static final double BACK_RIGHT_ENCODER_OFFSET = 0.430176; // TODO
         // private static final double BACK_RIGHT_ENCODER_OFFSET = 0;
     }
 
@@ -135,6 +135,7 @@ public final class Constants {
         public static final FeedbackConfigs feedbackConfigs = new FeedbackConfigs()
                 .withSensorToMechanismRatio(90d / 24 * 90 / 24 * 84 / 14);
 
+        public static final Measure<Voltage> shooterConstantVoltage = Volts.of(-5);
         public static final Measure<Voltage> shootVoltage = Volts.of(-10);
 
         public static final Measure<Angle> ampDeployAngle = Degrees.of(190);

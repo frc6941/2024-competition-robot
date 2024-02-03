@@ -1,5 +1,6 @@
 package net.ironpulse;
 
+import com.ctre.phoenix6.controls.Follower;
 import com.pathplanner.lib.pathfinding.Pathfinding;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -87,6 +88,13 @@ public class Robot extends LoggedRobot {
 
     @Override
     public void teleopInit() {
+        robotContainer.getShooterSubsystem().getShootMotorLeft()
+                .setVoltage(Constants.ShooterConstants.shooterConstantVoltage.magnitude());
+        robotContainer.getShooterSubsystem().getShootMotorRight()
+                .setControl(
+                        new Follower(Constants.ShooterConstants.SHOOTER_L_MOTOR_ID,
+                                true)
+                );
         if (autonomousCommand == null) return;
         autonomousCommand.cancel();
     }

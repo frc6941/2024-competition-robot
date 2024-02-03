@@ -37,7 +37,8 @@ public class PreShootCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        shooterSubsystem.getShootMotorLeft().setVoltage(0);
+        shooterSubsystem.getShootMotorLeft()
+                .setVoltage(Constants.ShooterConstants.shooterConstantVoltage.magnitude());
         if (!interrupted) return;
         robotContainer.getIndicatorSubsystem().resetToLastPattern();
     }
