@@ -8,11 +8,29 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.units.*;
-import net.ironpulse.subsystems.SwerveSubsystem;
 
 import static edu.wpi.first.units.Units.*;
 
 public final class Constants {
+    public static final Mode currentMode = Mode.REAL;
+
+    public static enum Mode {
+        /**
+         * Running on a real robot.
+         */
+        REAL,
+
+        /**
+         * Running a physics simulator.
+         */
+        SIM,
+
+        /**
+         * Replaying from a log file.
+         */
+        REPLAY
+    }
+
     public static final String CAN_BUS_NAME = "6941CANivore1";
 
     public static class OperatorConstants {
@@ -33,7 +51,7 @@ public final class Constants {
 
         // Swerve steering gains
         private static final Slot0Configs steerGains = new Slot0Configs()
-                .withKP(120)
+                .withKP(100)
                 .withKI(0.2)
                 .withKD(0.005)
                 .withKS(0)
@@ -73,8 +91,8 @@ public final class Constants {
         // Every 1 rotation of the azimuth results in COUPLE_RATIO drive motor turns;
         private static final double COUPLE_RATIO = 3.5;
 
-        private static final double DRIVE_GEAR_RATIO = 6.7460317460317460317460317460317;
-        private static final double STEER_GEAR_RATIO = 21.428571428571428571428571428571;
+        public static final double DRIVE_GEAR_RATIO = 6.7460317460317460317460317460317;
+        public static final double STEER_GEAR_RATIO = 21.428571428571428571428571428571;
 
         // Estimated at first, then fudge-factored to make odom match record
         private static final Measure<Distance> wheelRadius = Meters.of(0.05);
@@ -82,8 +100,8 @@ public final class Constants {
         private static final boolean STEER_MOTOR_REVERSED = true;
 
         // private static final String CAN_BUS_NAME = "rio";
-        
-        private static final int PIGEON_ID = 1;
+
+        public static final int PIGEON_ID = 1;
 
         // Simulation only
         private static final double STEER_INERTIA = 0.00001;
@@ -114,44 +132,44 @@ public final class Constants {
                 .withSteerMotorInverted(STEER_MOTOR_REVERSED);
 
         // Front Left
-        private static final int FRONT_LEFT_DRIVE_MOTOR_ID = 5;
-        private static final int FRONT_LEFT_STEER_MOTOR_ID = 3;
-        private static final int FRONT_LEFT_ENCODER_ID = 9;
-        private static final double FRONT_LEFT_ENCODER_OFFSET = 0.153809;
+        public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 5;
+        public static final int FRONT_LEFT_STEER_MOTOR_ID = 3;
+        public static final int FRONT_LEFT_ENCODER_ID = 9;
+        public static final double FRONT_LEFT_ENCODER_OFFSET = 0.179688;
         // private static final double FRONT_LEFT_ENCODER_OFFSET = 0;
 
-        private static final Measure<Distance> frontLeftXPos = Meters.of(0.5);
-        private static final Measure<Distance> frontLeftYPos = Meters.of(0.5);
+        public static final Measure<Distance> frontLeftXPos = Meters.of(0.5);
+        public static final Measure<Distance> frontLeftYPos = Meters.of(0.5);
 
         // Front Right
-        private static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 2;
-        private static final int FRONT_RIGHT_STEER_MOTOR_ID = 7;
-        private static final int FRONT_RIGHT_ENCODER_ID = 21;
-        private static final double FRONT_RIGHT_ENCODER_OFFSET = 0.381592;
+        public static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 2;
+        public static final int FRONT_RIGHT_STEER_MOTOR_ID = 7;
+        public static final int FRONT_RIGHT_ENCODER_ID = 21;
+        public static final double FRONT_RIGHT_ENCODER_OFFSET = 0.376709;
         // private static final double FRONT_RIGHT_ENCODER_OFFSET = 0;
 
-        private static final Measure<Distance> frontRightXPos = Meters.of(0.5);
-        private static final Measure<Distance> frontRightYPos = Meters.of(-0.5);
+        public static final Measure<Distance> frontRightXPos = Meters.of(0.5);
+        public static final Measure<Distance> frontRightYPos = Meters.of(-0.5);
 
         // Back Left
-        private static final int BACK_LEFT_DRIVE_MOTOR_ID = 15;
-        private static final int BACK_LEFT_STEER_MOTOR_ID = 14;
-        private static final int BACK_LEFT_ENCODER_ID = 20;
-        private static final double BACK_LEFT_ENCODER_OFFSET = 0.162598;
+        public static final int BACK_LEFT_DRIVE_MOTOR_ID = 15;
+        public static final int BACK_LEFT_STEER_MOTOR_ID = 14;
+        public static final int BACK_LEFT_ENCODER_ID = 20;
+        public static final double BACK_LEFT_ENCODER_OFFSET = 0.167969;
         // private static final double BACK_LEFT_ENCODER_OFFSET = 0;
 
-        private static final Measure<Distance> backLeftXPos = Meters.of(-0.5);
-        private static final Measure<Distance> backLeftYPos = Meters.of(0.5);
+        public static final Measure<Distance> backLeftXPos = Meters.of(-0.5);
+        public static final Measure<Distance> backLeftYPos = Meters.of(0.5);
 
         // Back Right
-        private static final int BACK_RIGHT_DRIVE_MOTOR_ID = 10;
-        private static final int BACK_RIGHT_STEER_MOTOR_ID = 6;
-        private static final int BACK_RIGHT_ENCODER_ID = 12;
-        private static final double BACK_RIGHT_ENCODER_OFFSET = 0.430176;
+        public static final int BACK_RIGHT_DRIVE_MOTOR_ID = 10;
+        public static final int BACK_RIGHT_STEER_MOTOR_ID = 6;
+        public static final int BACK_RIGHT_ENCODER_ID = 12;
+        public static final double BACK_RIGHT_ENCODER_OFFSET = 0.431641;
         // private static final double BACK_RIGHT_ENCODER_OFFSET = 0;
 
-        private static final Measure<Distance> backRightXPos = Meters.of(-0.5);
-        private static final Measure<Distance> backRightYPos = Meters.of(-0.5);
+        public static final Measure<Distance> backRightXPos = Meters.of(-0.5);
+        public static final Measure<Distance> backRightYPos = Meters.of(-0.5);
 
         private static final SwerveModuleConstants FrontLeft = ConstantCreator.createModuleConstants(
                 FRONT_LEFT_STEER_MOTOR_ID,
@@ -186,8 +204,8 @@ public final class Constants {
                 backRightYPos.magnitude(),
                 true);
 
-        public static final SwerveSubsystem DriveTrain =
-                new SwerveSubsystem(DrivetrainConstants, FrontLeft, FrontRight, BackLeft, BackRight);
+//        public static final SwerveSubsystem DriveTrain =
+//                new SwerveSubsystem(DrivetrainConstants, FrontLeft, FrontRight, BackLeft, BackRight);
     }
 
     public static class IndexerConstants {
@@ -231,19 +249,13 @@ public final class Constants {
         public static final FeedbackConfigs feedbackConfigs = new FeedbackConfigs()
                 .withSensorToMechanismRatio(90d / 24 * 90 / 24 * 84 / 14);
 
-        public static final Measure<Voltage> shooterConstantVoltage = Volts.of(-2);
-        public static final Measure<Voltage> defaultShootVoltage = Volts.of(-6);
-        public static final Measure<Voltage> shortShootVoltage = Volts.of(-8);
-        public static final Measure<Distance> shortShootMaxDistance = Meters.of(2.7);
-        public static final Measure<Voltage> farShootVoltage = Volts.of(-10);
+        public static final Measure<Voltage> shootVoltage = Volts.of(-10);
 
         public static final Measure<Angle> ampDeployAngle = Degrees.of(190);
 
-        public static final Measure<Angle> speakerArmOffset = Degrees.of(-43);
-        public static final Measure<Angle> speakerArmOffsetFar = Degrees.of(-34);
+        public static final Measure<Angle> speakerArmOffset = Degrees.of(-20);
 
         public static final Measure<Voltage> manualAimingVoltage = Volts.of(2);
-        public static Measure<Angle> parallelDeployAngle = Degrees.of(30);
     }
 
     public static class IntakerConstants {
@@ -251,7 +263,7 @@ public final class Constants {
 
         public static final MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs()
                 .withNeutralMode(NeutralModeValue.Brake);
-        public static final Measure<Voltage> intakeVoltage = Volts.of(-7.5);
+        public static final Measure<Voltage> intakeVoltage = Volts.of(-8);
     }
 
     public static class BeamBreakConstants {
