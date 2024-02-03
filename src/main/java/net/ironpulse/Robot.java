@@ -1,8 +1,9 @@
 package net.ironpulse;
 
-import edu.wpi.first.wpilibj.PowerDistribution;
+import com.pathplanner.lib.pathfinding.Pathfinding;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import net.ironpulse.utils.LocalADStarAK;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
@@ -15,10 +16,7 @@ public class Robot extends LoggedRobot {
     public void configureLogger() {
         Logger.recordMetadata("ProjectName", "2024-competition-robot");
         Logger.addDataReceiver(new NT4Publisher());
-        if (isReal()) {
-            // Initialize PowerDistribution logging
-            new PowerDistribution(1, PowerDistribution.ModuleType.kAutomatic);
-        } else {
+        if (!isReal()) {
             // Run as fast as possible
             setUseTiming(false);
         }
@@ -29,6 +27,7 @@ public class Robot extends LoggedRobot {
 
     @Override
     public void robotInit() {
+        Pathfinding.setPathfinder(new LocalADStarAK());
         configureLogger();
         robotContainer = new RobotContainer();
         robotContainer.swerveSubsystem.getDaqThread().setThreadPriority(99);
