@@ -231,6 +231,7 @@ public final class Constants {
         public static final FeedbackConfigs feedbackConfigs = new FeedbackConfigs()
                 .withSensorToMechanismRatio(90d / 24 * 90 / 24 * 84 / 14);
 
+        public static final Measure<Voltage> shooterConstantVoltage = Volts.of(-5);
         public static final Measure<Voltage> shootVoltage = Volts.of(-10);
 
         public static final Measure<Angle> ampDeployAngle = Degrees.of(190);

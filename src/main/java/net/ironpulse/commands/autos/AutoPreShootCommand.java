@@ -31,12 +31,7 @@ public class AutoPreShootCommand extends Command {
     }
 
     @Override
-    public void end(boolean interrupted) {
-        shooterSubsystem.getShootMotorLeft().setVoltage(0);
-    }
-
-    @Override
     public boolean isFinished() {
-        return timer.hasElapsed(2);
+        return timer.hasElapsed(15);
     }
 }
