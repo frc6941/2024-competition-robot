@@ -1,7 +1,17 @@
 {
-  "Keyboard 0 Settings": {
+  "FMS": {
     "window": {
-      "visible": true
+      "visible": false
+    }
+  },
+  "Joysticks": {
+    "window": {
+      "visible": false
+    }
+  },
+  "System Joysticks": {
+    "window": {
+      "visible": false
     }
   },
   "keyboardJoysticks": [
@@ -92,12 +102,6 @@
       "axisCount": 0,
       "buttonCount": 0,
       "povCount": 0
-    }
-  ],
-  "robotJoysticks": [
-    {
-      "guid": "78696e70757401000000000000000000",
-      "useGamepad": true
     }
   ]
 }
