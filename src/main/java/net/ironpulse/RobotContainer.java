@@ -129,7 +129,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("ShooterOn",
                 new AutoPreShootCommand(shooterSubsystem));
         NamedCommands.registerCommand("AutoShoot",
-                new AutoShootCommand(shooterSubsystem, indexerSubsystem, swerveSubsystem));
+                new AutoShootCommand(shooterSubsystem, indexerSubsystem));
         NamedCommands.registerCommand("Intake",
                 new AutoIntakeCommand(intakerSubsystem, indexerSubsystem, beamBreakSubsystem));
     }
