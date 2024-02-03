@@ -7,8 +7,6 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.util.GeometryUtil;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -22,6 +20,7 @@ import net.ironpulse.maths.MathMisc;
 import net.ironpulse.subsystems.*;
 import net.ironpulse.swerve.FieldCentricHeadingCorrect;
 import net.ironpulse.telemetries.*;
+import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Rotations;
@@ -62,7 +61,7 @@ public class RobotContainer {
             .withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo);
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
 
-    private final SendableChooser<Command> autoChooser;
+    private final LoggedDashboardChooser<Command> autoChooser;
 
     private Command autoCommand = null;
 
@@ -113,9 +112,9 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() {
         if (autoCommand != null
-                && autoCommand.getName().equals(autoChooser.getSelected().getName() + " Decorator"))
+                && autoCommand.getName().equals(autoChooser.get().getName() + " Decorator"))
             return autoCommand;
-        var selected = autoChooser.getSelected();
+        var selected = autoChooser.get();
         autoCommand = selected.beforeStarting(
                 Commands.runOnce(() -> resetOdometryWithAutoName(selected.getName())));
         autoCommand.setName(selected.getName() + " Decorator");
@@ -146,7 +145,6 @@ public class RobotContainer {
         configureAutos();
         configureKeyBindings();
         indicatorSubsystem.setPattern(IndicatorSubsystem.Patterns.NORMAL);
-        autoChooser = AutoBuilder.buildAutoChooser("M 1 Note Auto");
-        SmartDashboard.putData("Auto Chooser", autoChooser);
+        autoChooser = new LoggedDashboardChooser<>("Auto Chooser", AutoBuilder.buildAutoChooser("M 1 Note Auto"));
     }
 }
