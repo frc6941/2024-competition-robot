@@ -20,6 +20,7 @@ import net.ironpulse.commands.autos.AutoShootCommand;
 import net.ironpulse.commands.manuals.*;
 import net.ironpulse.maths.MathMisc;
 import net.ironpulse.subsystems.*;
+import net.ironpulse.swerve.FieldCentricHeadingCorrect;
 import net.ironpulse.telemetries.*;
 
 import static edu.wpi.first.units.Units.Degrees;
@@ -55,7 +56,7 @@ public class RobotContainer {
     @Getter
     private final IndicatorSubsystem indicatorSubsystem = new IndicatorSubsystem();
 
-    private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
+    private final FieldCentricHeadingCorrect drive = new FieldCentricHeadingCorrect()
             .withDeadband(maxSpeed.magnitude() * 0.1)
             .withRotationalDeadband(maxAngularRate.magnitude() * 0.1)
             .withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo);
