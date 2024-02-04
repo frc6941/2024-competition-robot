@@ -9,7 +9,7 @@ public class ManualIntakeOutCommand extends Command {
 
     public ManualIntakeOutCommand(IntakerSubsystem intakerSubsystem) {
         this.intakerSubsystem = intakerSubsystem;
-        addRequirements(intakerSubsystem);
+        //addRequirements(intakerSubsystem);
     }
 
     @Override

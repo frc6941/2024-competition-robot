@@ -15,10 +15,11 @@ public class ParallelShootCommand extends ParallelCommandGroup {
             RobotContainer robotContainer,
             ShooterSubsystem shooterSubsystem,
             IndexerSubsystem indexerSubsystem,
-            Supplier<Boolean> confirmation
+            Supplier<Boolean> confirmation,
+            int angle
     ) {
         addCommands(
-                new ParallelAimingCommand(shooterSubsystem),
+                new ParallelAimingCommand(shooterSubsystem,angle),
                 new PreShootCommand(shooterSubsystem, robotContainer),
                 Commands.sequence(
                         new WaitUntilCommand(confirmation::get),

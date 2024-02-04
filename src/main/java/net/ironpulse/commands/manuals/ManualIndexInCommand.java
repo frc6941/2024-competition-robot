@@ -9,7 +9,7 @@ public class ManualIndexInCommand extends Command {
 
     public ManualIndexInCommand(IndexerSubsystem indexerSubsystem) {
         this.indexerSubsystem = indexerSubsystem;
-        addRequirements(indexerSubsystem);
+        //addRequirements(indexerSubsystem);
     }
 
     @Override

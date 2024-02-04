@@ -9,7 +9,7 @@ public class ManualShooterUpCommand extends Command {
 
     public ManualShooterUpCommand(ShooterSubsystem shooterSubsystem) {
         this.shooterSubsystem = shooterSubsystem;
-        addRequirements(shooterSubsystem);
+        //addRequirements(shooterSubsystem);
     }
 
     @Override

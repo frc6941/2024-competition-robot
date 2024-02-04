@@ -17,7 +17,7 @@ public class IntakeCommand extends Command {
     ) {
         this.intakerSubsystem = intakerSubsystem;
         this.robotContainer = robotContainer;
-        addRequirements(intakerSubsystem);
+        //addRequirements(intakerSubsystem);
     }
 
     @Override

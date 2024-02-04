@@ -16,10 +16,10 @@ import net.ironpulse.commands.*;
 import net.ironpulse.commands.autos.AutoIntakeCommand;
 import net.ironpulse.commands.autos.AutoPreShootCommand;
 import net.ironpulse.commands.autos.AutoShootCommand;
+import net.ironpulse.commands.autos.AutoShootWithAngleCommand;
 import net.ironpulse.commands.manuals.*;
 import net.ironpulse.maths.MathMisc;
 import net.ironpulse.subsystems.*;
-import net.ironpulse.swerve.FieldCentricHeadingCorrect;
 import net.ironpulse.telemetries.*;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
@@ -57,7 +57,7 @@ public class RobotContainer {
     @Getter
     private final IndicatorSubsystem indicatorSubsystem = new IndicatorSubsystem();
 
-    private final FieldCentricHeadingCorrect drive = new FieldCentricHeadingCorrect()
+    private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             .withDeadband(maxSpeed.magnitude() * 0.1)
             .withRotationalDeadband(maxAngularRate.magnitude() * 0.1)
             .withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo);
@@ -85,10 +85,17 @@ public class RobotContainer {
         operatorController.leftTrigger().whileTrue(new AmpShootCommand(this,
                 shooterSubsystem, indexerSubsystem, () -> operatorController.getHID().getAButton()));
 
+        operatorController.a().whileTrue(new ShootWithoutAimingCommand(this, shooterSubsystem, 
+                indexerSubsystem, () -> operatorController.getHID().getRightBumper()));
+        operatorController.b().whileTrue(new ParallelShootCommand(this, shooterSubsystem,           
+                indexerSubsystem, () -> operatorController.getHID().getRightBumper(), 30));
         operatorController.x().whileTrue(new ParallelShootCommand(this, shooterSubsystem,
-                indexerSubsystem, () -> operatorController.getHID().getAButton()));
-        operatorController.y().whileTrue(new ShootWithoutAimingCommand(this, shooterSubsystem,
-                indexerSubsystem, () -> operatorController.getHID().getAButton()));
+                indexerSubsystem, () -> operatorController.getHID().getRightBumper(), 46));
+        operatorController.y().whileTrue(new ParallelShootCommand(this, shooterSubsystem,
+                indexerSubsystem, () -> operatorController.getHID().getRightBumper(), 62));
+
+
+
 
         driverController.rightBumper().whileTrue(
                 Commands.parallel(
@@ -117,6 +124,12 @@ public class RobotContainer {
                 new AutoShootCommand(shooterSubsystem, indexerSubsystem));
         NamedCommands.registerCommand("Intake",
                 new AutoIntakeCommand(intakerSubsystem, indexerSubsystem, beamBreakSubsystem));
+        NamedCommands.registerCommand("ShootNearSpeaker",
+                new AutoShootWithAngleCommand(shooterSubsystem, indexerSubsystem, 30));
+        NamedCommands.registerCommand("ShootOnLine", 
+                new AutoShootWithAngleCommand(shooterSubsystem, indexerSubsystem, 46));
+        NamedCommands.registerCommand("ShootAtLaunchPad", 
+                new AutoShootWithAngleCommand(shooterSubsystem, indexerSubsystem, 62));
     }
 
     public Command getAutonomousCommand() {

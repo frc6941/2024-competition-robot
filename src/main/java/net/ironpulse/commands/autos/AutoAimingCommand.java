@@ -10,7 +10,6 @@ import net.ironpulse.subsystems.ShooterSubsystem;
 
 public class AutoAimingCommand extends Command {
     private final ShooterSubsystem shooterSubsystem;
-
     private final Timer timer = new Timer();
 
     public AutoAimingCommand(ShooterSubsystem shooterSubsystem) {

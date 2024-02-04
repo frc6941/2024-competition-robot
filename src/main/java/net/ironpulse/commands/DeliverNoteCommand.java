@@ -20,7 +20,7 @@ public class DeliverNoteCommand extends Command {
     ) {
         this.indexerSubsystem = indexerSubsystem;
         this.robotContainer = robotContainer;
-        addRequirements(indexerSubsystem);
+        //addRequirements(indexerSubsystem);
     }
 
     @Override
