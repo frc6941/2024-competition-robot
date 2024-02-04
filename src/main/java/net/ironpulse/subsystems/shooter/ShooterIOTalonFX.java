@@ -22,6 +22,8 @@ public class ShooterIOTalonFX implements ShooterIO {
     private final TalonFX rightShooterTalon = new TalonFX(RIGHT_SHOOTER_MOTOR_ID, Constants.CAN_BUS_NAME);
     private final TalonFX armTalon = new TalonFX(ARM_MOTOR_ID, Constants.CAN_BUS_NAME);
 
+    private boolean homed = false;
+
     private final StatusSignal<Double> leftShooterVelocity = leftShooterTalon.getVelocity();
     private final StatusSignal<Double> leftShooterPosition = leftShooterTalon.getPosition();
     private final StatusSignal<Double> leftShooterAppliedVoltage = leftShooterTalon.getMotorVoltage();
@@ -39,7 +41,6 @@ public class ShooterIOTalonFX implements ShooterIO {
     public ShooterIOTalonFX() {
         var armMotorConfig = new TalonFXConfiguration()
                 .withSlot0(armGainsUp)
-                .withSlot1(armGainsDown)
                 .withMotionMagic(motionMagicConfigs)
                 .withMotorOutput(motorOutputConfigs)
                 .withFeedback(feedbackConfigs);
@@ -105,5 +106,10 @@ public class ShooterIOTalonFX implements ShooterIO {
     @Override
     public void setArmPosition(Measure<Angle> rad) {
         armTalon.setControl(new MotionMagicVoltage(rad.magnitude()));
+    }
+
+    @Override
+    public void setHomed(boolean homed) {
+        this.homed = homed;
     }
 }

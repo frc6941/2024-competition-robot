@@ -13,8 +13,6 @@ public class ShooterSubsystem extends SubsystemBase {
     private final ShooterIO io;
     private final ShooterIOInputsAutoLogged inputs = new ShooterIOInputsAutoLogged();
 
-    private boolean homed = false;
-
 
     public ShooterSubsystem(ShooterIO io) {
         this.io = io;
@@ -25,11 +23,11 @@ public class ShooterSubsystem extends SubsystemBase {
     public void periodic() {
         io.updateInputs(inputs);
         Logger.processInputs("Shooter", inputs);
-        if (homed) return;
+        if (inputs.homed) return;
         if (inputs.armSupplyCurrent.magnitude() > armZeroCurrent.magnitude()) {
             io.setArmVoltage(Volts.of(0));
             io.setArmHome(Radians.of(0));
-            homed = true;
+            getIo().setHomed(true);
         }
         io.setArmVoltage(armZeroVoltage);
     }
