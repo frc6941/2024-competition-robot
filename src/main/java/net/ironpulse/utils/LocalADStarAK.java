@@ -18,7 +18,8 @@ import java.util.List;
 
 /*
  * AdvantageKit compatible PathFinder.
- * */
+ */
+@SuppressWarnings("PMD")
 public class LocalADStarAK implements Pathfinder {
     private final ADStarIO io = new ADStarIO();
 

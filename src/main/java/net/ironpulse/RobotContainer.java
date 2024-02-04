@@ -14,6 +14,7 @@ import lombok.Getter;
 import net.ironpulse.Constants.OperatorConstants;
 import net.ironpulse.commands.*;
 import net.ironpulse.commands.autos.AutoIntakeCommand;
+import net.ironpulse.commands.autos.AutoPreShootCommand;
 import net.ironpulse.commands.autos.AutoShootCommand;
 import net.ironpulse.commands.manuals.*;
 import net.ironpulse.maths.MathMisc;
@@ -49,6 +50,7 @@ public class RobotContainer {
             new BeamBreakSubsystem(this, beamBreakTelemetry::telemeterize);
     private final IntakerSubsystem intakerSubsystem =
             new IntakerSubsystem(intakerTelemetry::telemeterize);
+    @Getter
     private final ShooterSubsystem shooterSubsystem =
             new ShooterSubsystem(shooterTelemetry::telemeterize);
 
@@ -83,6 +85,11 @@ public class RobotContainer {
         operatorController.leftTrigger().whileTrue(new AmpShootCommand(this,
                 shooterSubsystem, indexerSubsystem, () -> operatorController.getHID().getAButton()));
 
+        operatorController.x().whileTrue(new ParallelShootCommand(this, shooterSubsystem,
+                indexerSubsystem, () -> operatorController.getHID().getAButton()));
+        operatorController.y().whileTrue(new ShootWithoutAimingCommand(this, shooterSubsystem,
+                indexerSubsystem, () -> operatorController.getHID().getAButton()));
+
         driverController.rightBumper().whileTrue(
                 Commands.parallel(
                         new IntakeCommand(this, intakerSubsystem),
@@ -104,6 +111,8 @@ public class RobotContainer {
     }
 
     private void configureAutos() {
+        NamedCommands.registerCommand("ShooterOn",
+                new AutoPreShootCommand(shooterSubsystem));
         NamedCommands.registerCommand("AutoShoot",
                 new AutoShootCommand(shooterSubsystem, indexerSubsystem));
         NamedCommands.registerCommand("Intake",
