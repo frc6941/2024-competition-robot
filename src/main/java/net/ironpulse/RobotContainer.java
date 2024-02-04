@@ -122,6 +122,8 @@ public class RobotContainer {
                 new AutoPreShootCommand(shooterSubsystem));
         NamedCommands.registerCommand("AutoShoot",
                 new AutoShootCommand(shooterSubsystem, indexerSubsystem));
+        NamedCommands.registerCommand("AutoPreShoot",
+                new AutoPreShootCommand(shooterSubsystem));
         NamedCommands.registerCommand("Intake",
                 new AutoIntakeCommand(intakerSubsystem, indexerSubsystem, beamBreakSubsystem));
         NamedCommands.registerCommand("ShootNearSpeaker",
