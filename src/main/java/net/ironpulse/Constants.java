@@ -33,7 +33,7 @@ public final class Constants {
 
         // Swerve steering gains
         private static final Slot0Configs steerGains = new Slot0Configs()
-                .withKP(100)
+                .withKP(120)
                 .withKI(0.2)
                 .withKD(0.005)
                 .withKS(0)
@@ -117,7 +117,7 @@ public final class Constants {
         private static final int FRONT_LEFT_DRIVE_MOTOR_ID = 5;
         private static final int FRONT_LEFT_STEER_MOTOR_ID = 3;
         private static final int FRONT_LEFT_ENCODER_ID = 9;
-        private static final double FRONT_LEFT_ENCODER_OFFSET = 0.186035;
+        private static final double FRONT_LEFT_ENCODER_OFFSET = 0.153809;
         // private static final double FRONT_LEFT_ENCODER_OFFSET = 0;
 
         private static final Measure<Distance> frontLeftXPos = Meters.of(0.5);
@@ -127,7 +127,7 @@ public final class Constants {
         private static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 2;
         private static final int FRONT_RIGHT_STEER_MOTOR_ID = 7;
         private static final int FRONT_RIGHT_ENCODER_ID = 21;
-        private static final double FRONT_RIGHT_ENCODER_OFFSET = 0.379395;
+        private static final double FRONT_RIGHT_ENCODER_OFFSET = 0.381592;
         // private static final double FRONT_RIGHT_ENCODER_OFFSET = 0;
 
         private static final Measure<Distance> frontRightXPos = Meters.of(0.5);
@@ -137,7 +137,7 @@ public final class Constants {
         private static final int BACK_LEFT_DRIVE_MOTOR_ID = 15;
         private static final int BACK_LEFT_STEER_MOTOR_ID = 14;
         private static final int BACK_LEFT_ENCODER_ID = 20;
-        private static final double BACK_LEFT_ENCODER_OFFSET = 0.165771;
+        private static final double BACK_LEFT_ENCODER_OFFSET = 0.162598;
         // private static final double BACK_LEFT_ENCODER_OFFSET = 0;
 
         private static final Measure<Distance> backLeftXPos = Meters.of(-0.5);
