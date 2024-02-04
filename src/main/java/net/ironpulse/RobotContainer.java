@@ -85,6 +85,11 @@ public class RobotContainer {
         operatorController.leftTrigger().whileTrue(new AmpShootCommand(this,
                 shooterSubsystem, indexerSubsystem, () -> operatorController.getHID().getAButton()));
 
+        operatorController.x().whileTrue(new ParallelShootCommand(this, shooterSubsystem,
+                indexerSubsystem, () -> operatorController.getHID().getAButton()));
+        operatorController.y().whileTrue(new ShootWithoutAimingCommand(this, shooterSubsystem,
+                indexerSubsystem, () -> operatorController.getHID().getAButton()));
+
         driverController.rightBumper().whileTrue(
                 Commands.parallel(
                         new IntakeCommand(this, intakerSubsystem),
