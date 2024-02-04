@@ -1,6 +1,7 @@
 package net.ironpulse;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.util.GeometryUtil;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -10,11 +11,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import lombok.Getter;
-import net.ironpulse.commands.DefaultDriveCommand;
-import net.ironpulse.commands.IndexCommand;
-import net.ironpulse.commands.IntakeCommand;
-import net.ironpulse.commands.RumbleCommand;
+import net.ironpulse.commands.*;
+import net.ironpulse.commands.autos.AutoIntakeCommand;
+import net.ironpulse.commands.autos.AutoPreShootCommand;
+import net.ironpulse.commands.autos.AutoShootCommand;
 import net.ironpulse.subsystems.beambreak.BeamBreakIORev;
 import net.ironpulse.subsystems.beambreak.BeamBreakSubsystem;
 import net.ironpulse.subsystems.indexer.IndexerIOTalonFX;
@@ -29,9 +29,11 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import static edu.wpi.first.units.Units.Seconds;
 
 public class RobotContainer {
-    @Getter
     private final CommandXboxController driverController =
             new CommandXboxController(0);
+
+    private final CommandXboxController operatorController =
+            new CommandXboxController(1);
 
     private SwerveSubsystem swerveSubsystem;
     private IntakerSubsystem intakerSubsystem;
@@ -63,10 +65,48 @@ public class RobotContainer {
                 ),
                 () -> new RumbleCommand(driverController.getHID(), Seconds.of(1))
         ));
+
+        operatorController.rightTrigger().whileTrue(
+                new SpeakerShootCommand(
+                        swerveSubsystem,
+                        shooterSubsystem,
+                        indexerSubsystem,
+                        beamBreakSubsystem,
+                        () -> operatorController.getHID().getAButton(),
+                        () -> -driverController.getLeftY(),
+                        () -> -driverController.getLeftX()
+                )
+        );
+
+        operatorController.rightTrigger().whileTrue(
+                new AmpShootCommand(
+                        shooterSubsystem,
+                        indexerSubsystem,
+                        beamBreakSubsystem,
+                        () -> operatorController.getHID().getAButton()
+                )
+        );
+
+        operatorController.x().whileTrue(
+                new ParallelShootCommand(
+                        shooterSubsystem,
+                        indexerSubsystem,
+                        beamBreakSubsystem,
+                        () -> operatorController.getHID().getAButton()
+                )
+        );
+
+        operatorController.start().onTrue(new ResetArmCommand(shooterSubsystem));
     }
 
     private void configureAutos() {
         autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
+        NamedCommands.registerCommand("ShooterOn",
+                new AutoPreShootCommand(shooterSubsystem));
+        NamedCommands.registerCommand("AutoShoot",
+                new AutoShootCommand(shooterSubsystem, indexerSubsystem));
+        NamedCommands.registerCommand("Intake",
+                new AutoIntakeCommand(intakerSubsystem, indexerSubsystem, beamBreakSubsystem));
         // Set up SysId routines
         autoChooser.addOption(
                 "Drive SysId (Quasistatic Forward)",

@@ -9,6 +9,8 @@ import static edu.wpi.first.units.Units.Amps;
 public interface ShooterIO {
     @AutoLog
     class ShooterIOInputs {
+        public boolean homed = false;
+
         public Measure<Velocity<Angle>> leftShooterVelocity = RadiansPerSecond.of(0);
         public Measure<Angle> leftShooterPosition = Radians.of(0);
         public Measure<Voltage> leftShooterAppliedVoltage = Volts.of(0);
@@ -34,6 +36,9 @@ public interface ShooterIO {
     }
 
     default void setArmHome(Measure<Angle> rad) {
+    }
+
+    default void setHomed(boolean homed) {
     }
 
     default void setArmPosition(Measure<Angle> rad) {
