@@ -1,12 +1,14 @@
 package net.ironpulse.subsystems.shooter;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import lombok.Getter;
 import org.littletonrobotics.junction.Logger;
 
 import static edu.wpi.first.units.Units.Radians;
 import static edu.wpi.first.units.Units.Volts;
 import static net.ironpulse.Constants.ShooterConstants.*;
 
+@Getter
 public class ShooterSubsystem extends SubsystemBase {
     private final ShooterIO io;
     private final ShooterIOInputsAutoLogged inputs = new ShooterIOInputsAutoLogged();
@@ -16,8 +18,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public ShooterSubsystem(ShooterIO io) {
         this.io = io;
-        setDefaultCommand(run(() ->
-                io.setShooterVoltage(shooterConstantVoltage)));
+        setDefaultCommand(run(() -> io.setShooterVoltage(shooterConstantVoltage)));
     }
 
     @Override

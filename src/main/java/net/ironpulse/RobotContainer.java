@@ -12,8 +12,21 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import lombok.Getter;
 import net.ironpulse.commands.DefaultDriveCommand;
+import net.ironpulse.commands.IndexCommand;
+import net.ironpulse.commands.IntakeCommand;
+import net.ironpulse.commands.RumbleCommand;
+import net.ironpulse.subsystems.beambreak.BeamBreakIORev;
+import net.ironpulse.subsystems.beambreak.BeamBreakSubsystem;
+import net.ironpulse.subsystems.indexer.IndexerIOTalonFX;
+import net.ironpulse.subsystems.indexer.IndexerSubsystem;
+import net.ironpulse.subsystems.intaker.IntakerIOTalonFX;
+import net.ironpulse.subsystems.intaker.IntakerSubsystem;
+import net.ironpulse.subsystems.shooter.ShooterIOTalonFX;
+import net.ironpulse.subsystems.shooter.ShooterSubsystem;
 import net.ironpulse.subsystems.swerve.*;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+
+import static edu.wpi.first.units.Units.Seconds;
 
 public class RobotContainer {
     @Getter
@@ -21,6 +34,10 @@ public class RobotContainer {
             new CommandXboxController(0);
 
     private SwerveSubsystem swerveSubsystem;
+    private IntakerSubsystem intakerSubsystem;
+    private IndexerSubsystem indexerSubsystem;
+    private ShooterSubsystem shooterSubsystem;
+    private BeamBreakSubsystem beamBreakSubsystem;
 
     private LoggedDashboardChooser<Command> autoChooser;
     private Command autoCommand = null;
@@ -38,6 +55,14 @@ public class RobotContainer {
                         new Pose2d(swerveSubsystem.getPose().getTranslation(), new Rotation2d())),
                                 swerveSubsystem)
                         .ignoringDisable(true));
+
+        driverController.rightBumper().whileTrue(Commands.runEnd(
+                () -> Commands.parallel(
+                        new IntakeCommand(intakerSubsystem, beamBreakSubsystem),
+                        new IndexCommand(indexerSubsystem, beamBreakSubsystem)
+                ),
+                () -> new RumbleCommand(driverController.getHID(), Seconds.of(1))
+        ));
     }
 
     private void configureAutos() {
@@ -97,6 +122,10 @@ public class RobotContainer {
                         new ModuleIOTalonFX(2),
                         new ModuleIOTalonFX(3)
                 );
+                intakerSubsystem = new IntakerSubsystem(new IntakerIOTalonFX());
+                indexerSubsystem = new IndexerSubsystem(new IndexerIOTalonFX());
+                shooterSubsystem = new ShooterSubsystem(new ShooterIOTalonFX());
+                beamBreakSubsystem = new BeamBreakSubsystem(new BeamBreakIORev());
                 break;
             case SIM:
                 // Sim robot, instantiate physics sim IO implementations
