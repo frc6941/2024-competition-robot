@@ -61,9 +61,6 @@ public final class Constants {
     public static class IntakerConstants {
         public static final int INTAKE_MOTOR_ID = 13;
 
-        public static final MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs()
-                .withNeutralMode(NeutralModeValue.Brake);
-
         public static final Measure<Voltage> intakeVoltage = Volts.of(-8);
     }
 
@@ -79,12 +76,6 @@ public final class Constants {
                 .withKD(0.02)
                 .withKV(0.12)
                 .withKS(0.25);
-
-        // Shooter gains when deploying shooter to desired angle
-        public static final Slot1Configs armGainsDown = new Slot1Configs()
-                .withKP(30)
-                .withKI(0)
-                .withKD(0);
 
         public static final Measure<Current> armZeroCurrent = Amps.of(1.5);
         public static final Measure<Voltage> armZeroVoltage = Volts.of(-2);
@@ -102,6 +93,9 @@ public final class Constants {
         public static final Measure<Voltage> shooterConstantVoltage = Volts.of(-5);
         public static final Measure<Voltage> shootVoltage = Volts.of(-10);
         public final static Measure<Angle> speakerArmOffset = Degrees.of(-20);
+
+        public final static Measure<Angle> ampDeployAngle = Degrees.of(190);
+        public final static Measure<Angle> parallelDeployAngle = Degrees.of(90);
     }
 
     public static class BeamBreakConstants {
