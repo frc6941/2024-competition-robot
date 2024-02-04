@@ -1,6 +1,9 @@
 package net.ironpulse;
 
-import com.ctre.phoenix6.configs.*;
+import com.ctre.phoenix6.configs.FeedbackConfigs;
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
+import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.units.*;
 
@@ -131,5 +134,10 @@ public final class Constants {
         public final static int INTAKER_BEAM_BREAK_ID = 1;
         public final static int INDEXER_BEAM_BREAK_ID = 2;
         public final static int SHOOTER_BEAM_BREAK_ID = 3;
+    }
+
+    public static class IndicatorConstants {
+        public static final int LED_PORT = 0;
+        public static final int LED_BUFFER_LENGTH = 15;
     }
 }
