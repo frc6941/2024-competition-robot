@@ -3,6 +3,7 @@
     "types": {
       "/FMSInfo": "FMSInfo",
       "/Pose": "Field2d",
+      "/SmartDashboard/Auto Choices": "String Chooser",
       "/SmartDashboard/Auto Chooser": "String Chooser",
       "/SmartDashboard/Module 0": "Mechanism2d",
       "/SmartDashboard/Module 1": "Mechanism2d",
@@ -50,6 +51,12 @@
         "open": true
       },
       "SmartDashboard": {
+        "Auto Choices": {
+          "open": true,
+          "string[]##v_/SmartDashboard/Auto Choices/options": {
+            "open": true
+          }
+        },
         "Auto Chooser": {
           "open": true
         },
@@ -73,8 +80,7 @@
       },
       "Subscribers": {
         "open": true
-      },
-      "open": true
+      }
     },
     "visible": true
   },
