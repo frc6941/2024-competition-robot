@@ -47,7 +47,7 @@ public class DefaultDriveCommand extends Command {
         linearMagnitude = linearMagnitude * linearMagnitude;
         omega = Math.copySign(omega * omega, omega);
 
-        // Calcaulate new linear velocity
+        // Calculate new linear velocity
         Translation2d linearVelocity =
                 new Pose2d(new Translation2d(), linearDirection)
                         .transformBy(new Transform2d(linearMagnitude, 0.0, new Rotation2d()))
