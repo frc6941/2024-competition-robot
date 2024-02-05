@@ -25,7 +25,6 @@ public class AutoIntakeCommand extends Command {
         this.intakerSubsystem = intakerSubsystem;
         this.indexerSubsystem = indexerSubsystem;
         this.beamBreakSubsystem = beamBreakSubsystem;
-        addRequirements(intakerSubsystem, indexerSubsystem, beamBreakSubsystem);
     }
 
     @Override
