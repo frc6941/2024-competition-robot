@@ -46,7 +46,6 @@ public class RobotContainer {
     private IndexerSubsystem indexerSubsystem;
     private ShooterSubsystem shooterSubsystem;
     private BeamBreakSubsystem beamBreakSubsystem;
-    @Getter
     private IndicatorSubsystem indicatorSubsystem;
 
     private LoggedDashboardChooser<Command> autoChooser;
@@ -66,44 +65,55 @@ public class RobotContainer {
                                 swerveSubsystem)
                         .ignoringDisable(true));
 
-        driverController.rightBumper().whileTrue(Commands.runEnd(
-                () -> Commands.parallel(
-                        new IntakeCommand(intakerSubsystem, beamBreakSubsystem, this),
-                        new IndexCommand(indexerSubsystem, beamBreakSubsystem)
-                ),
-                () -> new RumbleCommand(driverController.getHID(), Seconds.of(1))
-        ));
-
-        operatorController.rightTrigger().whileTrue(
-                new SpeakerShootCommand(
-                        swerveSubsystem,
-                        shooterSubsystem,
-                        indexerSubsystem,
-                        beamBreakSubsystem,
-                        this,
-                        () -> operatorController.getHID().getAButton(),
-                        () -> -driverController.getLeftY(),
-                        () -> -driverController.getLeftX()
+        driverController.rightBumper().whileTrue(
+                Commands.sequence(
+                        Commands.parallel(
+                                new IntakeCommand(intakerSubsystem, beamBreakSubsystem, indicatorSubsystem),
+                                new IndexCommand(indexerSubsystem, beamBreakSubsystem)
+                        ),
+                        new RumbleCommand(driverController.getHID(), Seconds.of(1))
                 )
         );
 
         operatorController.rightTrigger().whileTrue(
-                new AmpShootCommand(
-                        shooterSubsystem,
-                        indexerSubsystem,
-                        beamBreakSubsystem,
-                        this,
-                        () -> operatorController.getHID().getAButton()
+                Commands.sequence(
+                        new SpeakerShootCommand(
+                                swerveSubsystem,
+                                shooterSubsystem,
+                                indexerSubsystem,
+                                beamBreakSubsystem,
+                                indicatorSubsystem,
+                                () -> operatorController.getHID().getAButton(),
+                                () -> -driverController.getLeftY(),
+                                () -> -driverController.getLeftX()
+                        ),
+                        new RumbleCommand(driverController.getHID(), Seconds.of(1))
+                )
+        );
+
+        operatorController.leftTrigger().whileTrue(
+                Commands.sequence(
+                        new AmpShootCommand(
+                                shooterSubsystem,
+                                indexerSubsystem,
+                                beamBreakSubsystem,
+                                indicatorSubsystem,
+                                () -> operatorController.getHID().getAButton()
+                        ),
+                        new RumbleCommand(driverController.getHID(), Seconds.of(1))
                 )
         );
 
         operatorController.x().whileTrue(
-                new ParallelShootCommand(
-                        shooterSubsystem,
-                        indexerSubsystem,
-                        beamBreakSubsystem,
-                        this,
-                        () -> operatorController.getHID().getAButton()
+                Commands.sequence(
+                        new ParallelShootCommand(
+                                shooterSubsystem,
+                                indexerSubsystem,
+                                beamBreakSubsystem,
+                                indicatorSubsystem,
+                                () -> operatorController.getHID().getAButton()
+                        ),
+                        new RumbleCommand(driverController.getHID(), Seconds.of(1))
                 )
         );
 
