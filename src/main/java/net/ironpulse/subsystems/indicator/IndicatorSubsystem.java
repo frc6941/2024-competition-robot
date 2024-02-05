@@ -20,6 +20,9 @@ public class IndicatorSubsystem extends SubsystemBase {
     }
 
     public void setPattern(Patterns pattern) {
+        if (pattern == currentPattern) {
+            return;
+        }
         lastPattern = currentPattern;
         currentPattern = pattern;
         io.setPattern(pattern);
