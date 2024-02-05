@@ -109,7 +109,7 @@ public final class Constants {
                 .withKV(0.12)
                 .withKS(0.25);
 
-        public static final Measure<Current> armZeroCurrent = Amps.of(1.5);
+        public static final Measure<Current> armZeroCurrent = Amps.of(1.2);
         public static final Measure<Voltage> armZeroVoltage = Volts.of(-2);
 
         public static final MotionMagicConfigs motionMagicConfigs = new MotionMagicConfigs()
