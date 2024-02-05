@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import net.ironpulse.drivers.Limelight;
 import net.ironpulse.utils.LocalADStarAK;
 import net.ironpulse.utils.Utils;
 import org.littletonrobotics.junction.AutoLogOutput;
@@ -27,7 +28,7 @@ import java.util.Arrays;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import static edu.wpi.first.units.Units.Volts;
+import static edu.wpi.first.units.Units.*;
 import static net.ironpulse.Constants.SwerveConstants.*;
 
 public class SwerveSubsystem extends SubsystemBase {
@@ -40,7 +41,7 @@ public class SwerveSubsystem extends SubsystemBase {
     private final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(getModuleTranslations());
     private Rotation2d rawGyroRotation = new Rotation2d();
     private final SwerveModulePosition[] lastModulePositions =
-            new SwerveModulePosition[] {
+            new SwerveModulePosition[]{
                     new SwerveModulePosition(),
                     new SwerveModulePosition(),
                     new SwerveModulePosition(),
@@ -117,6 +118,14 @@ public class SwerveSubsystem extends SubsystemBase {
             module.periodic();
         }
 
+        // Update pose
+        Limelight.getTarget()
+                .ifPresent(target ->
+                        addVisionMeasurement(
+                                target.botPoseWPIBlue().toPose2d(),
+                                Microseconds.of(Logger.getTimestamp()).minus(target.latency()).in(Seconds)
+                        ));
+
         // Stop moving when disabled
         if (DriverStation.isDisabled()) {
             for (var module : modules) {
@@ -125,8 +134,8 @@ public class SwerveSubsystem extends SubsystemBase {
         }
         // Log empty setpoint states when disabled
         if (DriverStation.isDisabled()) {
-            Logger.recordOutput("SwerveStates/Setpoints", new SwerveModuleState[] {});
-            Logger.recordOutput("SwerveStates/SetpointsOptimized", new SwerveModuleState[] {});
+            Logger.recordOutput("SwerveStates/Setpoints", new SwerveModuleState[]{});
+            Logger.recordOutput("SwerveStates/SetpointsOptimized", new SwerveModuleState[]{});
         }
 
         // Update odometry
@@ -185,7 +194,9 @@ public class SwerveSubsystem extends SubsystemBase {
         Logger.recordOutput("SwerveStates/SetpointsOptimized", optimizedSetpointStates);
     }
 
-    /** Stops the drive. */
+    /**
+     * Stops the drive.
+     */
     public void stop() {
         runVelocity(new ChassisSpeeds());
     }
@@ -203,17 +214,23 @@ public class SwerveSubsystem extends SubsystemBase {
         stop();
     }
 
-    /** Returns a command to run a quasistatic test in the specified direction. */
+    /**
+     * Returns a command to run a quasistatic test in the specified direction.
+     */
     public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
         return sysId.quasistatic(direction);
     }
 
-    /** Returns a command to run a dynamic test in the specified direction. */
+    /**
+     * Returns a command to run a dynamic test in the specified direction.
+     */
     public Command sysIdDynamic(SysIdRoutine.Direction direction) {
         return sysId.dynamic(direction);
     }
 
-    /** Returns the module states (turn angles and drive velocities) for all of the modules. */
+    /**
+     * Returns the module states (turn angles and drive velocities) for all of the modules.
+     */
     @AutoLogOutput(key = "SwerveStates/Measured")
     private SwerveModuleState[] getModuleStates() {
         SwerveModuleState[] states = new SwerveModuleState[4];
@@ -223,7 +240,9 @@ public class SwerveSubsystem extends SubsystemBase {
         return states;
     }
 
-    /** Returns the module positions (turn angles and drive positions) for all of the modules. */
+    /**
+     * Returns the module positions (turn angles and drive positions) for all of the modules.
+     */
     private SwerveModulePosition[] getModulePositions() {
         SwerveModulePosition[] states = new SwerveModulePosition[4];
         for (int i = 0; i < 4; i++) {
@@ -232,18 +251,24 @@ public class SwerveSubsystem extends SubsystemBase {
         return states;
     }
 
-    /** Returns the current odometry pose. */
+    /**
+     * Returns the current odometry pose.
+     */
     @AutoLogOutput(key = "Odometry/Robot")
     public Pose2d getPose() {
         return poseEstimator.getEstimatedPosition();
     }
 
-    /** Returns the current odometry rotation. */
+    /**
+     * Returns the current odometry rotation.
+     */
     public Rotation2d getRotation() {
         return getPose().getRotation();
     }
 
-    /** Resets the current odometry pose. */
+    /**
+     * Resets the current odometry pose.
+     */
     public void setPose(Pose2d pose) {
         poseEstimator.resetPosition(rawGyroRotation, getModulePositions(), pose);
     }
@@ -252,25 +277,31 @@ public class SwerveSubsystem extends SubsystemBase {
      * Adds a vision measurement to the pose estimator.
      *
      * @param visionPose The pose of the robot as measured by the vision camera.
-     * @param timestamp The timestamp of the vision measurement in seconds.
+     * @param timestamp  The timestamp of the vision measurement in seconds.
      */
     public void addVisionMeasurement(Pose2d visionPose, double timestamp) {
         poseEstimator.addVisionMeasurement(visionPose, timestamp);
     }
 
-    /** Returns the maximum linear speed in meters per sec. */
+    /**
+     * Returns the maximum linear speed in meters per sec.
+     */
     public double getMaxLinearSpeedMetersPerSec() {
         return maxLinearSpeed.magnitude();
     }
 
-    /** Returns the maximum angular speed in radians per sec. */
+    /**
+     * Returns the maximum angular speed in radians per sec.
+     */
     public double getMaxAngularSpeedRadPerSec() {
         return maxAngularSpeed.magnitude();
     }
 
-    /** Returns an array of module translations. */
+    /**
+     * Returns an array of module translations.
+     */
     public static Translation2d[] getModuleTranslations() {
-        return new Translation2d[] {
+        return new Translation2d[]{
                 new Translation2d(trackWidthX.magnitude() / 2.0, trackWidthY.magnitude() / 2.0),
                 new Translation2d(trackWidthX.magnitude() / 2.0, -trackWidthY.magnitude() / 2.0),
                 new Translation2d(-trackWidthX.magnitude() / 2.0, trackWidthY.magnitude() / 2.0),
