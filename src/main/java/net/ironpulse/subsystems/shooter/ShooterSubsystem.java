@@ -28,6 +28,7 @@ public class ShooterSubsystem extends SubsystemBase {
             io.setArmVoltage(Volts.of(0));
             io.setArmHome(Radians.of(0));
             getIo().setHomed(true);
+            return;
         }
         io.setArmVoltage(armZeroVoltage);
     }

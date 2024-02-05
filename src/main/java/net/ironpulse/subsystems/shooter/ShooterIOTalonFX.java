@@ -14,7 +14,6 @@ import edu.wpi.first.units.Voltage;
 import net.ironpulse.Constants;
 
 import static edu.wpi.first.units.Units.*;
-import static edu.wpi.first.units.Units.Amps;
 import static net.ironpulse.Constants.ShooterConstants.*;
 
 public class ShooterIOTalonFX implements ShooterIO {
@@ -89,6 +88,8 @@ public class ShooterIOTalonFX implements ShooterIO {
                 Volts.of(armAppliedVoltage.getValueAsDouble());
         inputs.armSupplyCurrent =
                 Amps.of(armSupplyCurrent.getValueAsDouble());
+
+        inputs.homed = homed;
     }
 
     @Override
