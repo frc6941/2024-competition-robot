@@ -7,8 +7,8 @@ import edu.wpi.first.units.Measure;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import net.ironpulse.subsystems.IndexerSubsystem;
-import net.ironpulse.subsystems.ShooterSubsystem;
+import net.ironpulse.subsystems.indexer.IndexerSubsystem;
+import net.ironpulse.subsystems.shooter.ShooterSubsystem;
 
 public class AutoShootWithAngleCommand extends ParallelCommandGroup {
     public AutoShootWithAngleCommand(
