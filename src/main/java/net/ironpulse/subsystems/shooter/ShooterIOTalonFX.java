@@ -106,7 +106,7 @@ public class ShooterIOTalonFX implements ShooterIO {
 
     @Override
     public void setArmPosition(Measure<Angle> rad) {
-        armTalon.setControl(new MotionMagicVoltage(rad.magnitude()));
+        armTalon.setControl(new MotionMagicVoltage(rad.in(Rotations)));
     }
 
     @Override
