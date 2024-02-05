@@ -14,10 +14,13 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
+import net.ironpulse.Constants;
+
 import java.util.Queue;
 
 import static edu.wpi.first.units.Units.*;
-import static net.ironpulse.Constants.SwerveConstants.ODOMETRY_FREQUENCY;
+import static net.ironpulse.Constants.SwerveConstants.*;
+import static net.ironpulse.Constants.SwerveConstants.STEER_GEAR_RATIO;
 
 /**
  * Module IO implementation for Talon FX drive motor controller, Talon FX turn motor controller, and
@@ -57,32 +60,45 @@ public class ModuleIOTalonFX implements ModuleIO {
 
     private final boolean isTurnMotorInverted = true;
     private final Rotation2d absoluteEncoderOffset;
+    private boolean inverted;
 
     public ModuleIOTalonFX(int index) {
         switch (index) {
             case 0:
-                driveTalon = new TalonFX(0);
-                turnTalon = new TalonFX(1);
-                cancoder = new CANcoder(2);
-                absoluteEncoderOffset = new Rotation2d(0.0); // MUST BE CALIBRATED
+                driveTalon = new TalonFX(Constants.SwerveConstants.FRONT_LEFT_DRIVE_MOTOR_ID,
+                        Constants.CAN_BUS_NAME);
+                turnTalon = new TalonFX(Constants.SwerveConstants.FRONT_LEFT_STEER_MOTOR_ID,
+                        Constants.CAN_BUS_NAME);
+                cancoder = new CANcoder(Constants.SwerveConstants.FRONT_LEFT_ENCODER_ID,
+                        Constants.CAN_BUS_NAME);
+                absoluteEncoderOffset = new Rotation2d(Constants.SwerveConstants.FRONT_LEFT_ENCODER_OFFSET); // MUST BE CALIBRATED
                 break;
             case 1:
-                driveTalon = new TalonFX(3);
-                turnTalon = new TalonFX(4);
-                cancoder = new CANcoder(5);
-                absoluteEncoderOffset = new Rotation2d(0.0); // MUST BE CALIBRATED
+                driveTalon = new TalonFX(Constants.SwerveConstants.FRONT_RIGHT_DRIVE_MOTOR_ID,
+                        Constants.CAN_BUS_NAME);
+                turnTalon = new TalonFX(Constants.SwerveConstants.FRONT_RIGHT_STEER_MOTOR_ID,
+                        Constants.CAN_BUS_NAME);
+                cancoder = new CANcoder(Constants.SwerveConstants.FRONT_RIGHT_ENCODER_ID,
+                        Constants.CAN_BUS_NAME);
+                absoluteEncoderOffset = new Rotation2d(Constants.SwerveConstants.FRONT_RIGHT_ENCODER_OFFSET); // MUST BE CALIBRATED
                 break;
             case 2:
-                driveTalon = new TalonFX(6);
-                turnTalon = new TalonFX(7);
-                cancoder = new CANcoder(8);
-                absoluteEncoderOffset = new Rotation2d(0.0); // MUST BE CALIBRATED
+                driveTalon = new TalonFX(Constants.SwerveConstants.BACK_LEFT_DRIVE_MOTOR_ID,
+                        Constants.CAN_BUS_NAME);
+                turnTalon = new TalonFX(Constants.SwerveConstants.BACK_LEFT_STEER_MOTOR_ID,
+                        Constants.CAN_BUS_NAME);
+                cancoder = new CANcoder(Constants.SwerveConstants.BACK_LEFT_ENCODER_ID,
+                        Constants.CAN_BUS_NAME);
+                absoluteEncoderOffset = new Rotation2d(Constants.SwerveConstants.BACK_LEFT_ENCODER_OFFSET); // MUST BE CALIBRATED
                 break;
             case 3:
-                driveTalon = new TalonFX(9);
-                turnTalon = new TalonFX(10);
-                cancoder = new CANcoder(11);
-                absoluteEncoderOffset = new Rotation2d(0.0); // MUST BE CALIBRATED
+                driveTalon = new TalonFX(Constants.SwerveConstants.BACK_RIGHT_DRIVE_MOTOR_ID,
+                        Constants.CAN_BUS_NAME);
+                turnTalon = new TalonFX(Constants.SwerveConstants.BACK_RIGHT_STEER_MOTOR_ID,
+                        Constants.CAN_BUS_NAME);
+                cancoder = new CANcoder(Constants.SwerveConstants.BACK_RIGHT_ENCODER_ID,
+                        Constants.CAN_BUS_NAME);
+                absoluteEncoderOffset = new Rotation2d(Constants.SwerveConstants.BACK_RIGHT_ENCODER_OFFSET); // MUST BE CALIBRATED
                 break;
             default:
                 throw new RuntimeException("Invalid module index");
