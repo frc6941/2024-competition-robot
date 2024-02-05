@@ -14,7 +14,6 @@ public class AutoDeliverNoteCommand extends Command {
 
     public AutoDeliverNoteCommand(IndexerSubsystem indexerSubsystem) {
         this.indexerSubsystem = indexerSubsystem;
-        addRequirements(indexerSubsystem);
     }
 
     @Override
