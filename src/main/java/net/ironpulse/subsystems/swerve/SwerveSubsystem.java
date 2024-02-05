@@ -15,11 +15,11 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import net.ironpulse.utils.LocalADStarAK;
+import net.ironpulse.utils.Utils;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
@@ -28,7 +28,6 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import static edu.wpi.first.units.Units.Volts;
-
 import static net.ironpulse.Constants.SwerveConstants.*;
 
 public class SwerveSubsystem extends SubsystemBase {
@@ -76,15 +75,15 @@ public class SwerveSubsystem extends SubsystemBase {
                         driveBaseRadius.magnitude(),
                         new ReplanningConfig()
                 ),
-                () -> DriverStation.getAlliance().filter(alliance -> alliance == Alliance.Red).isPresent(),
+                Utils::flip,
                 this
         );
         Pathfinding.setPathfinder(new LocalADStarAK());
         PathPlannerLogging.setLogActivePathCallback(
-                (activePath) -> Logger.recordOutput(
-                        "Odometry/Trajectory", activePath.toArray(new Pose2d[activePath.size()])));
+                activePath -> Logger.recordOutput(
+                        "Odometry/Trajectory", activePath.toArray(new Pose2d[0])));
         PathPlannerLogging.setLogTargetPoseCallback(
-                (targetPose) -> Logger.recordOutput("Odometry/TrajectorySetpoint", targetPose));
+                targetPose -> Logger.recordOutput("Odometry/TrajectorySetpoint", targetPose));
 
         // Configure SysId
         sysId =
