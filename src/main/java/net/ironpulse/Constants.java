@@ -132,8 +132,8 @@ public final class Constants {
 
     public static class BeamBreakConstants {
         public final static int INTAKER_BEAM_BREAK_ID = 1;
-        public final static int INDEXER_BEAM_BREAK_ID = 2;
-        public final static int SHOOTER_BEAM_BREAK_ID = 3;
+        public final static int INDEXER_BEAM_BREAK_ID = 3;
+        public final static int SHOOTER_BEAM_BREAK_ID = 2;
     }
 
     public static class IndicatorConstants {
