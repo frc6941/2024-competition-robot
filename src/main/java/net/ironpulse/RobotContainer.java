@@ -6,7 +6,6 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.util.GeometryUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -28,6 +27,7 @@ import net.ironpulse.subsystems.intaker.IntakerSubsystem;
 import net.ironpulse.subsystems.shooter.ShooterIOTalonFX;
 import net.ironpulse.subsystems.shooter.ShooterSubsystem;
 import net.ironpulse.subsystems.swerve.*;
+import net.ironpulse.utils.Utils;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 import static edu.wpi.first.units.Units.Seconds;
@@ -162,14 +162,9 @@ public class RobotContainer {
         var startPose = pathGroup
                 .get(0)
                 .getPreviewStartingHolonomicPose();
-        swerveSubsystem.setPose(flip() ?
+        swerveSubsystem.setPose(Utils.flip() ?
                 GeometryUtil.flipFieldPose(startPose) :
                 startPose);
-    }
-
-    public static boolean flip() {
-        var alliance = DriverStation.getAlliance();
-        return alliance.filter(value -> value == DriverStation.Alliance.Red).isPresent();
     }
 
     private void configureSubsystem() {
