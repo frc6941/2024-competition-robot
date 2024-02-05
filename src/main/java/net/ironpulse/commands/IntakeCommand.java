@@ -1,29 +1,27 @@
 package net.ironpulse.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import net.ironpulse.Constants;
-import net.ironpulse.RobotContainer;
 import net.ironpulse.subsystems.beambreak.BeamBreakSubsystem;
 import net.ironpulse.subsystems.indicator.IndicatorIO;
+import net.ironpulse.subsystems.indicator.IndicatorSubsystem;
 import net.ironpulse.subsystems.intaker.IntakerSubsystem;
 
-import static edu.wpi.first.units.Units.Seconds;
 import static edu.wpi.first.units.Units.Volts;
 
 public class IntakeCommand extends Command {
     private final IntakerSubsystem intakerSubsystem;
     private final BeamBreakSubsystem beamBreakSubsystem;
-    private final RobotContainer robotContainer;
+    private final IndicatorSubsystem indicatorSubsystem;
 
     public IntakeCommand(
             IntakerSubsystem intakerSubsystem,
             BeamBreakSubsystem beamBreakSubsystem,
-            RobotContainer robotContainer
+            IndicatorSubsystem indicatorSubsystem
     ) {
         this.intakerSubsystem = intakerSubsystem;
         this.beamBreakSubsystem = beamBreakSubsystem;
-        this.robotContainer = robotContainer;
+        this.indicatorSubsystem = indicatorSubsystem;
     }
 
     @Override
@@ -38,9 +36,8 @@ public class IntakeCommand extends Command {
         intakerSubsystem.getIo()
                 .setIntakeVoltage(Volts.of(0));
         if (interrupted) return;
-        robotContainer.getIndicatorSubsystem()
+        indicatorSubsystem
                 .setPattern(IndicatorIO.Patterns.FINISH_INTAKE);
-        Commands.runOnce(() -> new RumbleCommand(robotContainer.getDriverController().getHID(), Seconds.of(0.5)));
     }
 
 
