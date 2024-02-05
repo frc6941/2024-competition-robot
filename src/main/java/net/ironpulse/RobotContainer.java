@@ -21,6 +21,7 @@ import net.ironpulse.subsystems.indexer.IndexerIOTalonFX;
 import net.ironpulse.subsystems.indexer.IndexerSubsystem;
 import net.ironpulse.subsystems.indicator.IndicatorIO;
 import net.ironpulse.subsystems.indicator.IndicatorIOARGB;
+import net.ironpulse.subsystems.indicator.IndicatorIOSim;
 import net.ironpulse.subsystems.indicator.IndicatorSubsystem;
 import net.ironpulse.subsystems.intaker.IntakerIOTalonFX;
 import net.ironpulse.subsystems.intaker.IntakerSubsystem;
@@ -194,6 +195,7 @@ public class RobotContainer {
                                 new ModuleIOSim(),
                                 new ModuleIOSim(),
                                 new ModuleIOSim());
+                indicatorSubsystem = new IndicatorSubsystem(new IndicatorIOSim());
                 break;
         }
     }
