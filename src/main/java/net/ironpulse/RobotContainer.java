@@ -50,7 +50,7 @@ public class RobotContainer {
                         swerveSubsystem,
                         () -> -driverController.getLeftY(),
                         () -> -driverController.getLeftX(),
-                        () -> -driverController.getRawAxis(2)));
+                        () -> -driverController.getRightX()));
         driverController.x().onTrue(Commands.runOnce(swerveSubsystem::stopWithX, swerveSubsystem));
         driverController.b().onTrue(
                 Commands.runOnce(() -> swerveSubsystem.setPose(
@@ -121,29 +121,30 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        if (autoCommand != null
-                && autoCommand.getName().equals(autoChooser.get().getName() + " Decorator"))
-            return autoCommand;
+//        if (autoCommand != null
+//                && autoCommand.getName().equals(autoChooser.get().getName() + " Decorator"))
+//            return autoCommand;
         var selected = autoChooser.get();
-        autoCommand = selected.beforeStarting(
-                Commands.runOnce(() -> resetOdometryWithAutoName(selected.getName())));
-        autoCommand.setName(selected.getName() + " Decorator");
-        return autoCommand;
+        return selected;
+//        autoCommand = selected.beforeStarting(
+//                Commands.runOnce(() -> resetOdometryWithAutoName(selected.getName())));
+//        autoCommand.setName(selected.getName() + " Decorator");
+//        return autoCommand;
     }
 
     private void resetOdometryWithAutoName(String autoName) {
-        var pathGroup = PathPlannerAuto
-                .getPathGroupFromAutoFile(autoName);
-        if (pathGroup.isEmpty()) {
-            // no path in auto
-            return;
-        }
-        var startPose = pathGroup
-                .get(0)
-                .getPreviewStartingHolonomicPose();
-        swerveSubsystem.setPose(flip() ?
-                GeometryUtil.flipFieldPose(startPose) :
-                startPose);
+//        var pathGroup = PathPlannerAuto
+//                .getPathGroupFromAutoFile(autoName);
+//        if (pathGroup.isEmpty()) {
+//            // no path in auto
+//            return;
+//        }
+//        var startPose = pathGroup
+//                .get(0)
+//                .getPreviewStartingHolonomicPose();
+//        swerveSubsystem.setPose(flip() ?
+//                GeometryUtil.flipFieldPose(startPose) :
+//                startPose);
     }
 
     public static boolean flip() {
