@@ -2,26 +2,26 @@ package net.ironpulse.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import net.ironpulse.Constants;
-import net.ironpulse.RobotContainer;
 import net.ironpulse.subsystems.indicator.IndicatorIO;
+import net.ironpulse.subsystems.indicator.IndicatorSubsystem;
 import net.ironpulse.subsystems.shooter.ShooterSubsystem;
 
 import static net.ironpulse.Constants.ShooterConstants.shootVoltage;
 
 public class PreShootCommand extends Command {
     private final ShooterSubsystem shooterSubsystem;
-    private final RobotContainer robotContainer;
+    private final IndicatorSubsystem indicatorSubsystem;
 
 
     public PreShootCommand(ShooterSubsystem shooterSubsystem,
-                           RobotContainer robotContainer) {
+                           IndicatorSubsystem indicatorSubsystem) {
         this.shooterSubsystem = shooterSubsystem;
-        this.robotContainer = robotContainer;
+        this.indicatorSubsystem = indicatorSubsystem;
     }
 
     @Override
     public void initialize() {
-        robotContainer.getIndicatorSubsystem()
+        indicatorSubsystem
                 .setPattern(IndicatorIO.Patterns.SHOOTING);
     }
 
@@ -35,6 +35,6 @@ public class PreShootCommand extends Command {
         shooterSubsystem.getIo()
                 .setShooterVoltage(Constants.ShooterConstants.shooterConstantVoltage);
         if (!interrupted) return;
-        robotContainer.getIndicatorSubsystem().resetToLastPattern();
+        indicatorSubsystem.resetToLastPattern();
     }
 }

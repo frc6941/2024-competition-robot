@@ -3,9 +3,9 @@ package net.ironpulse.commands;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import net.ironpulse.RobotContainer;
 import net.ironpulse.subsystems.beambreak.BeamBreakSubsystem;
 import net.ironpulse.subsystems.indexer.IndexerSubsystem;
+import net.ironpulse.subsystems.indicator.IndicatorSubsystem;
 import net.ironpulse.subsystems.shooter.ShooterSubsystem;
 import net.ironpulse.subsystems.swerve.SwerveSubsystem;
 
@@ -18,17 +18,17 @@ public class SpeakerShootCommand extends ParallelCommandGroup {
             ShooterSubsystem shooterSubsystem,
             IndexerSubsystem indexerSubsystem,
             BeamBreakSubsystem beamBreakSubsystem,
-            RobotContainer robotContainer,
+            IndicatorSubsystem indicatorSubsystem,
             BooleanSupplier confirmation,
             DoubleSupplier xSupplier,
             DoubleSupplier ySupplier
     ) {
         addCommands(
                 new SpeakerAimingCommand(swerveSubsystem, shooterSubsystem, xSupplier, ySupplier),
-                new PreShootCommand(shooterSubsystem, robotContainer),
+                new PreShootCommand(shooterSubsystem, indicatorSubsystem),
                 Commands.sequence(
                         new WaitUntilCommand(confirmation),
-                        new DeliverNoteCommand(indexerSubsystem, beamBreakSubsystem, robotContainer)
+                        new DeliverNoteCommand(indexerSubsystem, beamBreakSubsystem, indicatorSubsystem)
                 )
         );
     }
