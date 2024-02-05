@@ -122,13 +122,15 @@ public class RobotContainer {
     }
 
     private void configureAutos() {
-        autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
         NamedCommands.registerCommand("ShooterOn",
                 new AutoPreShootCommand(shooterSubsystem));
         NamedCommands.registerCommand("AutoShoot",
                 new AutoShootCommand(shooterSubsystem, indexerSubsystem));
         NamedCommands.registerCommand("Intake",
                 new AutoIntakeCommand(intakerSubsystem, indexerSubsystem, beamBreakSubsystem));
+        NamedCommands.registerCommand("AutoPreShoot",
+                new AutoPreShootCommand(shooterSubsystem));
+        autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
         // Set up SysId routines
         autoChooser.addOption(
                 "Drive SysId (Quasistatic Forward)",
