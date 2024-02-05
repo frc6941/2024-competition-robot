@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import net.ironpulse.subsystems.shooter.ShooterSubsystem;
 
 import static edu.wpi.first.units.Units.Radians;
-import static edu.wpi.first.units.Units.Rotations;
 import static net.ironpulse.Constants.ShooterConstants.ampDeployAngle;
 
 public class AmpAimingCommand extends Command {
@@ -22,6 +21,6 @@ public class AmpAimingCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        shooterSubsystem.getIo().setArmPosition(Rotations.of(0));
+        shooterSubsystem.getIo().setArmPosition(Radians.zero());
     }
 }

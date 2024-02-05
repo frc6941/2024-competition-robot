@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import net.ironpulse.drivers.Limelight;
 import net.ironpulse.subsystems.shooter.ShooterSubsystem;
 
-import static edu.wpi.first.units.Units.Rotations;
+import static edu.wpi.first.units.Units.Radians;
 import static net.ironpulse.Constants.ShooterConstants.speakerArmOffset;
 
 public class AutoAimingCommand extends Command {
@@ -27,7 +27,7 @@ public class AutoAimingCommand extends Command {
     public void execute() {
         Limelight.getTarget()
                 .ifPresent(target -> shooterSubsystem.getIo().setArmPosition(
-                        Rotations.of(Units.degreesToRotations(90 -
+                        Radians.of(Units.degreesToRadians(90 -
                                 target.position().getY() - speakerArmOffset.magnitude()))
                 ));
     }
