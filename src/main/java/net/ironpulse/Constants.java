@@ -7,9 +7,9 @@ import edu.wpi.first.units.*;
 import static edu.wpi.first.units.Units.*;
 
 public final class Constants {
-    public static final Mode currentMode = Mode.SIM;
+    public static final Mode currentMode = Mode.REAL;
 
-    public static String CAN_BUS_NAME = "6941Canivore1";
+    public static String CAN_BUS_NAME = "6941CANivore1";
 
     public enum Mode {
         /**
@@ -48,10 +48,39 @@ public final class Constants {
         public static final double ODOMETRY_FREQUENCY = 250;
 
         public static final Measure<Distance> wheelRadius = Meters.of(0.05);
+
+
+        // Front Left
+        public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 5;
+        public static final int FRONT_LEFT_STEER_MOTOR_ID = 3;
+        public static final int FRONT_LEFT_ENCODER_ID = 9;
+        public static final double FRONT_LEFT_ENCODER_OFFSET = -0.945;
+        // private static final double FRONT_LEFT_ENCODER_OFFSET = 0;
+
+        // Front Right
+        public static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 2;
+        public static final int FRONT_RIGHT_STEER_MOTOR_ID = 7;
+        public static final int FRONT_RIGHT_ENCODER_ID = 21;
+        public static final double FRONT_RIGHT_ENCODER_OFFSET = -2.464;
+        // private static final double FRONT_RIGHT_ENCODER_OFFSET = 0;
+
+        // Back Left
+        public static final int BACK_LEFT_DRIVE_MOTOR_ID = 15;
+        public static final int BACK_LEFT_STEER_MOTOR_ID = 14;
+        public static final int BACK_LEFT_ENCODER_ID = 20;
+        public static final double BACK_LEFT_ENCODER_OFFSET = -0.966;
+        // private static final double BACK_LEFT_ENCODER_OFFSET = 0;
+
+        // Back Right
+        public static final int BACK_RIGHT_DRIVE_MOTOR_ID = 10;
+        public static final int BACK_RIGHT_STEER_MOTOR_ID = 6;
+        public static final int BACK_RIGHT_ENCODER_ID = 12;
+        public static final double BACK_RIGHT_ENCODER_OFFSET = -2.666;
+        public static final double STEER_GEAR_RATIO = 21.428571428571428571428571428571;
     }
 
     public static class IndexerConstants {
-        public static final int INDEX_MOTOR_ID = 12;
+        public static final int INDEX_MOTOR_ID = 40;
 
         public static final MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs()
                 .withNeutralMode(NeutralModeValue.Brake);
@@ -59,15 +88,15 @@ public final class Constants {
     }
 
     public static class IntakerConstants {
-        public static final int INTAKE_MOTOR_ID = 13;
+        public static final int INTAKE_MOTOR_ID = 30;
 
         public static final Measure<Voltage> intakeVoltage = Volts.of(-8);
     }
 
     public static class ShooterConstants {
-        public static final int LEFT_SHOOTER_MOTOR_ID = 14;
-        public static final int RIGHT_SHOOTER_MOTOR_ID = 15;
-        public static final int ARM_MOTOR_ID = 16;
+        public static final int LEFT_SHOOTER_MOTOR_ID = 41;
+        public static final int RIGHT_SHOOTER_MOTOR_ID = 42;
+        public static final int ARM_MOTOR_ID = 43;
 
         // Shooter gains when deploying shooter to desired angle
         public static final Slot0Configs armGainsUp = new Slot0Configs()
