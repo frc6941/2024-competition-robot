@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.util.Color;
 import net.ironpulse.drivers.led.AddressableLEDPattern;
 import net.ironpulse.drivers.led.patterns.BlinkingPattern;
+import net.ironpulse.drivers.led.patterns.RainbowPattern;
 import net.ironpulse.drivers.led.patterns.ScannerPattern;
 import org.littletonrobotics.junction.AutoLog;
 
@@ -15,7 +16,8 @@ public interface IndicatorIO {
         NORMAL(null),
         FINISH_INTAKE(new BlinkingPattern(Color.kGreen, 0.5)),
         SHOOTING(new ScannerPattern(Color.kRed, 2)),
-        FINISH_SHOOT(new BlinkingPattern(Color.kRed, 0.5));
+        FINISH_SHOOT(new BlinkingPattern(Color.kRed, 0.5)),
+        SHOULD_AMPLIFY(new RainbowPattern());
 
         public final AddressableLEDPattern pattern;
 
