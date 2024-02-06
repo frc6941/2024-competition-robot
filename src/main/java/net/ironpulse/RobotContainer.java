@@ -140,6 +140,8 @@ public class RobotContainer {
         operatorController.pov(0).whileTrue(new ShooterDownCommand(shooterSubsystem))
                 .and(() -> Rotations.of(shooterSubsystem.getInputs().armPosition.magnitude()).in(Degrees) > 15);
 
+        operatorController.back().toggleOnTrue(new RainbowCommand(indicatorSubsystem));
+
         operatorController.start().onTrue(new ResetArmCommand(shooterSubsystem));
     }
 
