@@ -5,6 +5,8 @@ import net.ironpulse.Constants;
 import net.ironpulse.subsystems.beambreak.BeamBreakSubsystem;
 import net.ironpulse.subsystems.indexer.IndexerSubsystem;
 
+import static edu.wpi.first.units.Units.Volts;
+
 public class IndexCommand extends Command {
     private final IndexerSubsystem indexerSubsystem;
     private final BeamBreakSubsystem beamBreakSubsystem;
@@ -22,6 +24,11 @@ public class IndexCommand extends Command {
         if (isFinished()) return;
         indexerSubsystem.getIo()
                 .setIndexVoltage(Constants.IndexerConstants.indexVoltage);
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        indexerSubsystem.getIo().setIndexVoltage(Volts.zero());
     }
 
     @Override

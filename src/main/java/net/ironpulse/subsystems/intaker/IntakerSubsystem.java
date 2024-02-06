@@ -4,8 +4,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import lombok.Getter;
 import org.littletonrobotics.junction.Logger;
 
-import static edu.wpi.first.units.Units.Volts;
-
 @Getter
 public class IntakerSubsystem extends SubsystemBase {
     private final IntakerIO io;
@@ -13,7 +11,6 @@ public class IntakerSubsystem extends SubsystemBase {
 
     public IntakerSubsystem(IntakerIO io) {
         this.io = io;
-        setDefaultCommand(run(() -> io.setIntakeVoltage(Volts.of(0))));
     }
 
     @Override

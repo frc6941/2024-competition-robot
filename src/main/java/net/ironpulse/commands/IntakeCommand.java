@@ -34,7 +34,7 @@ public class IntakeCommand extends Command {
     @Override
     public void end(boolean interrupted) {
         intakerSubsystem.getIo()
-                .setIntakeVoltage(Volts.of(0));
+                .setIntakeVoltage(Volts.zero());
         if (interrupted) return;
         indicatorSubsystem
                 .setPattern(IndicatorIO.Patterns.FINISH_INTAKE);
