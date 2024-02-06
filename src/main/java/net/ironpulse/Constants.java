@@ -123,7 +123,11 @@ public final class Constants {
                 .withSensorToMechanismRatio(90d / 24 * 90 / 24 * 84 / 14);
 
         public static final Measure<Voltage> shooterConstantVoltage = Volts.of(-5);
-        public static final Measure<Voltage> shootVoltage = Volts.of(-10);
+        public static final Measure<Voltage> defaultShootVoltage = Volts.of(-6);
+        public static final Measure<Voltage> shortShootVoltage = Volts.of(-7.5);
+        public static final Measure<Distance> shortShootMaxDistance = Meters.of(3.5);
+        public static final Measure<Voltage> farShootVoltage = Volts.of(-10);
+
         public final static Measure<Angle> speakerArmOffset = Degrees.of(-20);
 
         public final static Measure<Angle> ampDeployAngle = Degrees.of(190);

@@ -25,7 +25,8 @@ public class Limelight {
     private static final NetworkTableEntry tx = limelightTable.getEntry("tx");
     private static final NetworkTableEntry ty = limelightTable.getEntry("ty");
 
-    private static final NetworkTableEntry botPose = limelightTable.getEntry("botpose_wpiblue");
+    private static final NetworkTableEntry botPoseWPIBlue = limelightTable.getEntry("botpose_wpiblue");
+    private static final NetworkTableEntry targetPoseCameraSpace = limelightTable.getEntry("targetpose_cameraspace");
 
     /**
      * @return whether there is a target on the camera.
@@ -40,17 +41,26 @@ public class Limelight {
      */
     public static Optional<AprilTagTarget> getTarget() {
         if (!hasTarget()) return Optional.empty();
-        var rawPose = botPose.getDoubleArray(new double[7]);
+        var rawRobotPose = botPoseWPIBlue.getDoubleArray(new double[7]);
+        var rawTargetPose = targetPoseCameraSpace.getDoubleArray(new double[6]);
         return Optional.of(
                 new AprilTagTarget(
                         new Translation2d(tx.getDouble(0), ty.getDouble(0)),
-                        Microseconds.of(rawPose[6]),
+                        Microseconds.of(rawRobotPose[6]),
                         new Pose3d(
-                                new Translation3d(rawPose[0], rawPose[1], rawPose[2]),
+                                new Translation3d(rawRobotPose[0], rawRobotPose[1], rawRobotPose[2]),
                                 new Rotation3d(
-                                        Radians.convertFrom(rawPose[3], Degrees),
-                                        Radians.convertFrom(rawPose[4], Degrees),
-                                        Radians.convertFrom(rawPose[5], Degrees)
+                                        Radians.convertFrom(rawRobotPose[3], Degrees),
+                                        Radians.convertFrom(rawRobotPose[4], Degrees),
+                                        Radians.convertFrom(rawRobotPose[5], Degrees)
+                                )
+                        ),
+                        new Pose3d(
+                                new Translation3d(rawTargetPose[0], rawTargetPose[1], rawTargetPose[2]),
+                                new Rotation3d(
+                                        Radians.convertFrom(rawTargetPose[3], Degrees),
+                                        Radians.convertFrom(rawTargetPose[4], Degrees),
+                                        Radians.convertFrom(rawTargetPose[5], Degrees)
                                 )
                         )
                 )
@@ -60,7 +70,8 @@ public class Limelight {
     public record AprilTagTarget(
             Translation2d position,
             Measure<Time> latency,
-            Pose3d botPoseWPIBlue
+            Pose3d botPoseWPIBlue,
+            Pose3d targetPoseCameraSpace
     ) {
 
     }
