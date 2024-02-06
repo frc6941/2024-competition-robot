@@ -1,9 +1,6 @@
 package net.ironpulse;
 
-import com.ctre.phoenix6.configs.FeedbackConfigs;
-import com.ctre.phoenix6.configs.MotionMagicConfigs;
-import com.ctre.phoenix6.configs.MotorOutputConfigs;
-import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.*;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.units.*;
 
@@ -93,7 +90,7 @@ public final class Constants {
     public static class IntakerConstants {
         public static final int INTAKE_MOTOR_ID = 30;
 
-        public static final Measure<Voltage> intakeVoltage = Volts.of(-8);
+        public static final Measure<Voltage> intakeVoltage = Volts.of(-7.5);
     }
 
     public static class ShooterConstants {
@@ -109,6 +106,11 @@ public final class Constants {
                 .withKV(0.12)
                 .withKS(0.25);
 
+        public static final Slot1Configs armGainsDown = new Slot1Configs()
+                .withKP(30)
+                .withKI(0)
+                .withKD(0);
+
         public static final Measure<Current> armZeroCurrent = Amps.of(1.2);
         public static final Measure<Voltage> armZeroVoltage = Volts.of(-2);
 
@@ -122,16 +124,16 @@ public final class Constants {
         public static final FeedbackConfigs feedbackConfigs = new FeedbackConfigs()
                 .withSensorToMechanismRatio(90d / 24 * 90 / 24 * 84 / 14);
 
-        public static final Measure<Voltage> shooterConstantVoltage = Volts.of(-5);
-        public static final Measure<Voltage> defaultShootVoltage = Volts.of(-6);
-        public static final Measure<Voltage> shortShootVoltage = Volts.of(-7.5);
-        public static final Measure<Distance> shortShootMaxDistance = Meters.of(3.5);
+        public static final Measure<Voltage> shooterConstantVoltage = Volts.of(-2);
+        public static final Measure<Voltage> defaultShootVoltage = Volts.of(-10);
+        public static final Measure<Voltage> shortShootVoltage = Volts.of(-8);
+        public static final Measure<Distance> shortShootMaxDistance = Meters.of(3);
         public static final Measure<Voltage> farShootVoltage = Volts.of(-10);
 
         public final static Measure<Angle> speakerArmOffset = Degrees.of(-20);
 
         public final static Measure<Angle> ampDeployAngle = Degrees.of(190);
-        public final static Measure<Angle> parallelDeployAngle = Degrees.of(90);
+        public static final Measure<Voltage> manualAimingVoltage = Volts.of(2);
     }
 
     public static class BeamBreakConstants {

@@ -15,6 +15,7 @@ import net.ironpulse.commands.*;
 import net.ironpulse.commands.autos.AutoIntakeCommand;
 import net.ironpulse.commands.autos.AutoPreShootCommand;
 import net.ironpulse.commands.autos.AutoShootCommand;
+import net.ironpulse.commands.autos.AutoShootWithAngleCommand;
 import net.ironpulse.subsystems.beambreak.BeamBreakIORev;
 import net.ironpulse.subsystems.beambreak.BeamBreakSubsystem;
 import net.ironpulse.subsystems.indexer.IndexerIOTalonFX;
@@ -31,7 +32,8 @@ import net.ironpulse.subsystems.swerve.*;
 import net.ironpulse.utils.Utils;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
-import static edu.wpi.first.units.Units.Seconds;
+import static edu.wpi.first.units.Units.*;
+import static net.ironpulse.Constants.ShooterConstants.shooterConstantVoltage;
 
 public class RobotContainer {
     @Getter
@@ -59,8 +61,8 @@ public class RobotContainer {
                         () -> -driverController.getLeftY(),
                         () -> -driverController.getLeftX(),
                         () -> -driverController.getRightX()));
-        driverController.x().onTrue(Commands.runOnce(swerveSubsystem::stopWithX, swerveSubsystem));
-        driverController.b().onTrue(
+        driverController.b().onTrue(Commands.runOnce(swerveSubsystem::stopWithX, swerveSubsystem));
+        driverController.start().onTrue(
                 Commands.runOnce(() -> swerveSubsystem.setPose(
                                         new Pose2d(swerveSubsystem.getPose().getTranslation(), new Rotation2d())),
                                 swerveSubsystem)
@@ -75,6 +77,19 @@ public class RobotContainer {
                         new RumbleCommand(driverController.getHID(), Seconds.of(1))
                 )
         );
+        driverController.leftTrigger().whileTrue(
+                Commands.sequence(
+                        Commands.parallel(
+                                new IntakeCommand(intakerSubsystem, beamBreakSubsystem, indicatorSubsystem),
+                                new IndexCommand(indexerSubsystem, beamBreakSubsystem)
+                        ),
+                        new RumbleCommand(driverController.getHID(), Seconds.of(1))
+                )
+        );
+        driverController.rightTrigger().whileTrue(Commands.parallel(
+                new IntakeOutCommand(intakerSubsystem),
+                new IndexOutCommand(indexerSubsystem)));
+
 
         operatorController.rightTrigger().whileTrue(
                 Commands.sequence(
@@ -105,18 +120,21 @@ public class RobotContainer {
                 )
         );
 
-        operatorController.x().whileTrue(
-                Commands.sequence(
-                        new ParallelShootCommand(
-                                shooterSubsystem,
-                                indexerSubsystem,
-                                beamBreakSubsystem,
-                                indicatorSubsystem,
-                                () -> operatorController.getHID().getAButton()
-                        ),
-                        new RumbleCommand(driverController.getHID(), Seconds.of(1))
-                )
-        );
+        operatorController.a().whileTrue(new ShootWithoutAimingCommand(indicatorSubsystem, beamBreakSubsystem,
+                shooterSubsystem, indexerSubsystem, () -> operatorController.getHID().getRightBumper()));
+        operatorController.b().whileTrue(new ParallelShootCommand(shooterSubsystem,
+                indexerSubsystem, beamBreakSubsystem, indicatorSubsystem,
+                () -> operatorController.getHID().getRightBumper(), Degrees.of(30)));
+        operatorController.x().whileTrue(new ParallelShootCommand(shooterSubsystem,
+                indexerSubsystem, beamBreakSubsystem, indicatorSubsystem,
+                () -> operatorController.getHID().getRightBumper(), Degrees.of(46)));
+        operatorController.y().whileTrue(new ParallelShootCommand(shooterSubsystem,
+                indexerSubsystem, beamBreakSubsystem, indicatorSubsystem,
+                () -> operatorController.getHID().getRightBumper(), Degrees.of(62)));
+
+        operatorController.pov(180).whileTrue(new ShooterUpCommand(shooterSubsystem));
+        operatorController.pov(0).whileTrue(new ShooterDownCommand(shooterSubsystem))
+                .and(() -> Rotations.of(shooterSubsystem.getInputs().armPosition.magnitude()).in(Degrees) > 15);
 
         operatorController.start().onTrue(new ResetArmCommand(shooterSubsystem));
     }
@@ -130,6 +148,12 @@ public class RobotContainer {
                 new AutoIntakeCommand(intakerSubsystem, indexerSubsystem, beamBreakSubsystem));
         NamedCommands.registerCommand("AutoPreShoot",
                 new AutoPreShootCommand(shooterSubsystem));
+        NamedCommands.registerCommand("ShootNearSpeaker",
+                new AutoShootWithAngleCommand(shooterSubsystem, indexerSubsystem, 30));
+        NamedCommands.registerCommand("ShootOnLine",
+                new AutoShootWithAngleCommand(shooterSubsystem, indexerSubsystem, 46));
+        NamedCommands.registerCommand("ShootAtLaunchPad",
+                new AutoShootWithAngleCommand(shooterSubsystem, indexerSubsystem, 62));
         autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
         // Set up SysId routines
         autoChooser.addOption(
@@ -207,5 +231,6 @@ public class RobotContainer {
         configureAutos();
         configureKeyBindings();
         indicatorSubsystem.setPattern(IndicatorIO.Patterns.NORMAL);
+        shooterSubsystem.getIo().setShooterVoltage(shooterConstantVoltage);
     }
 }

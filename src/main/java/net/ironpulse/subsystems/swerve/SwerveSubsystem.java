@@ -5,6 +5,9 @@ import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import com.pathplanner.lib.util.ReplanningConfig;
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.Nat;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -14,6 +17,8 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -29,6 +34,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import static edu.wpi.first.units.Units.*;
+import static edu.wpi.first.wpilibj.RobotState.isAutonomous;
 import static net.ironpulse.Constants.SwerveConstants.*;
 
 public class SwerveSubsystem extends SubsystemBase {
@@ -120,11 +126,23 @@ public class SwerveSubsystem extends SubsystemBase {
 
         // Update pose
         Limelight.getTarget()
-                .ifPresent(target ->
-                        addVisionMeasurement(
-                                target.botPoseWPIBlue().toPose2d(),
-                                Microseconds.of(Logger.getTimestamp()).minus(target.latency()).in(Seconds)
-                        ));
+                .ifPresent(target -> {
+                    if (isAutonomous()) {
+                        return;
+                    }
+                    var distanceToTag = target.targetPoseCameraSpace().relativeTo(target.botPoseWPIBlue()).getTranslation().getNorm();
+                    var distanceToTag2 = distanceToTag * distanceToTag;
+                    var defaultDevs = VecBuilder.fill(0.3, 0.3, Math.toRadians(45));
+                    Matrix<N3, N1> visionStdMatBuilder = new Matrix<>(Nat.N3(), Nat.N1());
+                    visionStdMatBuilder.set(0, 0, defaultDevs.get(0, 0) * distanceToTag2);
+                    visionStdMatBuilder.set(1, 0, defaultDevs.get(1, 0) * distanceToTag2);
+                    visionStdMatBuilder.set(2, 0, Math.atan(Math.tan(defaultDevs.get(2, 0)) * distanceToTag2 * distanceToTag));
+                    addVisionMeasurement(
+                            target.botPoseWPIBlue().toPose2d(),
+                            Microseconds.of(Logger.getTimestamp()).minus(target.latency()).in(Seconds),
+                            visionStdMatBuilder
+                    );
+                });
 
         // Stop moving when disabled
         if (DriverStation.isDisabled()) {
@@ -281,6 +299,10 @@ public class SwerveSubsystem extends SubsystemBase {
      */
     public void addVisionMeasurement(Pose2d visionPose, double timestamp) {
         poseEstimator.addVisionMeasurement(visionPose, timestamp);
+    }
+
+    public void addVisionMeasurement(Pose2d visionPose, double timestamp, Matrix<N3, N1> visionMeasurementStdDevs) {
+        poseEstimator.addVisionMeasurement(visionPose, timestamp, visionMeasurementStdDevs);
     }
 
     /**

@@ -4,7 +4,6 @@ import edu.wpi.first.units.*;
 import org.littletonrobotics.junction.AutoLog;
 
 import static edu.wpi.first.units.Units.*;
-import static edu.wpi.first.units.Units.Amps;
 
 public interface ShooterIO {
     @AutoLog
@@ -42,5 +41,8 @@ public interface ShooterIO {
     }
 
     default void setArmPosition(Measure<Angle> rad) {
+    }
+
+    default void setArmPosition(Measure<Angle> rad, int slot) {
     }
 }
