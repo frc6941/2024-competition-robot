@@ -1,47 +1,49 @@
 package net.ironpulse.commands;
 
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 import net.ironpulse.Constants;
-import net.ironpulse.RobotContainer;
-import net.ironpulse.subsystems.IndicatorSubsystem;
-import net.ironpulse.subsystems.IntakerSubsystem;
+import net.ironpulse.subsystems.beambreak.BeamBreakSubsystem;
+import net.ironpulse.subsystems.indicator.IndicatorIO;
+import net.ironpulse.subsystems.indicator.IndicatorSubsystem;
+import net.ironpulse.subsystems.intaker.IntakerSubsystem;
+
+import static edu.wpi.first.units.Units.Volts;
 
 public class IntakeCommand extends Command {
     private final IntakerSubsystem intakerSubsystem;
-    private final RobotContainer robotContainer;
+    private final BeamBreakSubsystem beamBreakSubsystem;
+    private final IndicatorSubsystem indicatorSubsystem;
 
     public IntakeCommand(
-            RobotContainer robotContainer,
-            IntakerSubsystem intakerSubsystem
+            IntakerSubsystem intakerSubsystem,
+            BeamBreakSubsystem beamBreakSubsystem,
+            IndicatorSubsystem indicatorSubsystem
     ) {
         this.intakerSubsystem = intakerSubsystem;
-        this.robotContainer = robotContainer;
-        //addRequirements(intakerSubsystem);
+        this.beamBreakSubsystem = beamBreakSubsystem;
+        this.indicatorSubsystem = indicatorSubsystem;
     }
 
     @Override
     public void execute() {
         if (isFinished()) return;
-        intakerSubsystem.getIntakerMotor()
-                .setVoltage(Constants.IntakerConstants.intakeVoltage.magnitude());
+        intakerSubsystem.getIo()
+                .setIntakeVoltage(Constants.IntakerConstants.intakeVoltage);
     }
 
     @Override
     public void end(boolean interrupted) {
-        intakerSubsystem.getIntakerMotor()
-                .setVoltage(0);
-        robotContainer.getDriverController().getHID()
-                .setRumble(GenericHID.RumbleType.kBothRumble, 1);
-        robotContainer.getIndicatorSubsystem()
-                .setPattern(IndicatorSubsystem.Patterns.FINISH_INTAKE);
-        robotContainer.getDriverController().getHID()
-                .setRumble(GenericHID.RumbleType.kBothRumble, 0);
+        intakerSubsystem.getIo()
+                .setIntakeVoltage(Volts.zero());
+        if (interrupted) return;
+        indicatorSubsystem
+                .setPattern(IndicatorIO.Patterns.FINISH_INTAKE);
     }
+
 
     @Override
     public boolean isFinished() {
-        return robotContainer.getBeamBreakSubsystem().getIndexerBeamBreak().get() &&
-                !robotContainer.getBeamBreakSubsystem().getIntakerBeamBreak().get();
+        return beamBreakSubsystem.getInputs().isIndexerBeamBreakOn &&
+                !beamBreakSubsystem.getInputs().isIntakerBeamBreakOn;
     }
 }

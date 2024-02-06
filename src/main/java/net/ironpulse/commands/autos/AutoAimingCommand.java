@@ -1,15 +1,17 @@
 package net.ironpulse.commands.autos;
 
-import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import net.ironpulse.Constants;
 import net.ironpulse.drivers.Limelight;
-import net.ironpulse.subsystems.ShooterSubsystem;
+import net.ironpulse.subsystems.shooter.ShooterSubsystem;
+
+import static edu.wpi.first.units.Units.Radians;
+import static net.ironpulse.Constants.ShooterConstants.speakerArmOffset;
 
 public class AutoAimingCommand extends Command {
     private final ShooterSubsystem shooterSubsystem;
+
     private final Timer timer = new Timer();
 
     public AutoAimingCommand(ShooterSubsystem shooterSubsystem) {
@@ -24,12 +26,10 @@ public class AutoAimingCommand extends Command {
     @Override
     public void execute() {
         Limelight.getTarget()
-                .ifPresent(target -> shooterSubsystem
-                        .getArmMotor()
-                        .setControl(new MotionMagicVoltage(
-                                Units.degreesToRotations(90 - target.position().getY() +
-                                        Constants.ShooterConstants.speakerArmOffset.magnitude())))
-                );
+                .ifPresent(target -> shooterSubsystem.getIo().setArmPosition(
+                        Radians.of(Units.degreesToRadians(90 -
+                                target.position().getY() - speakerArmOffset.magnitude()))
+                ));
     }
 
     @Override

@@ -1,29 +1,32 @@
 package net.ironpulse.commands;
 
+import edu.wpi.first.units.Angle;
+import edu.wpi.first.units.Measure;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import net.ironpulse.RobotContainer;
-import net.ironpulse.subsystems.IndexerSubsystem;
-import net.ironpulse.subsystems.ShooterSubsystem;
+import net.ironpulse.subsystems.beambreak.BeamBreakSubsystem;
+import net.ironpulse.subsystems.indexer.IndexerSubsystem;
+import net.ironpulse.subsystems.indicator.IndicatorSubsystem;
+import net.ironpulse.subsystems.shooter.ShooterSubsystem;
 
-import java.util.function.Supplier;
+import java.util.function.BooleanSupplier;
 
 public class ParallelShootCommand extends ParallelCommandGroup {
-
     public ParallelShootCommand(
-            RobotContainer robotContainer,
             ShooterSubsystem shooterSubsystem,
             IndexerSubsystem indexerSubsystem,
-            Supplier<Boolean> confirmation,
-            int angle
+            BeamBreakSubsystem beamBreakSubsystem,
+            IndicatorSubsystem indicatorSubsystem,
+            BooleanSupplier confirmation,
+            Measure<Angle> angle
     ) {
         addCommands(
-                new ParallelAimingCommand(shooterSubsystem,angle),
-                new PreShootCommand(shooterSubsystem, robotContainer),
+                new ParallelAimingCommand(shooterSubsystem, angle),
+                new PreShootCommand(shooterSubsystem, indicatorSubsystem),
                 Commands.sequence(
-                        new WaitUntilCommand(confirmation::get),
-                        new DeliverNoteCommand(indexerSubsystem, robotContainer)
+                        new WaitUntilCommand(confirmation),
+                        new DeliverNoteCommand(indexerSubsystem, beamBreakSubsystem, indicatorSubsystem)
                 )
         );
     }

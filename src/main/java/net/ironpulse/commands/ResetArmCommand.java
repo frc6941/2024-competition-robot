@@ -1,7 +1,7 @@
 package net.ironpulse.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import net.ironpulse.subsystems.ShooterSubsystem;
+import net.ironpulse.subsystems.shooter.ShooterSubsystem;
 
 public class ResetArmCommand extends Command {
     private final ShooterSubsystem shooterSubsystem;
@@ -12,11 +12,11 @@ public class ResetArmCommand extends Command {
 
     @Override
     public void initialize() {
-        shooterSubsystem.setHomed(false);
+        shooterSubsystem.getIo().setHomed(false);
     }
 
     @Override
     public boolean isFinished() {
-        return shooterSubsystem.isHomed();
+        return shooterSubsystem.getInputs().homed;
     }
 }

@@ -3,32 +3,27 @@ package net.ironpulse.commands;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import net.ironpulse.RobotContainer;
-import net.ironpulse.subsystems.IndexerSubsystem;
-import net.ironpulse.subsystems.ShooterSubsystem;
+import net.ironpulse.subsystems.beambreak.BeamBreakSubsystem;
+import net.ironpulse.subsystems.indexer.IndexerSubsystem;
+import net.ironpulse.subsystems.indicator.IndicatorSubsystem;
+import net.ironpulse.subsystems.shooter.ShooterSubsystem;
 
-import java.util.function.Supplier;
+import java.util.function.BooleanSupplier;
 
-/**
- * This command will first aim the Amp and at the same time set the shooter to a voltage.
- * When the command get confirmation from driver, the indexer will deliver the note into
- * the shooter and finish a shot.
- * <p>
- * End Condition: Once robot state transferred from SHOOTING to IDLE
- */
 public class AmpShootCommand extends ParallelCommandGroup {
     public AmpShootCommand(
-            RobotContainer robotContainer,
             ShooterSubsystem shooterSubsystem,
             IndexerSubsystem indexerSubsystem,
-            Supplier<Boolean> confirmation
+            BeamBreakSubsystem beamBreakSubsystem,
+            IndicatorSubsystem indicatorSubsystem,
+            BooleanSupplier confirmation
     ) {
         addCommands(
                 new AmpAimingCommand(shooterSubsystem),
-                new PreShootCommand(shooterSubsystem, robotContainer),
+                new PreShootCommand(shooterSubsystem, indicatorSubsystem),
                 Commands.sequence(
-                        new WaitUntilCommand(confirmation::get),
-                        new DeliverNoteCommand(indexerSubsystem, robotContainer)
+                        new WaitUntilCommand(confirmation),
+                        new DeliverNoteCommand(indexerSubsystem, beamBreakSubsystem, indicatorSubsystem)
                 )
         );
     }

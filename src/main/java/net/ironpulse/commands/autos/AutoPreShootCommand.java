@@ -1,10 +1,10 @@
 package net.ironpulse.commands.autos;
 
-import com.ctre.phoenix6.controls.Follower;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import net.ironpulse.Constants;
-import net.ironpulse.subsystems.ShooterSubsystem;
+import net.ironpulse.subsystems.shooter.ShooterSubsystem;
+
+import static net.ironpulse.Constants.ShooterConstants.defaultShootVoltage;
 
 public class AutoPreShootCommand extends Command {
     private final ShooterSubsystem shooterSubsystem;
@@ -21,13 +21,7 @@ public class AutoPreShootCommand extends Command {
 
     @Override
     public void execute() {
-        shooterSubsystem.getShootMotorLeft()
-                .setVoltage(Constants.ShooterConstants.shortShootVoltage.magnitude());
-        shooterSubsystem.getShootMotorRight()
-                .setControl(
-                        new Follower(Constants.ShooterConstants.SHOOTER_L_MOTOR_ID,
-                                true)
-                );
+        shooterSubsystem.getIo().setShooterVoltage(defaultShootVoltage);
     }
 
     @Override

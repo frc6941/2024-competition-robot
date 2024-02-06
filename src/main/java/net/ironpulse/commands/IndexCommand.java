@@ -2,37 +2,38 @@ package net.ironpulse.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import net.ironpulse.Constants;
-import net.ironpulse.RobotContainer;
-import net.ironpulse.subsystems.IndexerSubsystem;
+import net.ironpulse.subsystems.beambreak.BeamBreakSubsystem;
+import net.ironpulse.subsystems.indexer.IndexerSubsystem;
+
+import static edu.wpi.first.units.Units.Volts;
 
 public class IndexCommand extends Command {
     private final IndexerSubsystem indexerSubsystem;
-    private final RobotContainer robotContainer;
+    private final BeamBreakSubsystem beamBreakSubsystem;
 
     public IndexCommand(
-            RobotContainer robotContainer,
-            IndexerSubsystem indexerSubsystem
+            IndexerSubsystem indexerSubsystem,
+            BeamBreakSubsystem beamBreakSubsystem
     ) {
         this.indexerSubsystem = indexerSubsystem;
-        this.robotContainer = robotContainer;
-        //addRequirements(indexerSubsystem);
+        this.beamBreakSubsystem = beamBreakSubsystem;
     }
 
     @Override
     public void execute() {
         if (isFinished()) return;
-        indexerSubsystem.getIndexerMotor()
-                .setVoltage(Constants.IndexerConstants.indexVoltage.magnitude());
+        indexerSubsystem.getIo()
+                .setIndexVoltage(Constants.IndexerConstants.indexVoltage);
     }
 
     @Override
     public void end(boolean interrupted) {
-        indexerSubsystem.getIndexerMotor().setVoltage(0);
+        indexerSubsystem.getIo().setIndexVoltage(Volts.zero());
     }
 
     @Override
     public boolean isFinished() {
-        return robotContainer.getBeamBreakSubsystem().getIndexerBeamBreak().get() &&
-                !robotContainer.getBeamBreakSubsystem().getIntakerBeamBreak().get();
+        return beamBreakSubsystem.getInputs().isIndexerBeamBreakOn &&
+                !beamBreakSubsystem.getInputs().isIntakerBeamBreakOn;
     }
 }

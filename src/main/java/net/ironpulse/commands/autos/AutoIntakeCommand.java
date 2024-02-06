@@ -2,10 +2,13 @@ package net.ironpulse.commands.autos;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import net.ironpulse.Constants;
-import net.ironpulse.subsystems.BeamBreakSubsystem;
-import net.ironpulse.subsystems.IndexerSubsystem;
-import net.ironpulse.subsystems.IntakerSubsystem;
+import net.ironpulse.subsystems.beambreak.BeamBreakSubsystem;
+import net.ironpulse.subsystems.indexer.IndexerSubsystem;
+import net.ironpulse.subsystems.intaker.IntakerSubsystem;
+
+import static edu.wpi.first.units.Units.Volts;
+import static net.ironpulse.Constants.IndexerConstants.indexVoltage;
+import static net.ironpulse.Constants.IntakerConstants.intakeVoltage;
 
 public class AutoIntakeCommand extends Command {
     private final IntakerSubsystem intakerSubsystem;
@@ -22,7 +25,6 @@ public class AutoIntakeCommand extends Command {
         this.intakerSubsystem = intakerSubsystem;
         this.indexerSubsystem = indexerSubsystem;
         this.beamBreakSubsystem = beamBreakSubsystem;
-        //addRequirements(intakerSubsystem, indexerSubsystem, beamBreakSubsystem);
     }
 
     @Override
@@ -32,21 +34,20 @@ public class AutoIntakeCommand extends Command {
 
     @Override
     public void execute() {
-        intakerSubsystem.getIntakerMotor()
-                .setVoltage(Constants.IntakerConstants.intakeVoltage.magnitude());
-        indexerSubsystem.getIndexerMotor()
-                .setVoltage(Constants.IndexerConstants.indexVoltage.magnitude());
+        intakerSubsystem.getIo().setIntakeVoltage(intakeVoltage);
+        indexerSubsystem.getIo().setIndexVoltage(indexVoltage);
     }
 
     @Override
     public void end(boolean interrupted) {
-        intakerSubsystem.getIntakerMotor().setVoltage(0);
-        indexerSubsystem.getIndexerMotor().setVoltage(0);
+        intakerSubsystem.getIo().setIntakeVoltage(Volts.zero());
+        indexerSubsystem.getIo().setIndexVoltage(Volts.zero());
     }
 
     @Override
     public boolean isFinished() {
-        return beamBreakSubsystem.getIndexerBeamBreak().get() &&
-                !beamBreakSubsystem.getIntakerBeamBreak().get() || timer.hasElapsed(2);
+        return beamBreakSubsystem.getInputs().isIndexerBeamBreakOn &&
+                !beamBreakSubsystem.getInputs().isIntakerBeamBreakOn ||
+                timer.hasElapsed(2);
     }
 }

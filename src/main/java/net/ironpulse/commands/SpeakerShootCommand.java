@@ -1,28 +1,34 @@
 package net.ironpulse.commands;
 
-import edu.wpi.first.wpilibj2.command.*;
-import net.ironpulse.RobotContainer;
-import net.ironpulse.subsystems.IndexerSubsystem;
-import net.ironpulse.subsystems.ShooterSubsystem;
-import net.ironpulse.subsystems.SwerveSubsystem;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import net.ironpulse.subsystems.beambreak.BeamBreakSubsystem;
+import net.ironpulse.subsystems.indexer.IndexerSubsystem;
+import net.ironpulse.subsystems.indicator.IndicatorSubsystem;
+import net.ironpulse.subsystems.shooter.ShooterSubsystem;
+import net.ironpulse.subsystems.swerve.SwerveSubsystem;
 
-import java.util.function.Supplier;
+import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
 
 public class SpeakerShootCommand extends ParallelCommandGroup {
-
     public SpeakerShootCommand(
-            RobotContainer robotContainer,
             SwerveSubsystem swerveSubsystem,
             ShooterSubsystem shooterSubsystem,
             IndexerSubsystem indexerSubsystem,
-            Supplier<Boolean> confirmation
+            BeamBreakSubsystem beamBreakSubsystem,
+            IndicatorSubsystem indicatorSubsystem,
+            BooleanSupplier confirmation,
+            DoubleSupplier xSupplier,
+            DoubleSupplier ySupplier
     ) {
         addCommands(
-                new SpeakerAimingCommand(robotContainer, shooterSubsystem, swerveSubsystem),
-                new PreShootCommand(shooterSubsystem, robotContainer),
+                new SpeakerAimingCommand(swerveSubsystem, shooterSubsystem, xSupplier, ySupplier),
+                new PreShootCommand(shooterSubsystem, indicatorSubsystem),
                 Commands.sequence(
-                        new WaitUntilCommand(confirmation::get),
-                        new DeliverNoteCommand(indexerSubsystem, robotContainer)
+                        new WaitUntilCommand(confirmation),
+                        new DeliverNoteCommand(indexerSubsystem, beamBreakSubsystem, indicatorSubsystem)
                 )
         );
     }
