@@ -17,15 +17,19 @@ import net.ironpulse.commands.autos.AutoPreShootCommand;
 import net.ironpulse.commands.autos.AutoShootCommand;
 import net.ironpulse.commands.autos.AutoShootWithAngleCommand;
 import net.ironpulse.subsystems.beambreak.BeamBreakIORev;
+import net.ironpulse.subsystems.beambreak.BeamBreakIOSim;
 import net.ironpulse.subsystems.beambreak.BeamBreakSubsystem;
+import net.ironpulse.subsystems.indexer.IndexerIOSim;
 import net.ironpulse.subsystems.indexer.IndexerIOTalonFX;
 import net.ironpulse.subsystems.indexer.IndexerSubsystem;
 import net.ironpulse.subsystems.indicator.IndicatorIO;
 import net.ironpulse.subsystems.indicator.IndicatorIOARGB;
 import net.ironpulse.subsystems.indicator.IndicatorIOSim;
 import net.ironpulse.subsystems.indicator.IndicatorSubsystem;
+import net.ironpulse.subsystems.intaker.IntakerIOSim;
 import net.ironpulse.subsystems.intaker.IntakerIOTalonFX;
 import net.ironpulse.subsystems.intaker.IntakerSubsystem;
+import net.ironpulse.subsystems.shooter.ShooterIOSim;
 import net.ironpulse.subsystems.shooter.ShooterIOTalonFX;
 import net.ironpulse.subsystems.shooter.ShooterSubsystem;
 import net.ironpulse.subsystems.swerve.*;
@@ -222,6 +226,10 @@ public class RobotContainer {
                                 new ModuleIOSim(),
                                 new ModuleIOSim());
                 indicatorSubsystem = new IndicatorSubsystem(new IndicatorIOSim());
+                intakerSubsystem = new IntakerSubsystem(new IntakerIOSim());
+                shooterSubsystem = new ShooterSubsystem(new ShooterIOSim());
+                beamBreakSubsystem = new BeamBreakSubsystem(new BeamBreakIOSim());
+                indexerSubsystem = new IndexerSubsystem(new IndexerIOSim());
                 break;
         }
     }
