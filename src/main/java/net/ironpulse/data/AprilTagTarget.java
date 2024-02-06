@@ -8,6 +8,7 @@ import edu.wpi.first.units.Time;
 public record AprilTagTarget(
         Translation2d position,
         Measure<Time> latency,
-        Pose3d botPose
+        Pose3d botPose,
+        Pose3d targetPoseCameraSpace
 ) {
 }

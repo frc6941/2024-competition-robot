@@ -22,7 +22,7 @@ public class AutoPreShootCommand extends Command {
     @Override
     public void execute() {
         shooterSubsystem.getShootMotorLeft()
-                .setVoltage(Constants.ShooterConstants.shootVoltage.magnitude());
+                .setVoltage(Constants.ShooterConstants.shortShootVoltage.magnitude());
         shooterSubsystem.getShootMotorRight()
                 .setControl(
                         new Follower(Constants.ShooterConstants.SHOOTER_L_MOTOR_ID,

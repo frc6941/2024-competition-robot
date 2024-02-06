@@ -2,6 +2,8 @@ package net.ironpulse.commands;
 
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
+
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import net.ironpulse.Constants;
@@ -38,10 +40,16 @@ public class SpeakerAimingCommand extends Command {
     @Override
     public void execute() {
         var targetOptional = Limelight.getTarget();
+        var offset = Constants.ShooterConstants.speakerArmOffset.magnitude();
         if (targetOptional.isEmpty()) return;
         var target = targetOptional.get();
+        var distance = target.
+                        targetPoseCameraSpace().
+                        getTranslation().
+                        getDistance(new Translation3d());
+        offset += distance * Constants.ShooterConstants.speakerArmOffsetIndex;
         if (!new Compare(90 - target.position().getY()
-                + Constants.ShooterConstants.speakerArmOffset.magnitude(),
+                + offset,
                 shooterSubsystem.getArmMotor().getPosition().getValue())
                 .epsilonEqual(1)
         ) {
