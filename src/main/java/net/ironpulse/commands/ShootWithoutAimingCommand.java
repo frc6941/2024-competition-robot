@@ -1,7 +1,5 @@
 package net.ironpulse.commands;
 
-import edu.wpi.first.units.Angle;
-import edu.wpi.first.units.Measure;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
@@ -10,22 +8,20 @@ import net.ironpulse.subsystems.indexer.IndexerSubsystem;
 import net.ironpulse.subsystems.indicator.IndicatorSubsystem;
 import net.ironpulse.subsystems.shooter.ShooterSubsystem;
 
-import java.util.function.BooleanSupplier;
+import java.util.function.Supplier;
 
-public class ParallelShootCommand extends ParallelCommandGroup {
-    public ParallelShootCommand(
+public class ShootWithoutAimingCommand extends ParallelCommandGroup {
+    public ShootWithoutAimingCommand(
+            IndicatorSubsystem indicatorSubsystem,
+            BeamBreakSubsystem beamBreakSubsystem,
             ShooterSubsystem shooterSubsystem,
             IndexerSubsystem indexerSubsystem,
-            BeamBreakSubsystem beamBreakSubsystem,
-            IndicatorSubsystem indicatorSubsystem,
-            BooleanSupplier confirmation,
-            Measure<Angle> angle
+            Supplier<Boolean> confirmation
     ) {
         addCommands(
-                new ParallelAimingCommand(shooterSubsystem, angle),
                 new PreShootCommand(shooterSubsystem, indicatorSubsystem),
                 Commands.sequence(
-                        new WaitUntilCommand(confirmation),
+                        new WaitUntilCommand(confirmation::get),
                         new DeliverNoteCommand(indexerSubsystem, beamBreakSubsystem, indicatorSubsystem)
                 )
         );
