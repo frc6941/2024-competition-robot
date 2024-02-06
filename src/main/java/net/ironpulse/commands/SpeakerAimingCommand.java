@@ -44,19 +44,21 @@ public class SpeakerAimingCommand extends Command {
         if (targetOptional.isEmpty()) return;
         var target = targetOptional.get();
         var distance = target.
-                        targetPoseCameraSpace().
-                        getTranslation().
-                        getDistance(new Translation3d());
-        offset += distance * Constants.ShooterConstants.speakerArmOffsetIndex;
+                targetPoseCameraSpace().
+                getTranslation().
+                getDistance(new Translation3d());
+        if(distance >= Constants.ShooterConstants.shortShootMaxDistance.magnitude()){
+                offset = Constants.ShooterConstants.speakerArmOffsetFar.magnitude();
+        }
         if (!new Compare(90 - target.position().getY()
                 + offset,
                 shooterSubsystem.getArmMotor().getPosition().getValue())
-                .epsilonEqual(1)
+                .epsilonEqual(3)
         ) {
             shooterSubsystem.getArmMotor()
                     .setControl(new MotionMagicVoltage(
                             Units.degreesToRotations(90 - target.position().getY() +
-                                    Constants.ShooterConstants.speakerArmOffset.magnitude())));
+                                    offset)));
         }
 
         swerveSubsystem.applyRequest(() ->
