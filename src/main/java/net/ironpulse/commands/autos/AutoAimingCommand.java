@@ -4,12 +4,12 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import net.ironpulse.Constants;
 import net.ironpulse.drivers.Limelight;
 import net.ironpulse.subsystems.shooter.ShooterSubsystem;
 
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Radians;
+import static net.ironpulse.Constants.ShooterConstants.*;
 
 public class AutoAimingCommand extends Command {
     private final ShooterSubsystem shooterSubsystem;
@@ -33,30 +33,30 @@ public class AutoAimingCommand extends Command {
 //                                target.position().getY() - speakerArmOffset.magnitude()))
 //                ));
         var targetOptional = Limelight.getTarget();
-        var offset = Constants.ShooterConstants.speakerArmOffset.magnitude();
+        var offset = speakerArmOffset.magnitude();
         if (targetOptional.isEmpty()) return;
         var target = targetOptional.get();
         var distance = target.
                 targetPoseCameraSpace().
                 getTranslation().
                 getDistance(new Translation3d());
-        if (distance >= Constants.ShooterConstants.shortShootMaxDistance.magnitude()) {
-            offset = Constants.ShooterConstants.speakerArmOffsetFar.magnitude();
+        if (distance >= shortShootMaxDistance.magnitude()) {
+            offset = speakerArmOffsetFar.magnitude();
             System.out.println("far shoot: offset = " + offset);
         } else if (distance >= 2.1) {
-            offset = Constants.ShooterConstants.speakerArmOffset.magnitude() +
-                    (distance - 2.1) / (Constants.ShooterConstants.shortShootMaxDistance.magnitude() - 2.1) *
-                            (Constants.ShooterConstants.speakerArmOffsetFar.magnitude() -
-                                    Constants.ShooterConstants.speakerArmOffset.magnitude());
+            offset = speakerArmOffset.magnitude() +
+                    (distance - 2.1) / (shortShootMaxDistance.magnitude() - 2.1) *
+                            (speakerArmOffsetFar.magnitude() -
+                                    speakerArmOffset.magnitude());
             System.out.println("far but not too far: offset = " + offset);
         } else if (distance >= 1.3) {
-            offset = Constants.ShooterConstants.speakerArmOffsetNear.magnitude() +
+            offset = speakerArmOffsetNear.magnitude() +
                     (distance - 1.3) / (2.1 - 1.3) *
-                            (Constants.ShooterConstants.speakerArmOffset.magnitude() -
-                                    Constants.ShooterConstants.speakerArmOffsetNear.magnitude());
+                            (speakerArmOffset.magnitude() -
+                                    speakerArmOffsetNear.magnitude());
             System.out.println("near but not too near: offset = " + offset);
         } else {
-            offset = Constants.ShooterConstants.speakerArmOffsetNear.magnitude();
+            offset = speakerArmOffsetNear.magnitude();
             System.out.println("near shoot: offset = " + offset);
         }
 
