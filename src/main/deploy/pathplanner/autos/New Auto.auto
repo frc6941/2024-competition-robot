@@ -2,15 +2,21 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.66,
-      "y": 6.659999999999999
+      "x": 2,
+      "y": 2
     },
-    "rotation": 60.0
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "ResetArm"
+          }
+        },
         {
           "type": "parallel",
           "data": {
@@ -26,16 +32,9 @@
                 "data": {
                   "commands": [
                     {
-                      "type": "deadline",
+                      "type": "named",
                       "data": {
-                        "commands": [
-                          {
-                            "type": "path",
-                            "data": {
-                              "pathName": "L-N1"
-                            }
-                          }
-                        ]
+                        "name": "AutoShoot"
                       }
                     }
                   ]
@@ -48,5 +47,5 @@
     }
   },
   "folder": null,
-  "choreoAuto": false
+  "choreoAuto": true
 }

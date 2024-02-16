@@ -15,7 +15,7 @@ public class IntakerIOSim implements IntakerIO {
             6.75, 0.025
     );
 
-    private Measure<Voltage> intakeAppliedVoltage = Volts.of(0);
+    private Measure<Voltage> intakeAppliedVoltage = Volts.zero();
 
     @Override
     public void updateInputs(IntakerIOInputs inputs) {

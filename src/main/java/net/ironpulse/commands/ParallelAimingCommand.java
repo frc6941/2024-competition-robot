@@ -23,6 +23,6 @@ public class ParallelAimingCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        shooterSubsystem.getIo().setArmPosition(Radians.zero(), 1);
+        shooterSubsystem.getIo().setArmPosition(Radians.zero());
     }
 }

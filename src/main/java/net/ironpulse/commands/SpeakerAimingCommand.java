@@ -90,6 +90,6 @@ public class SpeakerAimingCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        shooterSubsystem.getIo().setArmPosition(Radians.of(0));
+        shooterSubsystem.getIo().setArmPosition(Radians.zero());
     }
 }
