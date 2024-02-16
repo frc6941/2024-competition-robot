@@ -155,12 +155,12 @@ public class RobotContainer {
         NamedCommands.registerCommand("AutoPreShoot",
                 new AutoPreShootCommand(shooterSubsystem));
         NamedCommands.registerCommand("ShootNearSpeaker",
-                new AutoShootWithAngleCommand(shooterSubsystem, indexerSubsystem, 30));
+                new AutoShootWithAngleCommand(shooterSubsystem, indexerSubsystem, 26));
         NamedCommands.registerCommand("ShootOnLine",
                 new AutoShootWithAngleCommand(shooterSubsystem, indexerSubsystem, 46));
         NamedCommands.registerCommand("ShootAtLaunchPad",
                 new AutoShootWithAngleCommand(shooterSubsystem, indexerSubsystem, 62));
-        autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
+        autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser("Choreo Half"));
         // Set up SysId routines
         autoChooser.addOption(
                 "Drive SysId (Quasistatic Forward)",
