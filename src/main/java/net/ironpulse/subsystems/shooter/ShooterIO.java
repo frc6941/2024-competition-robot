@@ -42,7 +42,4 @@ public interface ShooterIO {
 
     default void setArmPosition(Measure<Angle> rad) {
     }
-
-    default void setArmPosition(Measure<Angle> rad, int slot) {
-    }
 }

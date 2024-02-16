@@ -30,7 +30,7 @@ public class AutoAimingWithAngleCommand extends Command {
 
     @Override
     public void end(boolean isInterrupted) {
-        shooterSubsystem.getIo().setArmPosition(Radians.zero(), 1);
+        shooterSubsystem.getIo().setArmPosition(Radians.zero());
     }
 
     @Override

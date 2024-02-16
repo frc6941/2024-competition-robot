@@ -1,6 +1,9 @@
 package net.ironpulse;
 
-import com.ctre.phoenix6.configs.*;
+import com.ctre.phoenix6.configs.FeedbackConfigs;
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
+import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.units.*;
 
@@ -105,11 +108,6 @@ public final class Constants {
                 .withKD(0.02)
                 .withKV(0.12)
                 .withKS(0.25);
-
-        public static final Slot1Configs armGainsDown = new Slot1Configs()
-                .withKP(30)
-                .withKI(0)
-                .withKD(0);
 
         public static final Measure<Current> armZeroCurrent = Amps.of(1.2);
         public static final Measure<Voltage> armZeroVoltage = Volts.of(-2);

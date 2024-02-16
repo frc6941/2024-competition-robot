@@ -84,11 +84,6 @@ public class ShooterIOSim implements ShooterIO {
     }
 
     @Override
-    public void setArmPosition(Measure<Angle> rad, int slot) {
-        armTalonSim.setState(rad.magnitude(), 0);
-    }
-
-    @Override
     public void setArmPosition(Measure<Angle> rad) {
         armTalonSim.setState(rad.magnitude(), 0);
     }

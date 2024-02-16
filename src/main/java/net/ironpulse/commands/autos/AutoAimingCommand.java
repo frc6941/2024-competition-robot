@@ -40,6 +40,7 @@ public class AutoAimingCommand extends Command {
                 targetPoseCameraSpace().
                 getTranslation().
                 getDistance(new Translation3d());
+        // TODO interpolation
         if (distance >= shortShootMaxDistance.magnitude()) {
             offset = speakerArmOffsetFar.magnitude();
             System.out.println("far shoot: offset = " + offset);
@@ -76,7 +77,7 @@ public class AutoAimingCommand extends Command {
 
     @Override
     public void end(boolean isInterrupted) {
-        shooterSubsystem.getIo().setArmPosition(Radians.zero(), 1);
+        shooterSubsystem.getIo().setArmPosition(Radians.zero());
     }
 
     @Override
