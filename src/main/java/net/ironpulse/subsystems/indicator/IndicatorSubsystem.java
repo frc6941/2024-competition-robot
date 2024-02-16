@@ -11,7 +11,7 @@ public class IndicatorSubsystem extends SubsystemBase {
     private final IndicatorIOInputsAutoLogged inputs = new IndicatorIOInputsAutoLogged();
     private Patterns currentPattern = Patterns.NORMAL;
     @Getter
-    private Patterns lastPattern = Patterns.NORMAL;
+    private Patterns lastPattern = null;
 
     private final Timer timer = new Timer();
 
