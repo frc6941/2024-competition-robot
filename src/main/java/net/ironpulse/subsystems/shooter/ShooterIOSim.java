@@ -25,9 +25,9 @@ public class ShooterIOSim implements ShooterIO {
 
     private boolean homed = false;
 
-    private Measure<Voltage> leftShooterAppliedVoltage = Volts.of(0);
-    private Measure<Voltage> rightShooterAppliedVoltage = Volts.of(0);
-    private Measure<Voltage> armAppliedVoltage = Volts.of(0);
+    private Measure<Voltage> leftShooterAppliedVoltage = Volts.zero();
+    private Measure<Voltage> rightShooterAppliedVoltage = Volts.zero();
+    private Measure<Voltage> armAppliedVoltage = Volts.zero();
 
     @Override
     public void updateInputs(ShooterIOInputs inputs) {
@@ -76,6 +76,11 @@ public class ShooterIOSim implements ShooterIO {
     public void setArmVoltage(Measure<Voltage> volts) {
         armAppliedVoltage = volts;
         armTalonSim.setInputVoltage(volts.magnitude());
+    }
+
+    @Override
+    public void setArmHome(Measure<Angle> rad) {
+        setArmPosition(rad);
     }
 
     @Override

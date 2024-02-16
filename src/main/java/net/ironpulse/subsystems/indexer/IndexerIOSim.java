@@ -14,7 +14,7 @@ public class IndexerIOSim implements IndexerIO {
             DCMotor.getFalcon500Foc(1), 6.75, 0.025
     );
 
-    private Measure<Voltage> indexAppliedVoltage = Volts.of(0);
+    private Measure<Voltage> indexAppliedVoltage = Volts.zero();
 
     @Override
     public void updateInputs(IndexerIOInputs inputs) {

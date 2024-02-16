@@ -8,10 +8,10 @@ import static edu.wpi.first.units.Units.*;
 public interface IntakerIO {
     @AutoLog
     class IntakerIOInputs {
-        public Measure<Velocity<Angle>> intakeVelocity = RadiansPerSecond.of(0);
-        public Measure<Angle> intakePosition = Radians.of(0);
-        public Measure<Voltage> intakeAppliedVoltage = Volts.of(0);
-        public Measure<Current> intakeSupplyCurrent = Amps.of(0);
+        public Measure<Velocity<Angle>> intakeVelocity = RadiansPerSecond.zero();
+        public Measure<Angle> intakePosition = Radians.zero();
+        public Measure<Voltage> intakeAppliedVoltage = Volts.zero();
+        public Measure<Current> intakeSupplyCurrent = Amps.zero();
     }
 
     default void updateInputs(IntakerIOInputs inputs) {

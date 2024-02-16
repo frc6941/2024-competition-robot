@@ -21,6 +21,6 @@ public class ShooterUpCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        shooterSubsystem.getIo().setShooterVoltage(Volts.of(0));
+        shooterSubsystem.getIo().setShooterVoltage(Volts.zero());
     }
 }

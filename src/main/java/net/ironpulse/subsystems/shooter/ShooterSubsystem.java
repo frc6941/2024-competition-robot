@@ -25,8 +25,8 @@ public class ShooterSubsystem extends SubsystemBase {
         Logger.processInputs("Shooter", inputs);
         if (inputs.homed) return;
         if (inputs.armSupplyCurrent.magnitude() > armZeroCurrent.magnitude()) {
-            io.setArmVoltage(Volts.of(0));
-            io.setArmHome(Radians.of(0));
+            io.setArmVoltage(Volts.zero());
+            io.setArmHome(Radians.zero());
             getIo().setHomed(true);
             return;
         }

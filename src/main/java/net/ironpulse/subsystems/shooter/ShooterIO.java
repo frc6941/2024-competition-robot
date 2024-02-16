@@ -10,19 +10,19 @@ public interface ShooterIO {
     class ShooterIOInputs {
         public boolean homed = false;
 
-        public Measure<Velocity<Angle>> leftShooterVelocity = RadiansPerSecond.of(0);
-        public Measure<Angle> leftShooterPosition = Radians.of(0);
-        public Measure<Voltage> leftShooterAppliedVoltage = Volts.of(0);
-        public Measure<Current> leftShooterSupplyCurrent = Amps.of(0);
+        public Measure<Velocity<Angle>> leftShooterVelocity = RadiansPerSecond.zero();
+        public Measure<Angle> leftShooterPosition = Radians.zero();
+        public Measure<Voltage> leftShooterAppliedVoltage = Volts.zero();
+        public Measure<Current> leftShooterSupplyCurrent = Amps.zero();
 
-        public Measure<Velocity<Angle>> rightShooterVelocity = RadiansPerSecond.of(0);
-        public Measure<Angle> rightShooterPosition = Radians.of(0);
-        public Measure<Voltage> rightShooterAppliedVoltage = Volts.of(0);
-        public Measure<Current> rightShooterSupplyCurrent = Amps.of(0);
+        public Measure<Velocity<Angle>> rightShooterVelocity = RadiansPerSecond.zero();
+        public Measure<Angle> rightShooterPosition = Radians.zero();
+        public Measure<Voltage> rightShooterAppliedVoltage = Volts.zero();
+        public Measure<Current> rightShooterSupplyCurrent = Amps.zero();
 
-        public Measure<Angle> armPosition = Radians.of(0);
-        public Measure<Voltage> armAppliedVoltage = Volts.of(0);
-        public Measure<Current> armSupplyCurrent = Amps.of(0);
+        public Measure<Angle> armPosition = Radians.zero();
+        public Measure<Voltage> armAppliedVoltage = Volts.zero();
+        public Measure<Current> armSupplyCurrent = Amps.zero();
     }
 
     default void updateInputs(ShooterIOInputs inputs) {

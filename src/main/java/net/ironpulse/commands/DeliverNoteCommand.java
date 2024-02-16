@@ -31,7 +31,7 @@ public class DeliverNoteCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        indexerSubsystem.getIo().setIndexVoltage(Volts.of(0));
+        indexerSubsystem.getIo().setIndexVoltage(Volts.zero());
         if (interrupted) return;
         indicatorSubsystem
                 .setPattern(IndicatorIO.Patterns.FINISH_SHOOT);

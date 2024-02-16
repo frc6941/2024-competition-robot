@@ -21,6 +21,6 @@ public class IntakeOutCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        intakerSubsystem.getIo().setIntakeVoltage(Volts.of(0));
+        intakerSubsystem.getIo().setIntakeVoltage(Volts.zero());
     }
 }

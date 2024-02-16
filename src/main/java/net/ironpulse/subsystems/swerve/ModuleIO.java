@@ -12,15 +12,15 @@ import static edu.wpi.first.units.Units.*;
 public interface ModuleIO {
     @AutoLog
     class ModuleIOInputs {
-        public Measure<Angle> drivePosition = Radians.of(0);
-        public Measure<Velocity<Angle>> driveVelocity = RadiansPerSecond.of(0);
-        public Measure<Voltage> driveAppliedVoltage = Volts.of(0);
+        public Measure<Angle> drivePosition = Radians.zero();
+        public Measure<Velocity<Angle>> driveVelocity = RadiansPerSecond.zero();
+        public Measure<Voltage> driveAppliedVoltage = Volts.zero();
         public double[] driveCurrentAmps = new double[]{};
 
         public Rotation2d turnAbsolutePosition = new Rotation2d();
         public Rotation2d turnPosition = new Rotation2d();
-        public Measure<Velocity<Angle>> turnVelocity = RadiansPerSecond.of(0);
-        public Measure<Voltage> turnAppliedVoltage = Volts.of(0);
+        public Measure<Velocity<Angle>> turnVelocity = RadiansPerSecond.zero();
+        public Measure<Voltage> turnAppliedVoltage = Volts.zero();
         public double[] turnCurrentAmps = new double[]{};
 
         public double[] odometryTimestamps = new double[]{};

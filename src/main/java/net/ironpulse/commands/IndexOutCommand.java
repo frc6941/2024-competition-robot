@@ -21,6 +21,6 @@ public class IndexOutCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        indexerSubsystem.getIo().setIndexVoltage(Volts.of(0));
+        indexerSubsystem.getIo().setIndexVoltage(Volts.zero());
     }
 }

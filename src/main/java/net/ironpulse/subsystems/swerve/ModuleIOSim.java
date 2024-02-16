@@ -24,8 +24,8 @@ public class ModuleIOSim implements ModuleIO {
     private final DCMotorSim turnSim = new DCMotorSim(DCMotor.getFalcon500Foc(1), 150.0 / 7.0, 0.004);
 
     private final Rotation2d turnAbsoluteInitPosition = new Rotation2d(Math.random() * 2.0 * Math.PI);
-    private Measure<Voltage> driveAppliedVoltage = Volts.of(0);
-    private Measure<Voltage> turnAppliedVoltage = Volts.of(0);
+    private Measure<Voltage> driveAppliedVoltage = Volts.zero();
+    private Measure<Voltage> turnAppliedVoltage = Volts.zero();
 
     @Override
     public void updateInputs(ModuleIOInputs inputs) {
