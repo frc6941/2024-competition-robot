@@ -6,7 +6,8 @@ import org.littletonrobotics.junction.Logger;
 
 import static edu.wpi.first.units.Units.Radians;
 import static edu.wpi.first.units.Units.Volts;
-import static net.ironpulse.Constants.ShooterConstants.*;
+import static net.ironpulse.Constants.ShooterConstants.armZeroCurrent;
+import static net.ironpulse.Constants.ShooterConstants.armZeroVoltage;
 
 @Getter
 public class ShooterSubsystem extends SubsystemBase {

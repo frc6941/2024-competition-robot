@@ -40,6 +40,7 @@ public class ShooterIOTalonFX implements ShooterIO {
     public ShooterIOTalonFX() {
         var armMotorConfig = new TalonFXConfiguration()
                 .withSlot0(armGainsUp)
+                .withSlot1(armGainsDown)
                 .withMotionMagic(motionMagicConfigs)
                 .withMotorOutput(motorOutputConfigs)
                 .withFeedback(feedbackConfigs);
@@ -102,6 +103,11 @@ public class ShooterIOTalonFX implements ShooterIO {
     @Override
     public void setArmVoltage(Measure<Voltage> volts) {
         armTalon.setControl(new VoltageOut(volts.magnitude()));
+    }
+
+    @Override
+    public void setArmHome(Measure<Angle> rad) {
+        armTalon.setPosition(rad.in(Rotations));
     }
 
     @Override
