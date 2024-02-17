@@ -130,14 +130,14 @@ public final class Constants {
                 .withSensorToMechanismRatio(90d / 24 * 90 / 24 * 84 / 14);
 
         public static final Measure<Voltage> shooterConstantVoltage = Volts.of(-2);
-        public static final Measure<Voltage> defaultShootVoltage = Volts.of(-6);
+        public static final Measure<Voltage> defaultShootVoltage = Volts.of(-10);
         public static final Measure<Voltage> shortShootVoltage = Volts.of(-8);
         public static final Measure<Distance> shortShootMaxDistance = Meters.of(2.7);
-        public static final Measure<Voltage> farShootVoltage = Volts.of(-10);
+        public static final Measure<Voltage> farShootVoltage = Volts.of(-11);
 
-        public static final Measure<Angle> speakerArmOffsetNear = Degrees.of(-47);
+        public static final Measure<Angle> speakerArmOffsetNear = Degrees.of(-43);
         public static final Measure<Angle> speakerArmOffset = Degrees.of(-50);
-        public static final Measure<Angle> speakerArmOffsetFar = Degrees.of(-36);
+        public static final Measure<Angle> speakerArmOffsetFar = Degrees.of(-33.5);
 
         public final static Measure<Angle> ampDeployAngle = Degrees.of(190);
         public static final Measure<Voltage> manualAimingVoltage = Volts.of(2);

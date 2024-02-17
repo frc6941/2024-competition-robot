@@ -2,42 +2,29 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 2,
-      "y": 2
+      "x": 1.369679570198059,
+      "y": 5.563625335693359
     },
-    "rotation": 0
+    "rotation": 0.0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "ResetArm"
-          }
-        },
-        {
-          "type": "parallel",
+          "type": "deadline",
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "AutoPreShoot"
+                  "pathName": "C_TEST.1"
                 }
               },
               {
-                "type": "sequential",
+                "type": "named",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "AutoShoot"
-                      }
-                    }
-                  ]
+                  "name": "Intake"
                 }
               }
             ]

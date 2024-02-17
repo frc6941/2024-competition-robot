@@ -38,7 +38,6 @@ import net.ironpulse.utils.Utils;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 import static edu.wpi.first.units.Units.*;
-import static net.ironpulse.Constants.ShooterConstants.shooterConstantVoltage;
 
 public class RobotContainer {
     @Getter
@@ -103,7 +102,7 @@ public class RobotContainer {
                                 indexerSubsystem,
                                 beamBreakSubsystem,
                                 indicatorSubsystem,
-                                () -> operatorController.getHID().getAButton(),
+                                () -> operatorController.getHID().getRightBumper(),
                                 () -> -driverController.getLeftY(),
                                 () -> -driverController.getLeftX()
                         ),
@@ -118,7 +117,7 @@ public class RobotContainer {
                                 indexerSubsystem,
                                 beamBreakSubsystem,
                                 indicatorSubsystem,
-                                () -> operatorController.getHID().getAButton()
+                                () -> operatorController.getHID().getRightBumper()
                         ),
                         new RumbleCommand(Seconds.of(1), driverController.getHID(), operatorController.getHID())
                 )
@@ -241,6 +240,5 @@ public class RobotContainer {
         configureAutos();
         configureKeyBindings();
         indicatorSubsystem.setPattern(IndicatorIO.Patterns.NORMAL);
-        shooterSubsystem.getIo().setShooterVoltage(shooterConstantVoltage);
     }
 }

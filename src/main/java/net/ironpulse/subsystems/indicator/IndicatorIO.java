@@ -6,6 +6,7 @@ import net.ironpulse.drivers.led.AddressableLEDPattern;
 import net.ironpulse.drivers.led.patterns.BlinkingPattern;
 import net.ironpulse.drivers.led.patterns.RainbowPattern;
 import net.ironpulse.drivers.led.patterns.ScannerPattern;
+import net.ironpulse.drivers.led.patterns.SolidColorPattern;
 import org.littletonrobotics.junction.AutoLog;
 
 public interface IndicatorIO {
@@ -17,7 +18,9 @@ public interface IndicatorIO {
         FINISH_INTAKE(new BlinkingPattern(Color.kGreen, 0.5)),
         SHOOTING(new ScannerPattern(Color.kRed, 2)),
         FINISH_SHOOT(new BlinkingPattern(Color.kRed, 0.5)),
-        SHOULD_AMPLIFY(new RainbowPattern());
+        SHOULD_AMPLIFY(new RainbowPattern()),
+        AIMING(new BlinkingPattern(Color.kYellow, 0.5)),
+        AIMED(new SolidColorPattern(Color.kYellow));
 
         public final AddressableLEDPattern pattern;
 
