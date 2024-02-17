@@ -13,7 +13,9 @@ import java.util.Queue;
 
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 
-/** IO implementation for Pigeon2 */
+/**
+ * IO implementation for Pigeon2
+ */
 public class GyroIOPigeon2 implements GyroIO {
     private final Pigeon2 pigeon = new Pigeon2(1, Constants.CAN_BUS_NAME);
     private final StatusSignal<Double> yaw = pigeon.getYaw();
@@ -30,6 +32,11 @@ public class GyroIOPigeon2 implements GyroIO {
         yawTimestampQueue = PhoenixOdometryThread.getInstance().makeTimestampQueue();
         yawPositionQueue =
                 PhoenixOdometryThread.getInstance().registerSignal(pigeon, pigeon.getYaw());
+    }
+
+    @Override
+    public void zeroGyro() {
+        pigeon.setYaw(0.0);
     }
 
     @Override

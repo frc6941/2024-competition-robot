@@ -8,17 +8,19 @@ import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.units.Angle;
+import edu.wpi.first.units.Measure;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -26,6 +28,8 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import net.ironpulse.drivers.Limelight;
 import net.ironpulse.utils.LocalADStarAK;
 import net.ironpulse.utils.Utils;
+import net.ironpulse.utils.swerve.BetterSwerveKinematics;
+import net.ironpulse.utils.swerve.BetterSwerveModuleState;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
@@ -44,7 +48,7 @@ public class SwerveSubsystem extends SubsystemBase {
     private final Module[] modules = new Module[4]; // FL, FR, BL, BR
     private final SysIdRoutine sysId;
 
-    private final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(getModuleTranslations());
+    private final BetterSwerveKinematics kinematics = new BetterSwerveKinematics(getModuleTranslations());
     private Rotation2d rawGyroRotation = new Rotation2d();
     private final SwerveModulePosition[] lastModulePositions =
             new SwerveModulePosition[]{
@@ -55,6 +59,8 @@ public class SwerveSubsystem extends SubsystemBase {
             };
     private final SwerveDrivePoseEstimator poseEstimator =
             new SwerveDrivePoseEstimator(kinematics, rawGyroRotation, lastModulePositions, new Pose2d());
+    private Measure<Angle> lastHeadingRadians;
+    private final PIDController thetaController;
 
     public SwerveSubsystem(
             GyroIO gyroIO,
@@ -67,6 +73,10 @@ public class SwerveSubsystem extends SubsystemBase {
         modules[1] = new Module(frModuleIO, 1);
         modules[2] = new Module(blModuleIO, 2);
         modules[3] = new Module(brModuleIO, 3);
+
+        // Configure heading PID TODO
+        thetaController = new PIDController(0.4, 0, 0.01);
+        thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
         // Start threads (no-op for each if no signals have been created)
         PhoenixOdometryThread.getInstance().start();
@@ -108,6 +118,14 @@ public class SwerveSubsystem extends SubsystemBase {
                                 null,
                                 this)
                 );
+
+        // Zero pigeon
+        zeroGyro();
+    }
+
+    public void zeroGyro() {
+        this.gyroIO.zeroGyro();
+        setPose(new Pose2d(getPose().getTranslation(), new Rotation2d()));
     }
 
     @Override
@@ -195,21 +213,38 @@ public class SwerveSubsystem extends SubsystemBase {
      * @param speeds Speeds in meters/sec
      */
     public void runVelocity(ChassisSpeeds speeds) {
+        // Heading correction (see https://github.com/BroncBotz3481/YAGSL/blob/main/swervelib/SwerveDrive.java#L475)
+        // TODO: swerveDrivePoseEstimator.getEstimatedPosition().getRotation() instead of rawGyroRotation?
+        if (Math.abs(speeds.omegaRadiansPerSecond) < HEADING_CORRECTION_DEADBAND
+                && (Math.abs(speeds.vxMetersPerSecond) > HEADING_CORRECTION_DEADBAND
+                || Math.abs(speeds.vyMetersPerSecond) > HEADING_CORRECTION_DEADBAND)) {
+            speeds.omegaRadiansPerSecond =
+                    thetaController.calculate(rawGyroRotation.getRadians(), lastHeadingRadians.magnitude())
+                            * getMaxAngularSpeedRadPerSec();
+        } else {
+            lastHeadingRadians = Radians.of(rawGyroRotation.getRadians());
+        }
+
+        // Logging purposes
+        SwerveModuleState[] rawStates = new SwerveModuleState[4];
+        SwerveModuleState[] rawOptimizedStates = new SwerveModuleState[4];
+
         // Calculate module setpoints
-        ChassisSpeeds discreteSpeeds = ChassisSpeeds.discretize(speeds, 0.02);
-        SwerveModuleState[] setpointStates = kinematics.toSwerveModuleStates(discreteSpeeds);
-        SwerveDriveKinematics.desaturateWheelSpeeds(setpointStates, maxLinearSpeed.magnitude());
+        BetterSwerveModuleState[] setpointStates = kinematics.toSwerveModuleStates(speeds);
+        BetterSwerveKinematics.desaturateWheelSpeeds(setpointStates, maxLinearSpeed.magnitude());
 
         // Send setpoints to modules
-        SwerveModuleState[] optimizedSetpointStates = new SwerveModuleState[4];
+        BetterSwerveModuleState[] optimizedSetpointStates = new BetterSwerveModuleState[4];
         for (int i = 0; i < 4; i++) {
             // The module returns the optimized state, useful for logging
-            optimizedSetpointStates[i] = modules[i].runSetpoint(setpointStates[i]);
+            optimizedSetpointStates[i] = modules[i].runSetpoint(setpointStates[i], true);
+            rawStates[i] = new SwerveModuleState(setpointStates[i].speedMetersPerSecond, setpointStates[i].angle);
+            rawOptimizedStates[i] = new SwerveModuleState(optimizedSetpointStates[i].speedMetersPerSecond, optimizedSetpointStates[i].angle);
         }
 
         // Log setpoint states
-        Logger.recordOutput("SwerveStates/Setpoints", setpointStates);
-        Logger.recordOutput("SwerveStates/SetpointsOptimized", optimizedSetpointStates);
+        Logger.recordOutput("SwerveStates/Setpoints", rawStates);
+        Logger.recordOutput("SwerveStates/SetpointsOptimized", rawOptimizedStates);
     }
 
     /**

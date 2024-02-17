@@ -1,5 +1,3 @@
-
-
 package net.ironpulse.subsystems.swerve;
 
 import com.ctre.phoenix6.BaseStatusSignal;
@@ -20,7 +18,6 @@ import java.util.Queue;
 
 import static edu.wpi.first.units.Units.*;
 import static net.ironpulse.Constants.SwerveConstants.*;
-import static net.ironpulse.Constants.SwerveConstants.STEER_GEAR_RATIO;
 
 /**
  * Module IO implementation for Talon FX drive motor controller, Talon FX turn motor controller, and
@@ -53,10 +50,6 @@ public class ModuleIOTalonFX implements ModuleIO {
     private final StatusSignal<Double> turnVelocity;
     private final StatusSignal<Double> turnAppliedVolts;
     private final StatusSignal<Double> turnCurrent;
-
-    // Gear ratios for SDS MK4i L2, adjust as necessary
-    private final double DRIVE_GEAR_RATIO = (50.0 / 14.0) * (17.0 / 27.0) * (45.0 / 15.0);
-    private final double TURN_GEAR_RATIO = 150.0 / 7.0;
 
     private final boolean isTurnMotorInverted = true;
     private final Rotation2d absoluteEncoderOffset;
@@ -170,7 +163,7 @@ public class ModuleIOTalonFX implements ModuleIO {
         inputs.driveVelocity =
                 RadiansPerSecond.of(Units.rotationsToRadians(driveVelocity.getValueAsDouble()) / DRIVE_GEAR_RATIO);
         inputs.driveAppliedVoltage = Volts.of(driveAppliedVolts.getValueAsDouble());
-        inputs.driveCurrentAmps = new double[] {driveCurrent.getValueAsDouble()};
+        inputs.driveCurrentAmps = new double[]{driveCurrent.getValueAsDouble()};
 
         inputs.turnAbsolutePosition =
                 Rotation2d.fromRotations(turnAbsolutePosition.getValueAsDouble())
@@ -180,7 +173,7 @@ public class ModuleIOTalonFX implements ModuleIO {
         inputs.turnVelocity =
                 RadiansPerSecond.of(Units.rotationsToRadians(turnVelocity.getValueAsDouble()) / TURN_GEAR_RATIO);
         inputs.turnAppliedVoltage = Volts.of(turnAppliedVolts.getValueAsDouble());
-        inputs.turnCurrentAmps = new double[] {turnCurrent.getValueAsDouble()};
+        inputs.turnCurrentAmps = new double[]{turnCurrent.getValueAsDouble()};
 
         inputs.odometryTimestamps =
                 timestampQueue.stream().mapToDouble((Double value) -> value).toArray();

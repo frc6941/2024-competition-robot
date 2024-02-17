@@ -10,7 +10,7 @@ import edu.wpi.first.units.*;
 import static edu.wpi.first.units.Units.*;
 
 public final class Constants {
-    public static final Mode currentMode = Mode.REAL;
+    public static final Mode currentMode = Mode.SIM;
 
     public static String CAN_BUS_NAME = "6941CANivore1";
 
@@ -34,6 +34,8 @@ public final class Constants {
     public static class SwerveConstants {
         public static final double DEADBAND = 0.1;
 
+        public static final double HEADING_CORRECTION_DEADBAND = 0.01;
+
         public static final Measure<Velocity<Distance>> maxLinearSpeed =
                 MetersPerSecond.of(4.5);
 
@@ -52,6 +54,8 @@ public final class Constants {
 
         public static final Measure<Distance> wheelRadius = Meters.of(0.05);
 
+        public static double DRIVE_GEAR_RATIO = (50.0 / 14.0) * (17.0 / 27.0) * (45.0 / 15.0);
+        public static double TURN_GEAR_RATIO = 150.0 / 7.0;
 
         // Front Left
         public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 5;
@@ -80,6 +84,9 @@ public final class Constants {
         public static final int BACK_RIGHT_ENCODER_ID = 12;
         public static final double BACK_RIGHT_ENCODER_OFFSET = -2.666;
         public static final double STEER_GEAR_RATIO = 21.428571428571428571428571428571;
+
+        public static final double MODULE_STEER_FF_OL = Robot.isReal() ? 0.6 : 0.27;
+        public static final double MODULE_STEER_FF_CL = Robot.isReal() ? 0.8 : 0.33;
     }
 
     public static class IndexerConstants {

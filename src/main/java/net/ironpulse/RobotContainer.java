@@ -4,8 +4,6 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.util.GeometryUtil;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -32,7 +30,10 @@ import net.ironpulse.subsystems.intaker.IntakerSubsystem;
 import net.ironpulse.subsystems.shooter.ShooterIOSim;
 import net.ironpulse.subsystems.shooter.ShooterIOTalonFX;
 import net.ironpulse.subsystems.shooter.ShooterSubsystem;
-import net.ironpulse.subsystems.swerve.*;
+import net.ironpulse.subsystems.swerve.GyroIOPigeon2;
+import net.ironpulse.subsystems.swerve.ModuleIOSim;
+import net.ironpulse.subsystems.swerve.ModuleIOTalonFX;
+import net.ironpulse.subsystems.swerve.SwerveSubsystem;
 import net.ironpulse.utils.Utils;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
@@ -67,8 +68,7 @@ public class RobotContainer {
                         () -> -driverController.getRightX()));
         driverController.b().onTrue(Commands.runOnce(swerveSubsystem::stopWithX, swerveSubsystem));
         driverController.start().onTrue(
-                Commands.runOnce(() -> swerveSubsystem.setPose(
-                                        new Pose2d(swerveSubsystem.getPose().getTranslation(), new Rotation2d())),
+                Commands.runOnce(() -> swerveSubsystem.zeroGyro(),
                                 swerveSubsystem)
                         .ignoringDisable(true));
 
@@ -221,7 +221,8 @@ public class RobotContainer {
                 // Sim robot, instantiate physics sim IO implementations
                 swerveSubsystem =
                         new SwerveSubsystem(
-                                inputs -> {},
+                                inputs -> {
+                                },
                                 new ModuleIOSim(),
                                 new ModuleIOSim(),
                                 new ModuleIOSim(),
