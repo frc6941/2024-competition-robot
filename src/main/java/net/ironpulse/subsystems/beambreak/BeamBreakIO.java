@@ -10,6 +10,5 @@ public interface BeamBreakIO {
         public boolean isShooterBeamBreakOn;
     }
 
-    default void updateInputs(BeamBreakIOInputs inputs) {
-    }
+    void updateInputs(BeamBreakIOInputs inputs);
 }

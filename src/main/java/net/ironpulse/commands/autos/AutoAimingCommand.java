@@ -27,20 +27,15 @@ public class AutoAimingCommand extends Command {
 
     @Override
     public void execute() {
-//        Limelight.getTarget()
-//                .ifPresent(target -> shooterSubsystem.getIo().setArmPosition(
-//                        Radians.of(Units.degreesToRadians(90 -
-//                                target.position().getY() - speakerArmOffset.magnitude()))
-//                ));
         var targetOptional = Limelight.getTarget();
         var offset = speakerArmOffset.magnitude();
         if (targetOptional.isEmpty()) return;
         var target = targetOptional.get();
-        var distance = target.
-                targetPoseCameraSpace().
-                getTranslation().
-                getDistance(new Translation3d());
-        // TODO interpolation
+        var distance = target
+                .targetPoseCameraSpace()
+                .getTranslation()
+                .getDistance(new Translation3d());
+
         if (distance >= shortShootMaxDistance.magnitude()) {
             offset = speakerArmOffsetFar.magnitude();
             System.out.println("far shoot: offset = " + offset);

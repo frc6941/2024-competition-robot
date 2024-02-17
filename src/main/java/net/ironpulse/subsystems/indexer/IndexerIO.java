@@ -14,9 +14,7 @@ public interface IndexerIO {
         public Measure<Current> indexSupplyCurrent = Amps.zero();
     }
 
-    default void updateInputs(IndexerIOInputs inputs) {
-    }
+    void updateInputs(IndexerIOInputs inputs);
 
-    default void setIndexVoltage(Measure<Voltage> volts) {
-    }
+    void setIndexVoltage(Measure<Voltage> volts);
 }

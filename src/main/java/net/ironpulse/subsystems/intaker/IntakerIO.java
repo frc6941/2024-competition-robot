@@ -14,9 +14,7 @@ public interface IntakerIO {
         public Measure<Current> intakeSupplyCurrent = Amps.zero();
     }
 
-    default void updateInputs(IntakerIOInputs inputs) {
-    }
+    void updateInputs(IntakerIOInputs inputs);
 
-    default void setIntakeVoltage(Measure<Voltage> volts) {
-    }
+    void setIntakeVoltage(Measure<Voltage> volts);
 }

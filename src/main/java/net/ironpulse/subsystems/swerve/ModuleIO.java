@@ -31,30 +31,25 @@ public interface ModuleIO {
     /**
      * Updates the set of loggable inputs.
      */
-    default void updateInputs(ModuleIOInputs inputs) {
-    }
+    void updateInputs(ModuleIOInputs inputs);
 
     /**
      * Run the drive motor at the specified voltage.
      */
-    default void setDriveVoltage(double volts) {
-    }
+    void setDriveVoltage(double volts);
 
     /**
      * Run the turn motor at the specified voltage.
      */
-    default void setTurnVoltage(double volts) {
-    }
+    void setTurnVoltage(double volts);
 
     /**
      * Enable or disable brake mode on the drive motor.
      */
-    default void setDriveBrakeMode(boolean enable) {
-    }
+    void setDriveBrakeMode(boolean enable);
 
     /**
      * Enable or disable brake mode on the turn motor.
      */
-    default void setTurnBrakeMode(boolean enable) {
-    }
+    void setTurnBrakeMode(boolean enable);
 }

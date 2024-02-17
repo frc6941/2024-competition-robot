@@ -46,12 +46,10 @@ public interface IndicatorIO {
     /**
      * Updates the set of loggable inputs.
      */
-    default void updateInputs(IndicatorIOInputs inputs) {
-    }
+    void updateInputs(IndicatorIOInputs inputs);
 
     /**
      * Set current pattern.
      */
-    default void setPattern(Patterns pattern) {
-    }
+    void setPattern(Patterns pattern);
 }

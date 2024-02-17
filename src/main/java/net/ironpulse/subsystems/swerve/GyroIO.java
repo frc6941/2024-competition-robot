@@ -19,7 +19,5 @@ public interface GyroIO {
                 RadiansPerSecond.zero();
     }
 
-    default void updateInputs(GyroIOInputs inputs) {
-
-    }
+    void updateInputs(GyroIOInputs inputs);
 }

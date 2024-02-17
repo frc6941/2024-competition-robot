@@ -221,8 +221,7 @@ public class RobotContainer {
                 // Sim robot, instantiate physics sim IO implementations
                 swerveSubsystem =
                         new SwerveSubsystem(
-                                new GyroIO() {
-                                },
+                                inputs -> {},
                                 new ModuleIOSim(),
                                 new ModuleIOSim(),
                                 new ModuleIOSim(),

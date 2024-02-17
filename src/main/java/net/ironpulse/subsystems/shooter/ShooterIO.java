@@ -25,21 +25,15 @@ public interface ShooterIO {
         public Measure<Current> armSupplyCurrent = Amps.zero();
     }
 
-    default void updateInputs(ShooterIOInputs inputs) {
-    }
+    void updateInputs(ShooterIOInputs inputs);
 
-    default void setShooterVoltage(Measure<Voltage> volts) {
-    }
+    void setShooterVoltage(Measure<Voltage> volts);
 
-    default void setArmVoltage(Measure<Voltage> volts) {
-    }
+    void setArmVoltage(Measure<Voltage> volts);
 
-    default void setArmHome(Measure<Angle> rad) {
-    }
+    void setArmHome(Measure<Angle> rad);
 
-    default void setHomed(boolean homed) {
-    }
+    void setHomed(boolean homed);
 
-    default void setArmPosition(Measure<Angle> rad) {
-    }
+    void setArmPosition(Measure<Angle> rad);
 }
