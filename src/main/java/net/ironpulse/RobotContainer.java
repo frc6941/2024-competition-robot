@@ -78,7 +78,7 @@ public class RobotContainer {
                                 new IntakeCommand(intakerSubsystem, beamBreakSubsystem, indicatorSubsystem),
                                 new IndexCommand(indexerSubsystem, beamBreakSubsystem)
                         ),
-                        new RumbleCommand(driverController.getHID(), Seconds.of(1))
+                        new RumbleCommand(Seconds.of(1), driverController.getHID(), operatorController.getHID())
                 )
         );
         driverController.leftTrigger().whileTrue(
@@ -87,7 +87,7 @@ public class RobotContainer {
                                 new IntakeCommand(intakerSubsystem, beamBreakSubsystem, indicatorSubsystem),
                                 new IndexCommand(indexerSubsystem, beamBreakSubsystem)
                         ),
-                        new RumbleCommand(driverController.getHID(), Seconds.of(1))
+                        new RumbleCommand(Seconds.of(1), driverController.getHID(), operatorController.getHID())
                 )
         );
         driverController.rightTrigger().whileTrue(Commands.parallel(
@@ -107,7 +107,7 @@ public class RobotContainer {
                                 () -> -driverController.getLeftY(),
                                 () -> -driverController.getLeftX()
                         ),
-                        new RumbleCommand(driverController.getHID(), Seconds.of(1))
+                        new RumbleCommand(Seconds.of(1), driverController.getHID(), operatorController.getHID())
                 )
         );
 
@@ -120,7 +120,7 @@ public class RobotContainer {
                                 indicatorSubsystem,
                                 () -> operatorController.getHID().getAButton()
                         ),
-                        new RumbleCommand(driverController.getHID(), Seconds.of(1))
+                        new RumbleCommand(Seconds.of(1), driverController.getHID(), operatorController.getHID())
                 )
         );
 
