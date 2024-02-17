@@ -32,12 +32,14 @@ import net.ironpulse.subsystems.intaker.IntakerSubsystem;
 import net.ironpulse.subsystems.shooter.ShooterIOSim;
 import net.ironpulse.subsystems.shooter.ShooterIOTalonFX;
 import net.ironpulse.subsystems.shooter.ShooterSubsystem;
-import net.ironpulse.subsystems.swerve.*;
+import net.ironpulse.subsystems.swerve.GyroIOPigeon2;
+import net.ironpulse.subsystems.swerve.ModuleIOSim;
+import net.ironpulse.subsystems.swerve.ModuleIOTalonFX;
+import net.ironpulse.subsystems.swerve.SwerveSubsystem;
 import net.ironpulse.utils.Utils;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 import static edu.wpi.first.units.Units.*;
-import static net.ironpulse.Constants.ShooterConstants.shooterConstantVoltage;
 
 public class RobotContainer {
     @Getter
@@ -103,7 +105,7 @@ public class RobotContainer {
                                 indexerSubsystem,
                                 beamBreakSubsystem,
                                 indicatorSubsystem,
-                                () -> operatorController.getHID().getAButton(),
+                                () -> operatorController.getHID().getRightBumper(),
                                 () -> -driverController.getLeftY(),
                                 () -> -driverController.getLeftX()
                         ),
@@ -118,7 +120,7 @@ public class RobotContainer {
                                 indexerSubsystem,
                                 beamBreakSubsystem,
                                 indicatorSubsystem,
-                                () -> operatorController.getHID().getAButton()
+                                () -> operatorController.getHID().getRightBumper()
                         ),
                         new RumbleCommand(Seconds.of(1), driverController.getHID(), operatorController.getHID())
                 )
@@ -221,7 +223,8 @@ public class RobotContainer {
                 // Sim robot, instantiate physics sim IO implementations
                 swerveSubsystem =
                         new SwerveSubsystem(
-                                inputs -> {},
+                                inputs -> {
+                                },
                                 new ModuleIOSim(),
                                 new ModuleIOSim(),
                                 new ModuleIOSim(),
@@ -240,6 +243,5 @@ public class RobotContainer {
         configureAutos();
         configureKeyBindings();
         indicatorSubsystem.setPattern(IndicatorIO.Patterns.NORMAL);
-        shooterSubsystem.getIo().setShooterVoltage(shooterConstantVoltage);
     }
 }
