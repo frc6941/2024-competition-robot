@@ -4,7 +4,6 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj2.command.Command;
 import net.ironpulse.Constants;
 import net.ironpulse.drivers.Limelight;
-import net.ironpulse.subsystems.indicator.IndicatorIO;
 import net.ironpulse.subsystems.indicator.IndicatorSubsystem;
 import net.ironpulse.subsystems.shooter.ShooterSubsystem;
 
@@ -23,15 +22,16 @@ public class PreShootCommand extends Command {
 
     @Override
     public void initialize() {
-        indicatorSubsystem
-                .setPattern(IndicatorIO.Patterns.SHOOTING);
+//        indicatorSubsystem
+//                .setPattern(IndicatorIO.Patterns.SHOOTING);
     }
 
     @Override
     public void execute() {
         var targetOptional = Limelight.getTarget();
         if (targetOptional.isEmpty()) {
-            shooterSubsystem.getIo().setShooterVoltage(defaultShootVoltage);
+//            shooterSubsystem.getIo().setShooterVoltage(defaultShootVoltage);
+//            shooterSubsystem.getIo().setShooterVoltage(shortShootVoltage);
             return;
         }
 
