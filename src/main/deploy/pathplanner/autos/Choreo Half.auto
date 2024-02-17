@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7460236549377441,
-      "y": 6.68057107925415
+      "x": 0.66,
+      "y": 6.66
     },
-    "rotation": 60.230459342605116
+    "rotation": 59.58761069360562
   },
   "command": {
     "type": "sequential",
@@ -28,7 +28,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "ShootNearSpeaker"
+                        "name": "AutoShoot"
                       }
                     },
                     {
@@ -51,19 +51,13 @@
                       }
                     },
                     {
-                      "type": "named",
-                      "data": {
-                        "name": "AutoShoot"
-                      }
-                    },
-                    {
                       "type": "parallel",
                       "data": {
                         "commands": [
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "C_N1-N2"
+                              "pathName": "C_N1-S1"
                             }
                           },
                           {
@@ -88,7 +82,51 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "C_N2-N3"
+                              "pathName": "C_S1-N2"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Intake"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "parallel",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "C_N2-S2"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Intake"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "AutoShoot"
+                      }
+                    },
+                    {
+                      "type": "parallel",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "C_S2-N3"
                             }
                           },
                           {
