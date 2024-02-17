@@ -97,14 +97,11 @@ public class RobotContainer {
         operatorController.rightTrigger().whileTrue(
                 Commands.sequence(
                         new SpeakerShootCommand(
-                                swerveSubsystem,
                                 shooterSubsystem,
                                 indexerSubsystem,
                                 beamBreakSubsystem,
                                 indicatorSubsystem,
-                                () -> operatorController.getHID().getRightBumper(),
-                                () -> -driverController.getLeftY(),
-                                () -> -driverController.getLeftX()
+                                () -> operatorController.getHID().getRightBumper()
                         ),
                         new RumbleCommand(Seconds.of(1), driverController.getHID(), operatorController.getHID())
                 )

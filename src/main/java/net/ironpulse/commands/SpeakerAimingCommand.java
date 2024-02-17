@@ -1,6 +1,5 @@
 package net.ironpulse.commands;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -9,33 +8,20 @@ import net.ironpulse.drivers.Limelight;
 import net.ironpulse.subsystems.indicator.IndicatorIO;
 import net.ironpulse.subsystems.indicator.IndicatorSubsystem;
 import net.ironpulse.subsystems.shooter.ShooterSubsystem;
-import net.ironpulse.subsystems.swerve.SwerveSubsystem;
-
-import java.util.function.DoubleSupplier;
 
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Radians;
 
 public class SpeakerAimingCommand extends Command {
-    private final SwerveSubsystem swerveSubsystem;
     private final ShooterSubsystem shooterSubsystem;
     private final IndicatorSubsystem indicatorSubsystem;
-    private final DoubleSupplier xSupplier;
-    private final DoubleSupplier ySupplier;
-    private final PIDController headingPID = new PIDController(0.1, 0, 0);
 
     public SpeakerAimingCommand(
-            SwerveSubsystem swerveSubsystem,
             ShooterSubsystem shooterSubsystem,
-            IndicatorSubsystem indicatorSubsystem,
-            DoubleSupplier xSupplier,
-            DoubleSupplier ySupplier
+            IndicatorSubsystem indicatorSubsystem
     ) {
-        this.swerveSubsystem = swerveSubsystem;
         this.shooterSubsystem = shooterSubsystem;
         this.indicatorSubsystem = indicatorSubsystem;
-        this.xSupplier = xSupplier;
-        this.ySupplier = ySupplier;
     }
 
     @Override
