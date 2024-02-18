@@ -213,14 +213,21 @@ public class SwerveSubsystem extends SubsystemBase {
      * @param speeds Speeds in meters/sec
      */
     public void runVelocity(ChassisSpeeds speeds) {
+        System.out.println("Running velocity -> " + speeds.omegaRadiansPerSecond);
         // Heading correction (see https://github.com/BroncBotz3481/YAGSL/blob/main/swervelib/SwerveDrive.java#L475)
         // TODO: swerveDrivePoseEstimator.getEstimatedPosition().getRotation() instead of rawGyroRotation?
         if (Math.abs(speeds.omegaRadiansPerSecond) < HEADING_CORRECTION_DEADBAND
                 && (Math.abs(speeds.vxMetersPerSecond) > HEADING_CORRECTION_DEADBAND
                 || Math.abs(speeds.vyMetersPerSecond) > HEADING_CORRECTION_DEADBAND)) {
             speeds.omegaRadiansPerSecond =
-                    thetaController.calculate(rawGyroRotation.getRadians(), lastHeadingRadians.magnitude())
+                    thetaController.calculate(poseEstimator.getEstimatedPosition().getRotation().getRadians(), lastHeadingRadians.magnitude())
                             * getMaxAngularSpeedRadPerSec();
+            System.out.println(
+                    "rawGyro -> " + rawGyroRotation.getRadians() + " lastHeading -> " + lastHeadingRadians.magnitude() +
+                            " postEstimator -> " + poseEstimator.getEstimatedPosition().getRotation().getRadians() +
+                            " correctedSpeed -> " + thetaController.calculate(poseEstimator.getEstimatedPosition().getRotation().getRadians(), lastHeadingRadians.magnitude())
+                            * getMaxAngularSpeedRadPerSec()
+            );
         } else {
             lastHeadingRadians = Radians.of(rawGyroRotation.getRadians());
         }

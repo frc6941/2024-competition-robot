@@ -152,7 +152,7 @@ public class Module {
 //            System.out.println(inputs.driveVelocity.magnitude() * Math.PI * 2 * wheelRadius.magnitude() / DRIVE_GEAR_RATIO + " vs " + inputs.driveVelocity.magnitude() / wheelRadius.magnitude());
             // or could be driveVelocity.magnitude() / wheelRadius.magnitude()
         }
-        turnFeedback.setSetpoint(state.angle.getRadians());
+        turnFeedback.setSetpoint(state.angle.plus(turnRelativeOffset).getRadians());
         io.setTurnVoltage(turnFeedback.calculate(getAngle().getRadians()) + MODULE_STEER_FF_OL * state.omegaRadPerSecond);
     }
 
