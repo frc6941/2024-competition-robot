@@ -9,4 +9,10 @@ public class Utils {
                 .filter(alliance -> alliance == DriverStation.Alliance.Red)
                 .isPresent();
     }
+
+    public static int sign(double value) {
+        if (value < 0) return -1;
+        else if (value == 0) return 0;
+        else return 1;
+    }
 }
