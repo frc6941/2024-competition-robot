@@ -219,6 +219,7 @@ public final class Constants {
         public static final int LEFT_SHOOTER_MOTOR_ID = 41;
         public static final int RIGHT_SHOOTER_MOTOR_ID = 42;
         public static final int ARM_MOTOR_ID = 43;
+        public static final int PULLER_MOTOR_ID = 44;
 
         // Shooter gains when deploying shooter to desired angle
         public static final Slot0Configs armGainsUp = new Slot0Configs()
@@ -246,6 +247,7 @@ public final class Constants {
         public static final Measure<Voltage> shortShootVoltage = Volts.of(-8);
         public static final Measure<Distance> shortShootMaxDistance = Meters.of(2.7);
         public static final Measure<Voltage> farShootVoltage = Volts.of(-11);
+        public static final Measure<Voltage> pullVoltage = Volts.of(-10);
 
         public static final Measure<Angle> speakerArmOffsetNear = Degrees.of(-43);
         public static final Measure<Angle> speakerArmOffset = Degrees.of(-50);

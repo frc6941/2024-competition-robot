@@ -22,18 +22,24 @@ public class ShooterIOSim implements ShooterIO {
             DCMotor.getFalcon500(1),
             6.75, 0.025
     );
+    private final DCMotorSim pullerTalonSim = new DCMotorSim(
+            DCMotor.getFalcon500(1),
+            6.75, 0.025
+    );
 
     private boolean homed = false;
 
     private Measure<Voltage> leftShooterAppliedVoltage = Volts.zero();
     private Measure<Voltage> rightShooterAppliedVoltage = Volts.zero();
     private Measure<Voltage> armAppliedVoltage = Volts.zero();
+    private Measure<Voltage> pullerAppliedVoltage = Volts.zero();
 
     @Override
     public void updateInputs(ShooterIOInputs inputs) {
         leftShooterTalonSim.update(LOOP_PERIOD_SECS);
         rightShooterTalonSim.update(LOOP_PERIOD_SECS);
         armTalonSim.update(LOOP_PERIOD_SECS);
+        pullerTalonSim.update(LOOP_PERIOD_SECS);
 
         inputs.leftShooterVelocity =
                 RadiansPerSecond.of(leftShooterTalonSim.getAngularVelocityRadPerSec());
@@ -60,6 +66,13 @@ public class ShooterIOSim implements ShooterIO {
         inputs.armSupplyCurrent =
                 Amps.of(armTalonSim.getCurrentDrawAmps());
 
+        inputs.pullerPosition =
+                Radians.of(pullerTalonSim.getAngularPositionRad());
+        inputs.pullerAppliedVoltage =
+                pullerAppliedVoltage;
+        inputs.pullerSupplyCurrent =
+                Amps.of(pullerTalonSim.getCurrentDrawAmps());
+
         inputs.homed = homed;
     }
 
@@ -79,6 +92,12 @@ public class ShooterIOSim implements ShooterIO {
     }
 
     @Override
+    public void setPullerVoltage(Measure<Voltage> volts) {
+        pullerAppliedVoltage = volts;
+        pullerTalonSim.setInputVoltage(volts.magnitude());
+    }
+
+    @Override
     public void setArmHome(Measure<Angle> rad) {
         setArmPosition(rad);
     }
@@ -86,6 +105,11 @@ public class ShooterIOSim implements ShooterIO {
     @Override
     public void setArmPosition(Measure<Angle> rad) {
         armTalonSim.setState(rad.magnitude(), 0);
+    }
+
+    @Override
+    public void setArmBrakeMode(boolean isCoast) {
+
     }
 
     @Override

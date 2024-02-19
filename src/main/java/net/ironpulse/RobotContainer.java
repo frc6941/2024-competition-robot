@@ -70,7 +70,7 @@ public class RobotContainer {
                         .withVelocityY(Utils.sign(-driverController.getLeftX()) * yLimiter.calculate(Math.abs(driverController.getLeftX())) * maxSpeed.magnitude())
                         .withRotationalRate(-driverController.getRightX() * maxAngularRate.magnitude()))
                 .ignoringDisable(true));
-        
+
         driverController.b().whileTrue(swerveSubsystem.applyRequest(() -> brake));
 
         driverController.start().onTrue(swerveSubsystem.runOnce(swerveSubsystem::seedFieldRelative));
@@ -139,6 +139,7 @@ public class RobotContainer {
         operatorController.pov(180).whileTrue(new ShooterUpCommand(shooterSubsystem));
         operatorController.pov(0).whileTrue(new ShooterDownCommand(shooterSubsystem))
                 .and(() -> Rotations.of(shooterSubsystem.getInputs().armPosition.magnitude()).in(Degrees) > 15);
+        operatorController.pov(90).whileTrue(new ClimbCommand(shooterSubsystem));
 
         operatorController.back().toggleOnTrue(new RainbowCommand(indicatorSubsystem));
 
