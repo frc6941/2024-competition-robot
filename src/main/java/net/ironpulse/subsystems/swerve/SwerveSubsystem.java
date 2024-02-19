@@ -6,11 +6,14 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PathPlannerLogging;
 import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
@@ -23,6 +26,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import net.ironpulse.Constants;
 import net.ironpulse.drivers.Limelight;
+import net.ironpulse.utils.LocalADStarAK;
+import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 import java.util.function.Supplier;
@@ -82,6 +87,12 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
                 net.ironpulse.utils.Utils::flip,
                 this
         );
+        Pathfinding.setPathfinder(new LocalADStarAK());
+        PathPlannerLogging.setLogActivePathCallback(
+                activePath -> Logger.recordOutput(
+                        "Odometry/Trajectory", activePath.toArray(new Pose2d[0])));
+        PathPlannerLogging.setLogTargetPoseCallback(
+                targetPose -> Logger.recordOutput("Odometry/TrajectorySetpoint", targetPose));
     }
 
     /**
@@ -116,5 +127,13 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
             updateSimState(deltaTime.magnitude(), RobotController.getBatteryVoltage());
         });
         simNotifier.startPeriodic(simLoopPeriod.in(Seconds));
+    }
+
+    /**
+     * Returns the current odometry pose.
+     */
+    @AutoLogOutput(key = "Odometry/Robot")
+    public Pose2d getPose() {
+        return m_odometry.getEstimatedPosition();
     }
 }
