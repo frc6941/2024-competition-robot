@@ -139,7 +139,8 @@ public class RobotContainer {
         operatorController.pov(180).whileTrue(new ShooterUpCommand(shooterSubsystem));
         operatorController.pov(0).whileTrue(new ShooterDownCommand(shooterSubsystem))
                 .and(() -> Rotations.of(shooterSubsystem.getInputs().armPosition.magnitude()).in(Degrees) > 15);
-        operatorController.pov(90).whileTrue(new ClimbCommand(shooterSubsystem));
+        operatorController.pov(90).whileTrue(new ClimbCommand(shooterSubsystem, false));
+        operatorController.pov(270).whileTrue(new ClimbCommand(shooterSubsystem, true));
 
         operatorController.back().toggleOnTrue(new RainbowCommand(indicatorSubsystem));
 
