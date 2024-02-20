@@ -65,10 +65,19 @@ public class RobotContainer {
 
     private void configureKeyBindings() {
         swerveSubsystem.setDefaultCommand(swerveSubsystem
-                .applyRequest(() -> drive.withVelocityX(Utils.sign(-driverController.getLeftY())
-                                * xLimiter.calculate(Math.abs(driverController.getLeftY())) * maxSpeed.magnitude())
-                        .withVelocityY(Utils.sign(-driverController.getLeftX()) * yLimiter.calculate(Math.abs(driverController.getLeftX())) * maxSpeed.magnitude())
-                        .withRotationalRate(-driverController.getRightX() * maxAngularRate.magnitude()))
+                .applyRequest(
+                        () -> drive
+                                .withVelocityX(Utils.sign(-driverController.getLeftY())
+                                        * xLimiter.calculate(Math.abs(driverController.getLeftY()))
+                                        * maxSpeed.magnitude())
+                                .withVelocityY(
+                                        Utils.sign(-driverController.getLeftX()) * maxSpeed.magnitude()
+                                                * yLimiter.calculate(Math.abs(driverController.getLeftX()))
+                                )
+                                .withRotationalRate(
+                                        -driverController.getRightX() * maxAngularRate.magnitude()
+                                )
+                )
                 .ignoringDisable(true));
 
         driverController.b().whileTrue(swerveSubsystem.applyRequest(() -> brake));
@@ -136,19 +145,19 @@ public class RobotContainer {
                 indexerSubsystem, beamBreakSubsystem, indicatorSubsystem,
                 () -> operatorController.getHID().getRightBumper(), Degrees.of(62)));
 
-        operatorController.pov(180).whileTrue(new ShooterUpCommand(shooterSubsystem));
-        operatorController.pov(0).whileTrue(new ShooterDownCommand(shooterSubsystem))
+        driverController.pov(180).whileTrue(new ShooterDownCommand(shooterSubsystem));
+        driverController.pov(0).whileTrue(new ShooterUpCommand(shooterSubsystem))
                 .and(() -> Rotations.of(shooterSubsystem.getInputs().armPosition.magnitude()).in(Degrees) > 15);
-        operatorController.pov(90).whileTrue(new ClimbCommand(shooterSubsystem, false));
-        operatorController.pov(270).whileTrue(new ClimbCommand(shooterSubsystem, true));
+        driverController.pov(90).whileTrue(new ClimbCommand(shooterSubsystem, false));
+        driverController.pov(270).whileTrue(new ClimbCommand(shooterSubsystem, true));
 
         // FIXME ALMOST DEFINITELY WOULD NOT WORK PROPERLY
-        driverController.pov(0).toggleOnTrue(new ShootPlateCommand(
-                shooterSubsystem,
-                indexerSubsystem,
-                beamBreakSubsystem,
-                () -> operatorController.getHID().getRightBumper()
-        ));
+//        driverController.pov(0).toggleOnTrue(new ShootPlateCommand(
+//                shooterSubsystem,
+//                indexerSubsystem,
+//                beamBreakSubsystem,
+//                () -> operatorController.getHID().getRightBumper()
+//        ));
 
         operatorController.back().toggleOnTrue(new RainbowCommand(indicatorSubsystem));
 
@@ -170,7 +179,7 @@ public class RobotContainer {
                 new AutoShootWithAngleCommand(shooterSubsystem, indexerSubsystem, 46));
         NamedCommands.registerCommand("ShootAtLaunchPad",
                 new AutoShootWithAngleCommand(shooterSubsystem, indexerSubsystem, 62));
-        autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser("Choreo Half"));
+        autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
     }
 
     public Command getAutonomousCommand() {

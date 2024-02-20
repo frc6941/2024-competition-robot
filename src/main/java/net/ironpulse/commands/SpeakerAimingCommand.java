@@ -69,36 +69,6 @@ public class SpeakerAimingCommand extends Command {
                                             offset))
                     );
         }
-
-        // FIXME Test driving after swapping old swerve subsystem
-//        double linearMagnitude =
-//                MathUtil.applyDeadband(
-//                        Math.hypot(xSupplier.getAsDouble(), ySupplier.getAsDouble()), DEADBAND);
-//        Rotation2d linearDirection =
-//                new Rotation2d(xSupplier.getAsDouble(), ySupplier.getAsDouble());
-//        double omega = MathUtil.applyDeadband(headingPID.calculate(target.position().getX(),
-//                0), DEADBAND);
-//
-//        linearMagnitude = Math.pow(linearMagnitude, 2);
-//        omega = Math.copySign(omega * omega, omega);
-//
-//        Translation2d linearVelocity =
-//                new Pose2d(new Translation2d(), linearDirection)
-//                        .transformBy(new Transform2d(linearMagnitude, 0.0, new Rotation2d()))
-//                        .getTranslation();
-//
-//        boolean isFlipped = DriverStation
-//                .getAlliance()
-//                .filter(alliance -> alliance == DriverStation.Alliance.Red)
-//                .isPresent();
-//        swerveSubsystem.runVelocity(
-//                ChassisSpeeds.fromFieldRelativeSpeeds(
-//                        linearVelocity.getX() * swerveSubsystem.getMaxLinearSpeedMetersPerSec(),
-//                        linearVelocity.getY() * swerveSubsystem.getMaxLinearSpeedMetersPerSec(),
-//                        omega,
-//                        isFlipped
-//                                ? swerveSubsystem.getRotation().plus(new Rotation2d(Math.PI))
-//                                : swerveSubsystem.getRotation()));
     }
 
     @Override
