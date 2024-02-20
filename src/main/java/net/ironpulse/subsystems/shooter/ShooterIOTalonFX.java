@@ -6,6 +6,7 @@ import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -141,6 +142,16 @@ public class ShooterIOTalonFX implements ShooterIO {
         var config = new MotorOutputConfigs();
         config.NeutralMode = isCoast ? NeutralModeValue.Coast : NeutralModeValue.Brake;
         armTalon.getConfigurator().apply(config);
+        armTalon.setControl(new NeutralOut());
+    }
+
+    @Override
+    public void setPullerBrakeMode(boolean isCoast) {
+        var config = new MotorOutputConfigs();
+        config.NeutralMode = isCoast ? NeutralModeValue.Coast : NeutralModeValue.Brake;
+        pullerTalon.getConfigurator().apply(config);
+        // FIXME there might be a better way
+        pullerTalon.setControl(new NeutralOut());
     }
 
     @Override

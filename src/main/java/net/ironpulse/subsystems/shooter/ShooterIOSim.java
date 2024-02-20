@@ -113,6 +113,11 @@ public class ShooterIOSim implements ShooterIO {
     }
 
     @Override
+    public void setPullerBrakeMode(boolean isCoast) {
+        
+    }
+
+    @Override
     public void setHomed(boolean homed) {
         this.homed = homed;
     }

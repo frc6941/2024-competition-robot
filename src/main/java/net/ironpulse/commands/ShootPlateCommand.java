@@ -9,7 +9,6 @@ import net.ironpulse.subsystems.shooter.ShooterSubsystem;
 
 import java.util.function.BooleanSupplier;
 
-import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Rotations;
 
 public class ShootPlateCommand extends ParallelCommandGroup {
@@ -22,7 +21,8 @@ public class ShootPlateCommand extends ParallelCommandGroup {
         addCommands(
                 Commands.sequence(
                         new ShooterUpCommand(shooterSubsystem).onlyWhile(
-                                () -> Rotations.of(shooterSubsystem.getInputs().armPosition.magnitude()).in(Degrees) < 90
+                                // magic number; do not touch!
+                                () -> Rotations.of(shooterSubsystem.getInputs().armPosition.magnitude()).magnitude() < 3.767
                         ),
                         new PreShootIndexCommand(indexerSubsystem),
                         new WaitUntilCommand(confirmation),

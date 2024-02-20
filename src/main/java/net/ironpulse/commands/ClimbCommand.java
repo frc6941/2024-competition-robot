@@ -20,6 +20,12 @@ public class ClimbCommand extends Command {
         this.reverse = reverse;
     }
 
+
+    @Override
+    public void initialize() {
+        shooterSubsystem.getIo().setArmBrakeMode(true);
+    }
+
     @Override
     public void execute() {
         Measure<Voltage> pullVoltage;
@@ -28,7 +34,6 @@ public class ClimbCommand extends Command {
         } else {
             pullVoltage = Constants.ShooterConstants.pullVoltage;
         }
-        shooterSubsystem.getIo().setArmBrakeMode(true);
         shooterSubsystem.getIo().setPullerVoltage(pullVoltage);
     }
 

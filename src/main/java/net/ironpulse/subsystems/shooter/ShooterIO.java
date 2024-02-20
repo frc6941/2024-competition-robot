@@ -44,4 +44,6 @@ public interface ShooterIO {
     void setArmPosition(Measure<Angle> rad);
 
     void setArmBrakeMode(boolean isCoast);
+
+    void setPullerBrakeMode(boolean isCoast);
 }
