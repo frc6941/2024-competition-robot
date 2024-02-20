@@ -207,6 +207,7 @@ public final class Constants {
         public static final MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs()
                 .withNeutralMode(NeutralModeValue.Brake);
         public final static Measure<Voltage> indexVoltage = Volts.of(5);
+        public final static Measure<Voltage> indexShootVoltage = Volts.of(10);
     }
 
     public static class IntakerConstants {
@@ -255,6 +256,7 @@ public final class Constants {
 
         public final static Measure<Angle> ampDeployAngle = Degrees.of(190);
         public static final Measure<Voltage> manualAimingVoltage = Volts.of(2);
+        public static final Measure<Voltage> shooterIndexVoltage = Volts.of(5);
     }
 
     public static class BeamBreakConstants {
