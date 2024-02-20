@@ -48,6 +48,6 @@ public class AutoIntakeCommand extends Command {
     public boolean isFinished() {
         return beamBreakSubsystem.getInputs().isIndexerBeamBreakOn &&
                 !beamBreakSubsystem.getInputs().isIntakerBeamBreakOn ||
-                timer.hasElapsed(2);
+                timer.hasElapsed(3); /// FIXME
     }
 }

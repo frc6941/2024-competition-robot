@@ -32,6 +32,6 @@ public class AutoPreShootCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        return timer.hasElapsed(15);
+        return timer.hasElapsed(20); // FIXME
     }
 }
