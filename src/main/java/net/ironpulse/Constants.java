@@ -39,7 +39,7 @@ public final class Constants {
 
     public static class SwerveConstants {
         // The max speed of the swerve (should not larger than speedAt12Volts)
-        public static final Measure<Velocity<Distance>> maxSpeed = MetersPerSecond.of(4.5);
+        public static final Measure<Velocity<Distance>> maxSpeed = MetersPerSecond.of(6);
         // The max turning speed of the swerve
         public static final Measure<Velocity<Angle>> maxAngularRate = RotationsPerSecond.of(1.5 * Math.PI);
 
@@ -244,18 +244,18 @@ public final class Constants {
                 .withSensorToMechanismRatio(90d / 24 * 90 / 24 * 84 / 14);
 
         public static final Measure<Voltage> shooterConstantVoltage = Volts.of(-2);
-        public static final Measure<Voltage> defaultShootVoltage = Volts.of(-10);
+        public static final Measure<Voltage> defaultShootVoltage = Volts.of(-9);
         public static final Measure<Voltage> shortShootVoltage = Volts.of(-8);
         public static final Measure<Distance> shortShootMaxDistance = Meters.of(2.7);
         public static final Measure<Voltage> farShootVoltage = Volts.of(-11);
         public static final Measure<Voltage> pullVoltage = Volts.of(-10);
 
         public static final Measure<Angle> speakerArmOffsetNear = Degrees.of(-43);
-        public static final Measure<Angle> speakerArmOffset = Degrees.of(-50);
-        public static final Measure<Angle> speakerArmOffsetFar = Degrees.of(-33.5);
+        public static final Measure<Angle> speakerArmOffset = Degrees.of(-48);
+        public static final Measure<Angle> speakerArmOffsetFar = Degrees.of(-32);
 
         public final static Measure<Angle> ampDeployAngle = Degrees.of(190);
-        public static final Measure<Voltage> manualAimingVoltage = Volts.of(2);
+        public static final Measure<Voltage> shooterUpDownVoltage = Volts.of(-4);
         public static final Measure<Voltage> shooterIndexVoltage = Volts.of(5);
     }
 
