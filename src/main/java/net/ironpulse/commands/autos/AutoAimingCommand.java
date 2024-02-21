@@ -17,12 +17,16 @@ public class AutoAimingCommand extends Command {
 
     private final Timer timer = new Timer();
 
+    private int trust = 0;
+
     public AutoAimingCommand(ShooterSubsystem shooterSubsystem) {
         this.shooterSubsystem = shooterSubsystem;
     }
 
     @Override
     public void initialize() {
+        debug("AutoAimingCommand", "start");
+        trust = 0;
         timer.restart();
     }
 
@@ -67,16 +71,20 @@ public class AutoAimingCommand extends Command {
                                             target.position().getY() +
                                             offset))
                     );
+        } else {
+            // FIXME Time?
+            trust += 1;
         }
     }
 
     @Override
     public void end(boolean interrupted) {
+        debug("AutoAimingCommand", "end; elapsed=" + timer.get());
         shooterSubsystem.getIo().setArmPosition(Radians.zero());
     }
 
     @Override
     public boolean isFinished() {
-        return timer.hasElapsed(2);
+        return timer.hasElapsed(2) || trust >= 15;
     }
 }
