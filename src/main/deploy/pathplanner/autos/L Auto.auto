@@ -51,13 +51,19 @@
                       }
                     },
                     {
-                      "type": "deadline",
+                      "type": "parallel",
                       "data": {
                         "commands": [
                           {
                             "type": "path",
                             "data": {
                               "pathName": "N1-S1"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Intake"
                             }
                           }
                         ]
@@ -76,26 +82,13 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "S1-N2"
+                              "pathName": "S1-N2-S2"
                             }
                           },
                           {
                             "type": "named",
                             "data": {
                               "name": "Intake"
-                            }
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "type": "deadline",
-                      "data": {
-                        "commands": [
-                          {
-                            "type": "path",
-                            "data": {
-                              "pathName": "N2-S2"
                             }
                           }
                         ]
