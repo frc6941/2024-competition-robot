@@ -13,7 +13,7 @@ public class AutoShootCommand extends ParallelCommandGroup {
         addCommands(
                 new AutoAimingCommand(shooterSubsystem),
                 Commands.sequence(
-//                        new WaitCommand(0.75), // FIXME
+//                        new WaitCommand(0.75), // FIXME should not comment out; indexer needs to slow down
                         new AutoDeliverNoteCommand(indexerSubsystem)
                 )
         );
