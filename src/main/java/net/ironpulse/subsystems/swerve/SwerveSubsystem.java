@@ -44,6 +44,20 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
         super(driveTrainConstants, modules);
         CommandScheduler.getInstance().registerSubsystem(this);
         configurePathPlanner();
+        var response = this.getPigeon2().clearStickyFaults();
+        if (response.isError())
+            System.out.println("Pigeon2 failed sticky fault clearing with error" + response);
+        for (int i = 0; i < 4; i++) {
+            response = this.getModule(i).getCANcoder().clearStickyFaults();
+            if (response.isError())
+                System.out.println("Swerve CANCoder " + i + " failed sticky fault clearing with error" + response);
+            response = this.getModule(i).getDriveMotor().clearStickyFaults();
+            if (response.isError())
+                System.out.println("Swerve Drive " + i + " failed sticky fault clearing with error" + response);
+            response = this.getModule(i).getSteerMotor().clearStickyFaults();
+            if (response.isError())
+                System.out.println("Swerve Steer " + i + " failed sticky fault clearing with error" + response);
+        }
         if (!Utils.isSimulation()) return;
         startSimThread();
     }

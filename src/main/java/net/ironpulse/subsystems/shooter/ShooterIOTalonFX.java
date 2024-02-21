@@ -54,6 +54,23 @@ public class ShooterIOTalonFX implements ShooterIO {
         var response = armTalon.getConfigurator().apply(armMotorConfig);
         if (response.isError())
             System.out.println("Shooter Arm TalonFX failed config with error" + response);
+        var pullerMotorConfig = new TalonFXConfiguration()
+                .withFeedback(pullerfeedbackConfigs);
+        response = pullerTalon.getConfigurator().apply(pullerMotorConfig);
+        if (response.isError())
+            System.out.println("Puller TalonFX failed config with error" + response);
+        response = armTalon.clearStickyFaults();
+        if (response.isError())
+            System.out.println("Shooter Arm TalonFX failed sticky fault clearing with error" + response);
+        response = pullerTalon.clearStickyFaults();
+        if (response.isError())
+            System.out.println("Puller TalonFX failed sticky fault clearing with error" + response);
+        response = leftShooterTalon.clearStickyFaults();
+        if (response.isError())
+            System.out.println("Left Shooter TalonFX failed sticky fault clearing with error" + response);
+        response = rightShooterTalon.clearStickyFaults();
+        if (response.isError())
+            System.out.println("Right Shooter TalonFX failed sticky fault clearing with error" + response);
     }
 
     @Override
@@ -119,7 +136,8 @@ public class ShooterIOTalonFX implements ShooterIO {
 
     @Override
     public void setArmVoltage(Measure<Voltage> volts) {
-        armTalon.setControl(new VoltageOut(volts.magnitude()));
+//        armTalon.setControl(new VoltageOut(volts.magnitude()));
+        armTalon.setControl(new VoltageOut(0));
     }
 
     @Override

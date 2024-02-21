@@ -28,6 +28,9 @@ public class IntakerIOTalonFX implements IntakerIO {
         var response = intakeTalon.getConfigurator().apply(intakerMotorConfigs);
         if (response.isError())
             System.out.println("Intaker TalonFX failed config with error" + response);
+        response = intakeTalon.clearStickyFaults();
+        if (response.isError())
+            System.out.println("Intaker TalonFX failed sticky fault clearing with error" + response);
     }
 
     @Override

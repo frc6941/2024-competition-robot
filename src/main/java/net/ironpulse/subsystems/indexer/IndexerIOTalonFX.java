@@ -28,6 +28,9 @@ public class IndexerIOTalonFX implements IndexerIO {
         var response = indexTalon.getConfigurator().apply(indexerMotorConfigs);
         if (response.isError())
             System.out.println("Indexer TalonFX failed config with error" + response);
+        response = indexTalon.clearStickyFaults();
+        if (response.isError())
+            System.out.println("Indexer TalonFX failed sticky fault clearing with error" + response);
     }
 
     @Override
