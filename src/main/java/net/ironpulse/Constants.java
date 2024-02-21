@@ -8,6 +8,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
+import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.units.*;
@@ -241,14 +242,18 @@ public final class Constants {
                 .withNeutralMode(NeutralModeValue.Brake);
 
         public static final FeedbackConfigs feedbackConfigs = new FeedbackConfigs()
+                .withFeedbackSensorSource(FeedbackSensorSourceValue.FusedCANcoder)
                 .withSensorToMechanismRatio(90d / 24 * 90 / 24 * 84 / 14);
+        public static final FeedbackConfigs pullerfeedbackConfigs = new FeedbackConfigs()
+                .withFeedbackSensorSource(FeedbackSensorSourceValue.FusedCANcoder)
+                .withSensorToMechanismRatio(8d / 64 * 16 / 64);
 
         public static final Measure<Voltage> shooterConstantVoltage = Volts.of(-2);
         public static final Measure<Voltage> defaultShootVoltage = Volts.of(-9);
         public static final Measure<Voltage> shortShootVoltage = Volts.of(-8);
         public static final Measure<Distance> shortShootMaxDistance = Meters.of(2.7);
         public static final Measure<Voltage> farShootVoltage = Volts.of(-11);
-        public static final Measure<Voltage> pullVoltage = Volts.of(-10);
+        public static final Measure<Voltage> pullVoltage = Volts.of(-6);
 
         public static final Measure<Angle> speakerArmOffsetNear = Degrees.of(-43);
         public static final Measure<Angle> speakerArmOffset = Degrees.of(-48);
