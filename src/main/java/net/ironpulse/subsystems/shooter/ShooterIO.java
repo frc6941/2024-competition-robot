@@ -23,6 +23,10 @@ public interface ShooterIO {
         public Measure<Angle> armPosition = Radians.zero();
         public Measure<Voltage> armAppliedVoltage = Volts.zero();
         public Measure<Current> armSupplyCurrent = Amps.zero();
+
+        public Measure<Angle> pullerPosition = Radians.zero();
+        public Measure<Voltage> pullerAppliedVoltage = Volts.zero();
+        public Measure<Current> pullerSupplyCurrent = Amps.zero();
     }
 
     void updateInputs(ShooterIOInputs inputs);
@@ -31,9 +35,15 @@ public interface ShooterIO {
 
     void setArmVoltage(Measure<Voltage> volts);
 
+    void setPullerVoltage(Measure<Voltage> volts);
+
     void setArmHome(Measure<Angle> rad);
 
     void setHomed(boolean homed);
 
     void setArmPosition(Measure<Angle> rad);
+
+    void setArmBrakeMode(boolean isCoast);
+
+    void setPullerBrakeMode(boolean isCoast);
 }

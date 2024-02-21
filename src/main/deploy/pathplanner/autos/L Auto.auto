@@ -26,7 +26,13 @@
                 "data": {
                   "commands": [
                     {
-                      "type": "deadline",
+                      "type": "named",
+                      "data": {
+                        "name": "AutoShoot"
+                      }
+                    },
+                    {
+                      "type": "parallel",
                       "data": {
                         "commands": [
                           {
@@ -45,13 +51,13 @@
                       }
                     },
                     {
-                      "type": "deadline",
+                      "type": "parallel",
                       "data": {
                         "commands": [
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "N1-N2"
+                              "pathName": "N1-S1"
                             }
                           },
                           {
@@ -64,13 +70,19 @@
                       }
                     },
                     {
-                      "type": "deadline",
+                      "type": "named",
+                      "data": {
+                        "name": "AutoShoot"
+                      }
+                    },
+                    {
+                      "type": "parallel",
                       "data": {
                         "commands": [
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "N2-N3"
+                              "pathName": "S1-N2-S2"
                             }
                           },
                           {
@@ -80,6 +92,56 @@
                             }
                           }
                         ]
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "AutoShoot"
+                      }
+                    },
+                    {
+                      "type": "parallel",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "S2-N3"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Intake"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "parallel",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "N3-S3"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Intake"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "AutoShoot"
                       }
                     }
                   ]

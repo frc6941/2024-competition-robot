@@ -14,13 +14,21 @@ public class ShooterUpCommand extends Command {
     }
 
     @Override
+    public void initialize() {
+        shooterSubsystem.getIo()
+                .setPullerBrakeMode(true);
+    }
+
+    @Override
     public void execute() {
         shooterSubsystem.getIo()
-                .setShooterVoltage(Constants.ShooterConstants.manualAimingVoltage.mutableCopy().negate());
+                .setArmVoltage(Constants.ShooterConstants.shooterUpDownVoltage.mutableCopy().negate());
     }
 
     @Override
     public void end(boolean interrupted) {
-        shooterSubsystem.getIo().setShooterVoltage(Volts.zero());
+        shooterSubsystem.getIo()
+                .setPullerBrakeMode(false);
+        shooterSubsystem.getIo().setArmVoltage(Volts.zero());
     }
 }

@@ -2,7 +2,6 @@ package net.ironpulse.commands.autos;
 
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import net.ironpulse.subsystems.indexer.IndexerSubsystem;
 import net.ironpulse.subsystems.shooter.ShooterSubsystem;
 
@@ -14,7 +13,7 @@ public class AutoShootCommand extends ParallelCommandGroup {
         addCommands(
                 new AutoAimingCommand(shooterSubsystem),
                 Commands.sequence(
-                        new WaitCommand(0.5),
+//                        new WaitCommand(0.75), // FIXME should not comment out; indexer needs to slow down
                         new AutoDeliverNoteCommand(indexerSubsystem)
                 )
         );

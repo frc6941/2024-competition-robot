@@ -2,11 +2,14 @@ package net.ironpulse.subsystems.shooter;
 
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.Measure;
@@ -20,6 +23,7 @@ public class ShooterIOTalonFX implements ShooterIO {
     private final TalonFX leftShooterTalon = new TalonFX(LEFT_SHOOTER_MOTOR_ID, Constants.CAN_BUS_NAME);
     private final TalonFX rightShooterTalon = new TalonFX(RIGHT_SHOOTER_MOTOR_ID, Constants.CAN_BUS_NAME);
     private final TalonFX armTalon = new TalonFX(ARM_MOTOR_ID, Constants.CAN_BUS_NAME);
+    private final TalonFX pullerTalon = new TalonFX(PULLER_MOTOR_ID, Constants.CAN_BUS_NAME);
 
     private boolean homed = false;
 
@@ -37,6 +41,10 @@ public class ShooterIOTalonFX implements ShooterIO {
     private final StatusSignal<Double> armAppliedVoltage = armTalon.getMotorVoltage();
     private final StatusSignal<Double> armSupplyCurrent = armTalon.getSupplyCurrent();
 
+    private final StatusSignal<Double> pullerPosition = pullerTalon.getPosition();
+    private final StatusSignal<Double> pullerAppliedVoltage = pullerTalon.getMotorVoltage();
+    private final StatusSignal<Double> pullerSupplyCurrent = pullerTalon.getSupplyCurrent();
+
     public ShooterIOTalonFX() {
         var armMotorConfig = new TalonFXConfiguration()
                 .withSlot0(armGainsUp)
@@ -46,6 +54,23 @@ public class ShooterIOTalonFX implements ShooterIO {
         var response = armTalon.getConfigurator().apply(armMotorConfig);
         if (response.isError())
             System.out.println("Shooter Arm TalonFX failed config with error" + response);
+        var pullerMotorConfig = new TalonFXConfiguration()
+                .withFeedback(pullerfeedbackConfigs);
+        response = pullerTalon.getConfigurator().apply(pullerMotorConfig);
+        if (response.isError())
+            System.out.println("Puller TalonFX failed config with error" + response);
+        response = armTalon.clearStickyFaults();
+        if (response.isError())
+            System.out.println("Shooter Arm TalonFX failed sticky fault clearing with error" + response);
+        response = pullerTalon.clearStickyFaults();
+        if (response.isError())
+            System.out.println("Puller TalonFX failed sticky fault clearing with error" + response);
+        response = leftShooterTalon.clearStickyFaults();
+        if (response.isError())
+            System.out.println("Left Shooter TalonFX failed sticky fault clearing with error" + response);
+        response = rightShooterTalon.clearStickyFaults();
+        if (response.isError())
+            System.out.println("Right Shooter TalonFX failed sticky fault clearing with error" + response);
     }
 
     @Override
@@ -61,7 +86,10 @@ public class ShooterIOTalonFX implements ShooterIO {
                 rightShooterSupplyCurrent,
                 armPosition,
                 armAppliedVoltage,
-                armSupplyCurrent
+                armSupplyCurrent,
+                pullerPosition,
+                pullerAppliedVoltage,
+                pullerSupplyCurrent
         );
 
         inputs.leftShooterVelocity =
@@ -89,6 +117,13 @@ public class ShooterIOTalonFX implements ShooterIO {
         inputs.armSupplyCurrent =
                 Amps.of(armSupplyCurrent.getValueAsDouble());
 
+        inputs.pullerPosition =
+                Radians.of(Units.rotationsToRadians(pullerPosition.getValueAsDouble()));
+        inputs.pullerAppliedVoltage =
+                Volts.of(pullerAppliedVoltage.getValueAsDouble());
+        inputs.pullerSupplyCurrent =
+                Amps.of(pullerSupplyCurrent.getValueAsDouble());
+
         inputs.homed = homed;
     }
 
@@ -101,7 +136,13 @@ public class ShooterIOTalonFX implements ShooterIO {
 
     @Override
     public void setArmVoltage(Measure<Voltage> volts) {
-        armTalon.setControl(new VoltageOut(volts.magnitude()));
+//        armTalon.setControl(new VoltageOut(volts.magnitude()));
+        armTalon.setControl(new VoltageOut(0));
+    }
+
+    @Override
+    public void setPullerVoltage(Measure<Voltage> volts) {
+        pullerTalon.setControl(new VoltageOut(volts.magnitude()));
     }
 
     @Override
@@ -112,6 +153,23 @@ public class ShooterIOTalonFX implements ShooterIO {
     @Override
     public void setArmPosition(Measure<Angle> rad) {
         armTalon.setControl(new MotionMagicVoltage(rad.in(Rotations)));
+    }
+
+    @Override
+    public void setArmBrakeMode(boolean isCoast) {
+        var config = new MotorOutputConfigs();
+        config.NeutralMode = isCoast ? NeutralModeValue.Coast : NeutralModeValue.Brake;
+        armTalon.getConfigurator().apply(config);
+        armTalon.setControl(new NeutralOut());
+    }
+
+    @Override
+    public void setPullerBrakeMode(boolean isCoast) {
+        var config = new MotorOutputConfigs();
+        config.NeutralMode = isCoast ? NeutralModeValue.Coast : NeutralModeValue.Brake;
+        pullerTalon.getConfigurator().apply(config);
+        // FIXME there might be a better way
+        pullerTalon.setControl(new NeutralOut());
     }
 
     @Override

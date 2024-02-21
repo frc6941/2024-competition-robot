@@ -7,11 +7,11 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class RumbleCommand extends Command {
-    private final GenericHID hid;
+    private final GenericHID[] hid;
     private final Timer timer = new Timer();
     private final Measure<Time> rumbleTime;
 
-    public RumbleCommand(GenericHID hid, Measure<Time> seconds) {
+    public RumbleCommand(Measure<Time> seconds, GenericHID... hid) {
         this.hid = hid;
         this.rumbleTime = seconds;
     }
@@ -19,12 +19,16 @@ public class RumbleCommand extends Command {
     @Override
     public void initialize() {
         timer.restart();
-        hid.setRumble(GenericHID.RumbleType.kBothRumble, 1);
+        for (var i : hid) {
+            i.setRumble(GenericHID.RumbleType.kBothRumble, 1);
+        }
     }
 
     @Override
     public void end(boolean interrupted) {
-        hid.setRumble(GenericHID.RumbleType.kBothRumble, 0);
+        for (var i : hid) {
+            i.setRumble(GenericHID.RumbleType.kBothRumble, 0);
+        }
     }
 
     @Override

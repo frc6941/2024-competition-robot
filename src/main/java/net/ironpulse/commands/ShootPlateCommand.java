@@ -5,25 +5,28 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import net.ironpulse.subsystems.beambreak.BeamBreakSubsystem;
 import net.ironpulse.subsystems.indexer.IndexerSubsystem;
-import net.ironpulse.subsystems.indicator.IndicatorSubsystem;
 import net.ironpulse.subsystems.shooter.ShooterSubsystem;
 
 import java.util.function.BooleanSupplier;
 
-public class SpeakerShootCommand extends ParallelCommandGroup {
-    public SpeakerShootCommand(
+import static edu.wpi.first.units.Units.Rotations;
+
+public class ShootPlateCommand extends ParallelCommandGroup {
+    public ShootPlateCommand(
             ShooterSubsystem shooterSubsystem,
             IndexerSubsystem indexerSubsystem,
             BeamBreakSubsystem beamBreakSubsystem,
-            IndicatorSubsystem indicatorSubsystem,
             BooleanSupplier confirmation
     ) {
         addCommands(
-                new SpeakerAimingCommand(shooterSubsystem, indicatorSubsystem),
-                new PreShootCommand(shooterSubsystem, indicatorSubsystem),
                 Commands.sequence(
+                        new ShooterUpCommand(shooterSubsystem).onlyWhile(
+                                // magic number; do not touch!
+                                () -> Rotations.of(shooterSubsystem.getInputs().armPosition.magnitude()).magnitude() < 3.767
+                        ),
+                        new PreShootIndexCommand(indexerSubsystem),
                         new WaitUntilCommand(confirmation),
-                        new DeliverNoteCommand(indexerSubsystem, beamBreakSubsystem, indicatorSubsystem)
+                        new DeliverNoteIndexCommand(shooterSubsystem, beamBreakSubsystem)
                 )
         );
     }

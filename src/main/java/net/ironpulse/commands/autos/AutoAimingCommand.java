@@ -4,17 +4,20 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
+import net.ironpulse.Constants;
 import net.ironpulse.drivers.Limelight;
 import net.ironpulse.subsystems.shooter.ShooterSubsystem;
 
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Radians;
-import static net.ironpulse.Constants.ShooterConstants.*;
+import static net.ironpulse.Constants.Logger.debug;
 
 public class AutoAimingCommand extends Command {
     private final ShooterSubsystem shooterSubsystem;
 
     private final Timer timer = new Timer();
+
+    private int trust = 0;
 
     public AutoAimingCommand(ShooterSubsystem shooterSubsystem) {
         this.shooterSubsystem = shooterSubsystem;
@@ -22,38 +25,39 @@ public class AutoAimingCommand extends Command {
 
     @Override
     public void initialize() {
+        debug("AutoAimingCommand", "start");
+        trust = 0;
         timer.restart();
     }
 
     @Override
     public void execute() {
         var targetOptional = Limelight.getTarget();
-        var offset = speakerArmOffset.magnitude();
+        var offset = Constants.ShooterConstants.speakerArmOffset.magnitude();
         if (targetOptional.isEmpty()) return;
         var target = targetOptional.get();
-        var distance = target
-                .targetPoseCameraSpace()
-                .getTranslation()
-                .getDistance(new Translation3d());
-
-        if (distance >= shortShootMaxDistance.magnitude()) {
-            offset = speakerArmOffsetFar.magnitude();
-            System.out.println("far shoot: offset = " + offset);
+        var distance = target.
+                targetPoseCameraSpace().
+                getTranslation().
+                getDistance(new Translation3d());
+        if (distance >= Constants.ShooterConstants.shortShootMaxDistance.magnitude()) {
+            offset = Constants.ShooterConstants.speakerArmOffsetFar.magnitude();
+            debug("Shooter:", "far shoot: offset = " + offset);
         } else if (distance >= 2.1) {
-            offset = speakerArmOffset.magnitude() +
-                    (distance - 2.1) / (shortShootMaxDistance.magnitude() - 2.1) *
-                            (speakerArmOffsetFar.magnitude() -
-                                    speakerArmOffset.magnitude());
-            System.out.println("far but not too far: offset = " + offset);
+            offset = Constants.ShooterConstants.speakerArmOffset.magnitude() +
+                    (distance - 2.1) / (Constants.ShooterConstants.shortShootMaxDistance.magnitude() - 2.1) *
+                            (Constants.ShooterConstants.speakerArmOffsetFar.magnitude() -
+                                    Constants.ShooterConstants.speakerArmOffset.magnitude());
+            debug("Shooter:", "far but not too far: offset = " + offset);
         } else if (distance >= 1.3) {
-            offset = speakerArmOffsetNear.magnitude() +
+            offset = Constants.ShooterConstants.speakerArmOffsetNear.magnitude() +
                     (distance - 1.3) / (2.1 - 1.3) *
-                            (speakerArmOffset.magnitude() -
-                                    speakerArmOffsetNear.magnitude());
-            System.out.println("near but not too near: offset = " + offset);
+                            (Constants.ShooterConstants.speakerArmOffset.magnitude() -
+                                    Constants.ShooterConstants.speakerArmOffsetNear.magnitude());
+            debug("Shooter:", "near but not too near: offset = " + offset);
         } else {
-            offset = speakerArmOffsetNear.magnitude();
-            System.out.println("near shoot: offset = " + offset);
+            offset = Constants.ShooterConstants.speakerArmOffsetNear.magnitude();
+            debug("Shooter:", "near shoot: offset = " + offset);
         }
 
         if (Math.abs(
@@ -67,16 +71,20 @@ public class AutoAimingCommand extends Command {
                                             target.position().getY() +
                                             offset))
                     );
+        } else {
+            // FIXME Time?
+            trust += 1;
         }
     }
 
     @Override
-    public void end(boolean isInterrupted) {
+    public void end(boolean interrupted) {
+        debug("AutoAimingCommand", "end; elapsed=" + timer.get());
         shooterSubsystem.getIo().setArmPosition(Radians.zero());
     }
 
     @Override
     public boolean isFinished() {
-        return timer.hasElapsed(2);
+        return timer.hasElapsed(2) || trust >= 15;
     }
 }

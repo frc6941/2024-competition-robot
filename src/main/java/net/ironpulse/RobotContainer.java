@@ -1,15 +1,14 @@
 package net.ironpulse;
 
+import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.util.GeometryUtil;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import lombok.Getter;
 import net.ironpulse.commands.*;
 import net.ironpulse.commands.autos.AutoIntakeCommand;
@@ -32,12 +31,12 @@ import net.ironpulse.subsystems.intaker.IntakerSubsystem;
 import net.ironpulse.subsystems.shooter.ShooterIOSim;
 import net.ironpulse.subsystems.shooter.ShooterIOTalonFX;
 import net.ironpulse.subsystems.shooter.ShooterSubsystem;
-import net.ironpulse.subsystems.swerve.*;
+import net.ironpulse.subsystems.swerve.SwerveSubsystem;
 import net.ironpulse.utils.Utils;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 import static edu.wpi.first.units.Units.*;
-import static net.ironpulse.Constants.ShooterConstants.shooterConstantVoltage;
+import static net.ironpulse.Constants.SwerveConstants.*;
 
 public class RobotContainer {
     @Getter
@@ -58,19 +57,32 @@ public class RobotContainer {
     private LoggedDashboardChooser<Command> autoChooser;
     private Command autoCommand = null;
 
+    private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
+            .withDeadband(maxSpeed.magnitude() * 0.1)
+            .withRotationalDeadband(maxAngularRate.magnitude() * 0.1)
+            .withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo);
+    private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
+
     private void configureKeyBindings() {
-        swerveSubsystem.setDefaultCommand(
-                new DefaultDriveCommand(
-                        swerveSubsystem,
-                        () -> -driverController.getLeftY(),
-                        () -> -driverController.getLeftX(),
-                        () -> -driverController.getRightX()));
-        driverController.b().onTrue(Commands.runOnce(swerveSubsystem::stopWithX, swerveSubsystem));
-        driverController.start().onTrue(
-                Commands.runOnce(() -> swerveSubsystem.setPose(
-                                        new Pose2d(swerveSubsystem.getPose().getTranslation(), new Rotation2d())),
-                                swerveSubsystem)
-                        .ignoringDisable(true));
+        swerveSubsystem.setDefaultCommand(swerveSubsystem
+                .applyRequest(
+                        () -> drive
+                                .withVelocityX(Utils.sign(-driverController.getLeftY())
+                                        * xLimiter.calculate(Math.abs(driverController.getLeftY()))
+                                        * maxSpeed.magnitude())
+                                .withVelocityY(
+                                        Utils.sign(-driverController.getLeftX()) * maxSpeed.magnitude()
+                                                * yLimiter.calculate(Math.abs(driverController.getLeftX()))
+                                )
+                                .withRotationalRate(
+                                        -driverController.getRightX() * maxAngularRate.magnitude()
+                                )
+                )
+                .ignoringDisable(true));
+
+        driverController.b().whileTrue(swerveSubsystem.applyRequest(() -> brake));
+
+        driverController.start().onTrue(swerveSubsystem.runOnce(swerveSubsystem::seedFieldRelative));
 
         driverController.rightBumper().whileTrue(
                 Commands.sequence(
@@ -78,7 +90,7 @@ public class RobotContainer {
                                 new IntakeCommand(intakerSubsystem, beamBreakSubsystem, indicatorSubsystem),
                                 new IndexCommand(indexerSubsystem, beamBreakSubsystem)
                         ),
-                        new RumbleCommand(driverController.getHID(), Seconds.of(1))
+                        new RumbleCommand(Seconds.of(1), driverController.getHID(), operatorController.getHID())
                 )
         );
         driverController.leftTrigger().whileTrue(
@@ -87,7 +99,7 @@ public class RobotContainer {
                                 new IntakeCommand(intakerSubsystem, beamBreakSubsystem, indicatorSubsystem),
                                 new IndexCommand(indexerSubsystem, beamBreakSubsystem)
                         ),
-                        new RumbleCommand(driverController.getHID(), Seconds.of(1))
+                        new RumbleCommand(Seconds.of(1), driverController.getHID(), operatorController.getHID())
                 )
         );
         driverController.rightTrigger().whileTrue(Commands.parallel(
@@ -98,16 +110,13 @@ public class RobotContainer {
         operatorController.rightTrigger().whileTrue(
                 Commands.sequence(
                         new SpeakerShootCommand(
-                                swerveSubsystem,
                                 shooterSubsystem,
                                 indexerSubsystem,
                                 beamBreakSubsystem,
                                 indicatorSubsystem,
-                                () -> operatorController.getHID().getAButton(),
-                                () -> -driverController.getLeftY(),
-                                () -> -driverController.getLeftX()
+                                () -> operatorController.getHID().getRightBumper()
                         ),
-                        new RumbleCommand(driverController.getHID(), Seconds.of(1))
+                        new RumbleCommand(Seconds.of(1), driverController.getHID(), operatorController.getHID())
                 )
         );
 
@@ -118,9 +127,9 @@ public class RobotContainer {
                                 indexerSubsystem,
                                 beamBreakSubsystem,
                                 indicatorSubsystem,
-                                () -> operatorController.getHID().getAButton()
+                                () -> operatorController.getHID().getRightBumper()
                         ),
-                        new RumbleCommand(driverController.getHID(), Seconds.of(1))
+                        new RumbleCommand(Seconds.of(1), driverController.getHID(), operatorController.getHID())
                 )
         );
 
@@ -136,9 +145,19 @@ public class RobotContainer {
                 indexerSubsystem, beamBreakSubsystem, indicatorSubsystem,
                 () -> operatorController.getHID().getRightBumper(), Degrees.of(62)));
 
-        operatorController.pov(180).whileTrue(new ShooterUpCommand(shooterSubsystem));
-        operatorController.pov(0).whileTrue(new ShooterDownCommand(shooterSubsystem))
+        driverController.pov(180).whileTrue(new ShooterDownCommand(shooterSubsystem));
+        driverController.pov(0).whileTrue(new ShooterUpCommand(shooterSubsystem))
                 .and(() -> Rotations.of(shooterSubsystem.getInputs().armPosition.magnitude()).in(Degrees) > 15);
+        driverController.pov(90).whileTrue(new ClimbCommand(shooterSubsystem, false));
+        driverController.pov(270).whileTrue(new ClimbCommand(shooterSubsystem, true));
+
+        // FIXME ALMOST DEFINITELY WOULD NOT WORK PROPERLY
+//        driverController.pov(0).toggleOnTrue(new ShootPlateCommand(
+//                shooterSubsystem,
+//                indexerSubsystem,
+//                beamBreakSubsystem,
+//                () -> operatorController.getHID().getRightBumper()
+//        ));
 
         operatorController.back().toggleOnTrue(new RainbowCommand(indicatorSubsystem));
 
@@ -160,18 +179,7 @@ public class RobotContainer {
                 new AutoShootWithAngleCommand(shooterSubsystem, indexerSubsystem, 46));
         NamedCommands.registerCommand("ShootAtLaunchPad",
                 new AutoShootWithAngleCommand(shooterSubsystem, indexerSubsystem, 62));
-        autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser("Choreo Half"));
-        // Set up SysId routines
-        autoChooser.addOption(
-                "Drive SysId (Quasistatic Forward)",
-                swerveSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-        autoChooser.addOption(
-                "Drive SysId (Quasistatic Reverse)",
-                swerveSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-        autoChooser.addOption(
-                "Drive SysId (Dynamic Forward)", swerveSubsystem.sysIdDynamic(SysIdRoutine.Direction.kForward));
-        autoChooser.addOption(
-                "Drive SysId (Dynamic Reverse)", swerveSubsystem.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+        autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
     }
 
     public Command getAutonomousCommand() {
@@ -195,7 +203,7 @@ public class RobotContainer {
         var startPose = pathGroup
                 .get(0)
                 .getPreviewStartingHolonomicPose();
-        swerveSubsystem.setPose(Utils.flip() ?
+        swerveSubsystem.seedFieldRelative(Utils.flip() ?
                 GeometryUtil.flipFieldPose(startPose) :
                 startPose);
     }
@@ -204,13 +212,7 @@ public class RobotContainer {
         switch (Constants.currentMode) {
             default:
             case REAL:
-                swerveSubsystem = new SwerveSubsystem(
-                        new GyroIOPigeon2(),
-                        new ModuleIOTalonFX(0),
-                        new ModuleIOTalonFX(1),
-                        new ModuleIOTalonFX(2),
-                        new ModuleIOTalonFX(3)
-                );
+                swerveSubsystem = DriveTrain;
                 intakerSubsystem = new IntakerSubsystem(new IntakerIOTalonFX());
                 indexerSubsystem = new IndexerSubsystem(new IndexerIOTalonFX());
                 shooterSubsystem = new ShooterSubsystem(new ShooterIOTalonFX());
@@ -219,13 +221,7 @@ public class RobotContainer {
                 break;
             case SIM:
                 // Sim robot, instantiate physics sim IO implementations
-                swerveSubsystem =
-                        new SwerveSubsystem(
-                                inputs -> {},
-                                new ModuleIOSim(),
-                                new ModuleIOSim(),
-                                new ModuleIOSim(),
-                                new ModuleIOSim());
+                swerveSubsystem = DriveTrain;
                 indicatorSubsystem = new IndicatorSubsystem(new IndicatorIOSim());
                 intakerSubsystem = new IntakerSubsystem(new IntakerIOSim());
                 shooterSubsystem = new ShooterSubsystem(new ShooterIOSim());
@@ -240,6 +236,5 @@ public class RobotContainer {
         configureAutos();
         configureKeyBindings();
         indicatorSubsystem.setPattern(IndicatorIO.Patterns.NORMAL);
-        shooterSubsystem.getIo().setShooterVoltage(shooterConstantVoltage);
     }
 }
