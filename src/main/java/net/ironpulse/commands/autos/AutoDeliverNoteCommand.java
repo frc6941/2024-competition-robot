@@ -6,6 +6,7 @@ import net.ironpulse.subsystems.indexer.IndexerSubsystem;
 
 import static edu.wpi.first.units.Units.Volts;
 import static net.ironpulse.Constants.IndexerConstants.indexVoltage;
+import static net.ironpulse.Constants.Logger.debug;
 
 public class AutoDeliverNoteCommand extends Command {
     private final IndexerSubsystem indexerSubsystem;
@@ -18,6 +19,7 @@ public class AutoDeliverNoteCommand extends Command {
 
     @Override
     public void initialize() {
+        debug("AutoDeliverNote", "start");
         timer.restart();
     }
 
@@ -28,6 +30,7 @@ public class AutoDeliverNoteCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
+        debug("AutoDeliverNote", "end; elapsed=" + timer.get());
         indexerSubsystem.getIo().setIndexVoltage(Volts.zero());
     }
 

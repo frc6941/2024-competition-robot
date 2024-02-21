@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import net.ironpulse.subsystems.shooter.ShooterSubsystem;
 
+import static net.ironpulse.Constants.Logger.debug;
 import static net.ironpulse.Constants.ShooterConstants.defaultShootVoltage;
 import static net.ironpulse.Constants.ShooterConstants.shooterConstantVoltage;
 
@@ -17,6 +18,7 @@ public class AutoPreShootCommand extends Command {
 
     @Override
     public void initialize() {
+        debug("AutoPreShoot", "start");
         timer.restart();
     }
 
@@ -27,6 +29,7 @@ public class AutoPreShootCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
+        debug("AutoPreShoot", "end; elapsed=" + timer.get());
         shooterSubsystem.getIo().setShooterVoltage(shooterConstantVoltage);
     }
 
