@@ -80,7 +80,7 @@ public final class Constants {
         private static final Measure<Current> slipCurrent = Amps.of(300.0);
 
         // Theoretical free speed (m/s) at 12v applied output;
-        public static final Measure<Velocity<Distance>> speedAt12Volts = MetersPerSecond.of(4.5);
+        public static final Measure<Velocity<Distance>> speedAt12Volts = MetersPerSecond.of(6.0);
 
         // Every 1 rotation of the azimuth results in COUPLE_RATIO drive motor turns;
         private static final double COUPLE_RATIO = 3.5;
