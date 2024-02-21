@@ -19,7 +19,7 @@ public class BeamBreakIOSim implements BeamBreakIO {
             new BeamBreak(Constants.BeamBreakConstants.SHOOTER_BEAM_BREAK_ID);
 
     public BeamBreakIOSim() {
-        // FIXME
+        // do not fix it
         intakerSim.setInitialized(true);
         indexerSim.setInitialized(true);
         shooterSim.setInitialized(true);
