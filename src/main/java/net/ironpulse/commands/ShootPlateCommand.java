@@ -9,7 +9,7 @@ import net.ironpulse.subsystems.shooter.ShooterSubsystem;
 
 import java.util.function.BooleanSupplier;
 
-import static edu.wpi.first.units.Units.Rotations;
+import static edu.wpi.first.units.Units.Radians;
 
 public class ShootPlateCommand extends ParallelCommandGroup {
     public ShootPlateCommand(
@@ -19,14 +19,14 @@ public class ShootPlateCommand extends ParallelCommandGroup {
             BooleanSupplier confirmation
     ) {
         addCommands(
+                new PreShootIndexCommand(indexerSubsystem, shooterSubsystem),
                 Commands.sequence(
                         new ShooterUpCommand(shooterSubsystem).onlyWhile(
                                 // magic number; do not touch!
-                                () -> Rotations.of(shooterSubsystem.getInputs().armPosition.magnitude()).magnitude() < 3.767
+                                () -> shooterSubsystem.getInputs().armPosition.lt(Radians.of(3.767))
                         ),
-                        new PreShootIndexCommand(indexerSubsystem),
                         new WaitUntilCommand(confirmation),
-                        new DeliverNoteIndexCommand(shooterSubsystem, beamBreakSubsystem)
+                        new DeliverNoteIndexCommand(shooterSubsystem, indexerSubsystem)
                 )
         );
     }

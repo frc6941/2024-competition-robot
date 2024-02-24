@@ -40,10 +40,12 @@ public class ShooterIOTalonFX implements ShooterIO {
     private final StatusSignal<Double> armPosition = armTalon.getPosition();
     private final StatusSignal<Double> armAppliedVoltage = armTalon.getMotorVoltage();
     private final StatusSignal<Double> armSupplyCurrent = armTalon.getSupplyCurrent();
+    private final StatusSignal<Double> armTorqueCurrent = armTalon.getTorqueCurrent();
 
     private final StatusSignal<Double> pullerPosition = pullerTalon.getPosition();
     private final StatusSignal<Double> pullerAppliedVoltage = pullerTalon.getMotorVoltage();
     private final StatusSignal<Double> pullerSupplyCurrent = pullerTalon.getSupplyCurrent();
+    private final StatusSignal<Double> pullerTorqueCurrent = pullerTalon.getTorqueCurrent();
 
     public ShooterIOTalonFX() {
         var armMotorConfig = new TalonFXConfiguration()
@@ -54,8 +56,10 @@ public class ShooterIOTalonFX implements ShooterIO {
         var response = armTalon.getConfigurator().apply(armMotorConfig);
         if (response.isError())
             System.out.println("Shooter Arm TalonFX failed config with error" + response);
+        armTalon.setPosition(0);
         var pullerMotorConfig = new TalonFXConfiguration()
                 .withFeedback(pullerfeedbackConfigs);
+        pullerTalon.setPosition(0);
         response = pullerTalon.getConfigurator().apply(pullerMotorConfig);
         if (response.isError())
             System.out.println("Puller TalonFX failed config with error" + response);
@@ -87,9 +91,11 @@ public class ShooterIOTalonFX implements ShooterIO {
                 armPosition,
                 armAppliedVoltage,
                 armSupplyCurrent,
+                armTorqueCurrent,
                 pullerPosition,
                 pullerAppliedVoltage,
-                pullerSupplyCurrent
+                pullerSupplyCurrent,
+                pullerTorqueCurrent
         );
 
         inputs.leftShooterVelocity =
@@ -116,6 +122,8 @@ public class ShooterIOTalonFX implements ShooterIO {
                 Volts.of(armAppliedVoltage.getValueAsDouble());
         inputs.armSupplyCurrent =
                 Amps.of(armSupplyCurrent.getValueAsDouble());
+        inputs.armTorqueCurrent =
+                Amps.of(armTorqueCurrent.getValueAsDouble());
 
         inputs.pullerPosition =
                 Radians.of(Units.rotationsToRadians(pullerPosition.getValueAsDouble()));
@@ -123,6 +131,8 @@ public class ShooterIOTalonFX implements ShooterIO {
                 Volts.of(pullerAppliedVoltage.getValueAsDouble());
         inputs.pullerSupplyCurrent =
                 Amps.of(pullerSupplyCurrent.getValueAsDouble());
+        inputs.pullerTorqueCurrent =
+                Amps.of(pullerTorqueCurrent.getValueAsDouble());
 
         inputs.homed = homed;
     }
@@ -136,8 +146,7 @@ public class ShooterIOTalonFX implements ShooterIO {
 
     @Override
     public void setArmVoltage(Measure<Voltage> volts) {
-//        armTalon.setControl(new VoltageOut(volts.magnitude()));
-        armTalon.setControl(new VoltageOut(0));
+        armTalon.setControl(new VoltageOut(volts.magnitude()));
     }
 
     @Override

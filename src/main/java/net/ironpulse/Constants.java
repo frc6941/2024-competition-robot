@@ -208,7 +208,8 @@ public final class Constants {
         public static final MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs()
                 .withNeutralMode(NeutralModeValue.Brake);
         public final static Measure<Voltage> indexVoltage = Volts.of(5);
-        public final static Measure<Voltage> indexShootVoltage = Volts.of(10);
+        public final static Measure<Voltage> trapIndexVoltage = Volts.of(2);
+        public final static Measure<Voltage> indexShootVoltage = Volts.of(-16);
     }
 
     public static class IntakerConstants {
@@ -242,10 +243,10 @@ public final class Constants {
                 .withNeutralMode(NeutralModeValue.Brake);
 
         public static final FeedbackConfigs feedbackConfigs = new FeedbackConfigs()
-                .withFeedbackSensorSource(FeedbackSensorSourceValue.FusedCANcoder)
+                .withFeedbackSensorSource(FeedbackSensorSourceValue.RotorSensor)
                 .withSensorToMechanismRatio(90d / 24 * 90 / 24 * 84 / 14);
         public static final FeedbackConfigs pullerfeedbackConfigs = new FeedbackConfigs()
-                .withFeedbackSensorSource(FeedbackSensorSourceValue.FusedCANcoder)
+                .withFeedbackSensorSource(FeedbackSensorSourceValue.RotorSensor)
                 .withSensorToMechanismRatio(8d / 64 * 16 / 64);
 
         public static final Measure<Voltage> shooterConstantVoltage = Volts.of(-2);
@@ -261,7 +262,7 @@ public final class Constants {
 
         public final static Measure<Angle> ampDeployAngle = Degrees.of(190);
         public static final Measure<Voltage> shooterUpDownVoltage = Volts.of(-4);
-        public static final Measure<Voltage> shooterIndexVoltage = Volts.of(5);
+        public static final Measure<Voltage> shooterIndexVoltage = Volts.of(13);
     }
 
     public static class BeamBreakConstants {

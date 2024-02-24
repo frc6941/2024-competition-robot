@@ -35,7 +35,8 @@ import net.ironpulse.subsystems.swerve.SwerveSubsystem;
 import net.ironpulse.utils.Utils;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
-import static edu.wpi.first.units.Units.*;
+import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.Seconds;
 import static net.ironpulse.Constants.SwerveConstants.*;
 
 public class RobotContainer {
@@ -146,13 +147,12 @@ public class RobotContainer {
                 () -> operatorController.getHID().getRightBumper(), Degrees.of(62)));
 
         driverController.pov(180).whileTrue(new ShooterDownCommand(shooterSubsystem));
-        driverController.pov(0).whileTrue(new ShooterUpCommand(shooterSubsystem))
-                .and(() -> Rotations.of(shooterSubsystem.getInputs().armPosition.magnitude()).in(Degrees) > 15);
+        driverController.pov(0).whileTrue(new ClimbShooterUpCommand(shooterSubsystem));
         driverController.pov(90).whileTrue(new ClimbCommand(shooterSubsystem, false));
         driverController.pov(270).whileTrue(new ClimbCommand(shooterSubsystem, true));
 
-        // FIXME ALMOST DEFINITELY WOULD NOT WORK PROPERLY
-//        driverController.pov(0).toggleOnTrue(new ShootPlateCommand(
+        // Remember if you will, or, better still, forget it.
+//        operatorController.pov(0).toggleOnTrue(new ShootPlateCommand(
 //                shooterSubsystem,
 //                indexerSubsystem,
 //                beamBreakSubsystem,

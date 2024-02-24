@@ -1,6 +1,7 @@
 package net.ironpulse;
 
 import com.pathplanner.lib.pathfinding.Pathfinding;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import net.ironpulse.utils.LocalADStarAK;
@@ -16,6 +17,7 @@ public class Robot extends LoggedRobot {
 
     private RobotContainer robotContainer;
 
+    @SuppressWarnings("resource")
     public void configureLogger() {
         // Record metadata
         Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
@@ -54,6 +56,7 @@ public class Robot extends LoggedRobot {
                 Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim")));
                 break;
         }
+        new PowerDistribution(50, PowerDistribution.ModuleType.kRev);
         Logger.start();
     }
 

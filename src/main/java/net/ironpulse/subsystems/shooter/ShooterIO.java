@@ -23,10 +23,12 @@ public interface ShooterIO {
         public Measure<Angle> armPosition = Radians.zero();
         public Measure<Voltage> armAppliedVoltage = Volts.zero();
         public Measure<Current> armSupplyCurrent = Amps.zero();
+        public Measure<Current> armTorqueCurrent = Amps.zero();
 
         public Measure<Angle> pullerPosition = Radians.zero();
         public Measure<Voltage> pullerAppliedVoltage = Volts.zero();
         public Measure<Current> pullerSupplyCurrent = Amps.zero();
+        public Measure<Current> pullerTorqueCurrent = Amps.zero();
     }
 
     void updateInputs(ShooterIOInputs inputs);
