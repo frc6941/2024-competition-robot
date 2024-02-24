@@ -151,8 +151,8 @@ public class RobotContainer {
         driverController.pov(90).whileTrue(new ClimbCommand(shooterSubsystem, false));
         driverController.pov(270).whileTrue(new ClimbCommand(shooterSubsystem, true));
 
-        // FIXME ALMOST DEFINITELY WOULD NOT WORK PROPERLY
-//        driverController.pov(0).toggleOnTrue(new ShootPlateCommand(
+        // Remember if you will, or, better still, forget it.
+//        operatorController.pov(0).toggleOnTrue(new ShootPlateCommand(
 //                shooterSubsystem,
 //                indexerSubsystem,
 //                beamBreakSubsystem,
