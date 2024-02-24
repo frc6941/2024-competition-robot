@@ -37,7 +37,7 @@ import static edu.wpi.first.wpilibj.RobotState.isAutonomous;
 
 public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
     private static final Measure<Time> simLoopPeriod = Microsecond.of(5);
-    private Measure<Time> lastSimTime = Seconds.of(0);
+    private Measure<Time> lastSimTime = Seconds.zero();
     private final SwerveRequest.ApplyChassisSpeeds autoRequest = new SwerveRequest.ApplyChassisSpeeds();
 
     public SwerveSubsystem(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
