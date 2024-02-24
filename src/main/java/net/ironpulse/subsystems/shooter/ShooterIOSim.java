@@ -65,6 +65,8 @@ public class ShooterIOSim implements ShooterIO {
                 armAppliedVoltage;
         inputs.armSupplyCurrent =
                 Amps.of(armTalonSim.getCurrentDrawAmps());
+        inputs.armTorqueCurrent =
+                Amps.zero();
 
         inputs.pullerPosition =
                 Radians.of(pullerTalonSim.getAngularPositionRad());
@@ -72,6 +74,8 @@ public class ShooterIOSim implements ShooterIO {
                 pullerAppliedVoltage;
         inputs.pullerSupplyCurrent =
                 Amps.of(pullerTalonSim.getCurrentDrawAmps());
+        inputs.pullerTorqueCurrent =
+                Amps.zero();
 
         inputs.homed = homed;
     }
@@ -114,7 +118,7 @@ public class ShooterIOSim implements ShooterIO {
 
     @Override
     public void setPullerBrakeMode(boolean isCoast) {
-        
+
     }
 
     @Override

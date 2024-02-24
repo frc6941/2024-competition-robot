@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import net.ironpulse.Constants;
 import net.ironpulse.subsystems.shooter.ShooterSubsystem;
 
+import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.Volts;
 
 public class ClimbCommand extends Command {
@@ -33,6 +34,9 @@ public class ClimbCommand extends Command {
             pullVoltage = Constants.ShooterConstants.pullVoltage.negate();
         } else {
             pullVoltage = Constants.ShooterConstants.pullVoltage;
+        }
+        if (shooterSubsystem.getInputs().pullerTorqueCurrent.gt(Amps.of((50)))) {
+            pullVoltage = Volts.zero();
         }
         shooterSubsystem.getIo().setPullerVoltage(pullVoltage);
     }
