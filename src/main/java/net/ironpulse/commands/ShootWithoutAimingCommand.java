@@ -10,6 +10,8 @@ import net.ironpulse.subsystems.shooter.ShooterSubsystem;
 
 import java.util.function.Supplier;
 
+import static net.ironpulse.Constants.ShooterConstants.farShootVoltage;
+
 public class ShootWithoutAimingCommand extends ParallelCommandGroup {
     public ShootWithoutAimingCommand(
             IndicatorSubsystem indicatorSubsystem,
@@ -19,7 +21,7 @@ public class ShootWithoutAimingCommand extends ParallelCommandGroup {
             Supplier<Boolean> confirmation
     ) {
         addCommands(
-                new PreShootCommand(shooterSubsystem, indicatorSubsystem),
+                new PreShootWithoutAimingCommand(shooterSubsystem, farShootVoltage),
                 Commands.sequence(
                         new WaitUntilCommand(confirmation::get),
                         new DeliverNoteCommand(indexerSubsystem, beamBreakSubsystem, indicatorSubsystem)
