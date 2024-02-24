@@ -20,7 +20,7 @@ public class SpeakerShootCommand extends ParallelCommandGroup {
     ) {
         addCommands(
                 new SpeakerAimingCommand(shooterSubsystem, indicatorSubsystem),
-                new PreShootCommand(shooterSubsystem, indicatorSubsystem),
+                new PreShootCommand(shooterSubsystem),
                 Commands.sequence(
                         new WaitUntilCommand(confirmation),
                         new DeliverNoteCommand(indexerSubsystem, beamBreakSubsystem, indicatorSubsystem)

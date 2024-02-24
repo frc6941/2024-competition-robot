@@ -12,6 +12,8 @@ import net.ironpulse.subsystems.shooter.ShooterSubsystem;
 
 import java.util.function.BooleanSupplier;
 
+import static net.ironpulse.Constants.ShooterConstants.defaultShootVoltage;
+
 public class ParallelShootCommand extends ParallelCommandGroup {
     public ParallelShootCommand(
             ShooterSubsystem shooterSubsystem,
@@ -23,7 +25,7 @@ public class ParallelShootCommand extends ParallelCommandGroup {
     ) {
         addCommands(
                 new ParallelAimingCommand(shooterSubsystem, angle),
-                new PreShootCommand(shooterSubsystem, indicatorSubsystem),
+                new PreShootWithoutAimingCommand(shooterSubsystem, defaultShootVoltage),
                 Commands.sequence(
                         new WaitUntilCommand(confirmation),
                         new DeliverNoteCommand(indexerSubsystem, beamBreakSubsystem, indicatorSubsystem)
