@@ -56,7 +56,8 @@ public class Robot extends LoggedRobot {
                 Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim")));
                 break;
         }
-        new PowerDistribution(50, PowerDistribution.ModuleType.kRev);
+        var pdp = new PowerDistribution(50, PowerDistribution.ModuleType.kRev);
+        pdp.clearStickyFaults();
         Logger.start();
     }
 
