@@ -177,7 +177,6 @@ public class ShooterIOTalonFX implements ShooterIO {
         var config = new MotorOutputConfigs();
         config.NeutralMode = isCoast ? NeutralModeValue.Coast : NeutralModeValue.Brake;
         pullerTalon.getConfigurator().apply(config);
-        // FIXME there might be a better way
         pullerTalon.setControl(new NeutralOut());
     }
 
