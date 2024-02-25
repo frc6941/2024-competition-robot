@@ -1,40 +1,17 @@
 package net.ironpulse.commands.autos;
 
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import net.ironpulse.subsystems.beambreak.BeamBreakSubsystem;
 import net.ironpulse.subsystems.shooter.ShooterSubsystem;
 
-import static net.ironpulse.Constants.Logger.debug;
-import static net.ironpulse.Constants.ShooterConstants.defaultShootVoltage;
-import static net.ironpulse.Constants.ShooterConstants.shooterConstantVoltage;
-
-public class AutoPreShootCommand extends Command {
-    private final ShooterSubsystem shooterSubsystem;
-    private final Timer timer = new Timer();
-
-    public AutoPreShootCommand(ShooterSubsystem shooterSubsystem) {
-        this.shooterSubsystem = shooterSubsystem;
-    }
-
-    @Override
-    public void initialize() {
-        debug("AutoPreShoot", "start");
-        timer.restart();
-    }
-
-    @Override
-    public void execute() {
-        shooterSubsystem.getIo().setShooterVoltage(defaultShootVoltage);
-    }
-
-    @Override
-    public void end(boolean interrupted) {
-        debug("AutoPreShoot", "end; elapsed=" + timer.get());
-        shooterSubsystem.getIo().setShooterVoltage(shooterConstantVoltage);
-    }
-
-    @Override
-    public boolean isFinished() {
-        return timer.hasElapsed(20); // FIXME
+public class AutoPreShootCommand extends ParallelCommandGroup {
+    public AutoPreShootCommand(
+            ShooterSubsystem shooterSubsystem,
+            BeamBreakSubsystem beamBreakSubsystem
+    ) {
+        addCommands(
+                new AutoAimingCommand(shooterSubsystem, beamBreakSubsystem),
+                new AutoShooterSpeedUpCommand(shooterSubsystem)
+        );
     }
 }

@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import net.ironpulse.Constants;
 import net.ironpulse.drivers.Limelight;
+import net.ironpulse.subsystems.beambreak.BeamBreakSubsystem;
 import net.ironpulse.subsystems.shooter.ShooterSubsystem;
 
 import static edu.wpi.first.units.Units.Degrees;
@@ -14,24 +15,32 @@ import static net.ironpulse.Constants.Logger.debug;
 
 public class AutoAimingCommand extends Command {
     private final ShooterSubsystem shooterSubsystem;
+    private final BeamBreakSubsystem beamBreakSubsystem;
 
     private final Timer timer = new Timer();
 
-    private int trust = 0;
-
-    public AutoAimingCommand(ShooterSubsystem shooterSubsystem) {
+    public AutoAimingCommand(ShooterSubsystem shooterSubsystem, BeamBreakSubsystem beamBreakSubsystem) {
         this.shooterSubsystem = shooterSubsystem;
+        this.beamBreakSubsystem = beamBreakSubsystem;
     }
 
     @Override
     public void initialize() {
         debug("AutoAimingCommand", "start");
-        trust = 0;
         timer.restart();
     }
 
     @Override
     public void execute() {
+        // if shooter beam break is on: shooting, do not aim
+        // if not (indexer beam break on and not intaker beam break on): intaking, do not aim
+        if (beamBreakSubsystem.getInputs().isShooterBeamBreakOn || !(
+                beamBreakSubsystem.getInputs().isIndexerBeamBreakOn &&
+                        !beamBreakSubsystem.getInputs().isIntakerBeamBreakOn
+        )) {
+            shooterSubsystem.getIo().setArmPosition(Radians.zero());
+            return;
+        }
         var targetOptional = Limelight.getTarget();
         var offset = Constants.ShooterConstants.speakerArmOffset.magnitude();
         if (targetOptional.isEmpty()) return;
@@ -71,9 +80,6 @@ public class AutoAimingCommand extends Command {
                                             target.position().getY() +
                                             offset))
                     );
-        } else {
-            // FIXME Time?
-            trust += 1;
         }
     }
 
@@ -85,6 +91,6 @@ public class AutoAimingCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        return timer.hasElapsed(2) || trust >= 15;
+        return timer.hasElapsed(15);
     }
 }
