@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.71,
-      "y": 6.63
+      "x": 1.2891870489623334,
+      "y": 5.55802417487188
     },
-    "rotation": 60.0
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
@@ -38,7 +38,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "L-N1"
+                              "pathName": "M-N3"
                             }
                           },
                           {
@@ -57,32 +57,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "N1-S1"
-                            }
-                          },
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "Intake"
-                            }
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "AutoShoot"
-                      }
-                    },
-                    {
-                      "type": "parallel",
-                      "data": {
-                        "commands": [
-                          {
-                            "type": "path",
-                            "data": {
-                              "pathName": "S1-N2-S2"
+                              "pathName": "N3-S"
                             }
                           },
                           {
@@ -107,7 +82,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "S2-N3"
+                              "pathName": "New Path"
                             }
                           },
                           {
@@ -120,13 +95,19 @@
                       }
                     },
                     {
+                      "type": "named",
+                      "data": {
+                        "name": "AutoShoot"
+                      }
+                    },
+                    {
                       "type": "parallel",
                       "data": {
                         "commands": [
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "N3-S3"
+                              "pathName": "N2-N1"
                             }
                           },
                           {

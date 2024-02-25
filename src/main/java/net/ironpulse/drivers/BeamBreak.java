@@ -23,7 +23,7 @@ public class BeamBreak {
     }
 
     public boolean get() {
-        return analogInput.getVoltage() > 2.0;
+        return analogInput.getVoltage() > 1.5;
     }
 
     public boolean wasTripped() {

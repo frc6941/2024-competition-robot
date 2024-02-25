@@ -4,12 +4,12 @@
     {
       "anchor": {
         "x": 2.88,
-        "y": 7.07
+        "y": 7.05
       },
       "prevControl": null,
       "nextControl": {
         "x": 3.2893848514781574,
-        "y": 7.07
+        "y": 7.05
       },
       "isLocked": false,
       "linkedName": null
@@ -36,46 +36,17 @@
         "y": 5.57
       },
       "prevControl": {
-        "x": 3.315095639200287,
-        "y": 5.594556013976893
+        "x": 3.2863385117633177,
+        "y": 5.56731980469037
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 1.0,
-      "rotationDegrees": 30.0,
-      "rotateFast": false
-    },
-    {
-      "waypointRelativePos": 1.35,
-      "rotationDegrees": 0,
-      "rotateFast": false
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
-  "eventMarkers": [
-    {
-      "name": "New Event Marker",
-      "waypointRelativePos": 0.5,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "AutoShoot"
-              }
-            }
-          ]
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -88,7 +59,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Blue Left",
   "previewStartingState": null,
   "useDefaultConstraints": false
 }

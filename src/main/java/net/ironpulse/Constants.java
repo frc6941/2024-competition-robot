@@ -236,7 +236,7 @@ public final class Constants {
         public static final Measure<Voltage> armZeroVoltage = Volts.of(-2);
 
         public static final MotionMagicConfigs motionMagicConfigs = new MotionMagicConfigs()
-                .withMotionMagicAcceleration(10)
+                .withMotionMagicAcceleration(3)
                 .withMotionMagicJerk(50)
                 .withMotionMagicCruiseVelocity(10);
         public static final MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs()
