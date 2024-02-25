@@ -229,16 +229,16 @@ public final class Constants {
                 .withKP(60)
                 .withKI(0.01)
                 .withKD(0.02)
-                .withKV(0.12)
-                .withKS(0.25);
+                .withKV(0.12) // add 12v for desired velocity FIXME
+                .withKS(0.25); // add 0.24v to overcome friction
 
         public static final Measure<Current> armZeroCurrent = Amps.of(1.2);
         public static final Measure<Voltage> armZeroVoltage = Volts.of(-2);
 
         public static final MotionMagicConfigs motionMagicConfigs = new MotionMagicConfigs()
-                .withMotionMagicAcceleration(3)
-                .withMotionMagicJerk(50)
-                .withMotionMagicCruiseVelocity(10);
+                .withMotionMagicAcceleration(160) // 160 rps/s acceleration
+                .withMotionMagicJerk(1600) // 1600 rps/s^2 jerk
+                .withMotionMagicCruiseVelocity(80); // 80 rps cruise velocity
         public static final MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs()
                 .withNeutralMode(NeutralModeValue.Brake);
 
