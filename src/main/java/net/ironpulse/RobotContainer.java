@@ -11,9 +11,9 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import lombok.Getter;
 import net.ironpulse.commands.*;
-import net.ironpulse.commands.autos.AutoDeliverNoteCommand;
 import net.ironpulse.commands.autos.AutoIntakeCommand;
 import net.ironpulse.commands.autos.AutoPreShootCommand;
+import net.ironpulse.commands.autos.AutoShootCommand;
 import net.ironpulse.commands.autos.AutoShootWithAngleCommand;
 import net.ironpulse.subsystems.beambreak.BeamBreakIORev;
 import net.ironpulse.subsystems.beambreak.BeamBreakIOSim;
@@ -166,7 +166,7 @@ public class RobotContainer {
 
     private void configureAutos() {
         NamedCommands.registerCommand("AutoShoot",
-                new AutoDeliverNoteCommand(indexerSubsystem));
+                new AutoShootCommand(indexerSubsystem));
         NamedCommands.registerCommand("Intake",
                 new AutoIntakeCommand(intakerSubsystem, indexerSubsystem, beamBreakSubsystem));
         NamedCommands.registerCommand("AutoPreShoot",
