@@ -285,7 +285,10 @@ public final class Constants {
 
         public static void debug(String... texts) {
             if (ENABLE_DEBUG) {
-                System.out.println(String.join(" ", texts));
+                // FIXME
+                if (!texts[0].equals("Shooter:")) {
+                    System.out.println(String.join(" ", texts));
+                }
             }
         }
     }

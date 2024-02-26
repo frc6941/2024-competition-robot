@@ -55,7 +55,6 @@ public class SpeakerAimingCommand extends Command {
                 targetPoseCameraSpace().
                 getTranslation().
                 getDistance(new Translation3d());
-        System.out.println("near offset => " + Constants.ShooterConstants.speakerArmOffsetNear + " far => " + Constants.ShooterConstants.speakerArmOffsetFar + " standard => " + Constants.ShooterConstants.speakerArmOffset);
         if (distance >= Constants.ShooterConstants.shortShootMaxDistance.magnitude()) {
             offset = Constants.ShooterConstants.speakerArmOffsetFar.magnitude();
             debug("Shooter:", "far shoot: offset = " + offset);
