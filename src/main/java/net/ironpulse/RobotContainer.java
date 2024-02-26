@@ -112,6 +112,8 @@ public class RobotContainer {
                                 indexerSubsystem,
                                 beamBreakSubsystem,
                                 indicatorSubsystem,
+                                swerveSubsystem,
+                                driverController,
                                 () -> operatorController.getHID().getRightBumper()
                         ),
                         new RumbleCommand(Seconds.of(1), driverController.getHID(), operatorController.getHID())

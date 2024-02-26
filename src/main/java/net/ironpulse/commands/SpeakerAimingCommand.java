@@ -1,28 +1,46 @@
 package net.ironpulse.commands;
 
+import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import net.ironpulse.Constants;
 import net.ironpulse.drivers.Limelight;
 import net.ironpulse.subsystems.indicator.IndicatorIO;
 import net.ironpulse.subsystems.indicator.IndicatorSubsystem;
 import net.ironpulse.subsystems.shooter.ShooterSubsystem;
+import net.ironpulse.subsystems.swerve.FieldCentricTargetHeading;
+import net.ironpulse.subsystems.swerve.SwerveSubsystem;
+import net.ironpulse.utils.Utils;
 
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Radians;
 import static net.ironpulse.Constants.Logger.debug;
+import static net.ironpulse.Constants.SwerveConstants.*;
 
 public class SpeakerAimingCommand extends Command {
     private final ShooterSubsystem shooterSubsystem;
     private final IndicatorSubsystem indicatorSubsystem;
+    private final SwerveSubsystem swerveSubsystem;
+    private final CommandXboxController driverController;
+    private final FieldCentricTargetHeading drive = new FieldCentricTargetHeading()
+            .withDeadband(maxSpeed.magnitude() * 0.1)
+            .withRotationalDeadband(0)
+            .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage)
+            .withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo);
 
     public SpeakerAimingCommand(
             ShooterSubsystem shooterSubsystem,
-            IndicatorSubsystem indicatorSubsystem
+            IndicatorSubsystem indicatorSubsystem,
+            SwerveSubsystem swerveSubsystem,
+            CommandXboxController driverController
     ) {
         this.shooterSubsystem = shooterSubsystem;
         this.indicatorSubsystem = indicatorSubsystem;
+        this.swerveSubsystem = swerveSubsystem;
+        this.driverController = driverController;
+        drive.HeadingController.setPID(headingGains.kP, headingGains.kI, headingGains.kD);
     }
 
     @Override
@@ -37,6 +55,7 @@ public class SpeakerAimingCommand extends Command {
                 targetPoseCameraSpace().
                 getTranslation().
                 getDistance(new Translation3d());
+        System.out.println("near offset => " + Constants.ShooterConstants.speakerArmOffsetNear + " far => " + Constants.ShooterConstants.speakerArmOffsetFar + " standard => " + Constants.ShooterConstants.speakerArmOffset);
         if (distance >= Constants.ShooterConstants.shortShootMaxDistance.magnitude()) {
             offset = Constants.ShooterConstants.speakerArmOffsetFar.magnitude();
             debug("Shooter:", "far shoot: offset = " + offset);
@@ -69,6 +88,18 @@ public class SpeakerAimingCommand extends Command {
                                             offset))
                     );
         }
+
+        swerveSubsystem.applyRequest(() ->
+                drive
+                        .withVelocityX(Utils.sign(-driverController.getLeftY())
+                                * xLimiter.calculate(Math.abs(driverController.getLeftY()))
+                                * maxSpeed.magnitude())
+                        .withVelocityY(
+                                Utils.sign(-driverController.getLeftX()) * maxSpeed.magnitude()
+                                        * yLimiter.calculate(Math.abs(driverController.getLeftX()))
+                        )
+                        .withCurrentTx(target.position().getX())
+        ).execute();
     }
 
     @Override

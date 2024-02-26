@@ -197,6 +197,10 @@ public final class Constants {
                 backRightXPos.magnitude(),
                 backRightYPos.magnitude(),
                 true);
+        public static final Slot0Configs headingGains = new Slot0Configs()
+                .withKP(0.04)
+                .withKI(0)
+                .withKD(0);
 
         public static final SwerveSubsystem DriveTrain =
                 new SwerveSubsystem(DrivetrainConstants, FrontLeft, FrontRight, BackLeft, BackRight);
@@ -229,16 +233,16 @@ public final class Constants {
                 .withKP(60)
                 .withKI(0.01)
                 .withKD(0.02)
-                .withKV(0.12) // add 12v for desired velocity FIXME
+                .withKV(0.12) // add 12v for desired velocity
                 .withKS(0.25); // add 0.24v to overcome friction
 
         public static final Measure<Current> armZeroCurrent = Amps.of(1.2);
         public static final Measure<Voltage> armZeroVoltage = Volts.of(-2);
 
         public static final MotionMagicConfigs motionMagicConfigs = new MotionMagicConfigs()
-                .withMotionMagicAcceleration(160) // 160 rps/s acceleration
-                .withMotionMagicJerk(1600) // 1600 rps/s^2 jerk
-                .withMotionMagicCruiseVelocity(80); // 80 rps cruise velocity
+                .withMotionMagicAcceleration(30)
+                .withMotionMagicJerk(70)
+                .withMotionMagicCruiseVelocity(60);
         public static final MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs()
                 .withNeutralMode(NeutralModeValue.Brake);
 
@@ -252,13 +256,13 @@ public final class Constants {
         public static final Measure<Voltage> shooterConstantVoltage = Volts.of(-2);
         public static final Measure<Voltage> defaultShootVoltage = Volts.of(-9);
         public static final Measure<Voltage> shortShootVoltage = Volts.of(-8);
-        public static final Measure<Distance> shortShootMaxDistance = Meters.of(2.7);
+        public static Measure<Distance> shortShootMaxDistance = Meters.of(2.7);
         public static final Measure<Voltage> farShootVoltage = Volts.of(-11);
         public static final Measure<Voltage> pullVoltage = Volts.of(-6);
 
-        public static final Measure<Angle> speakerArmOffsetNear = Degrees.of(-43);
-        public static final Measure<Angle> speakerArmOffset = Degrees.of(-48);
-        public static final Measure<Angle> speakerArmOffsetFar = Degrees.of(-32);
+        public static Measure<Angle> speakerArmOffsetNear = Degrees.of(-43);
+        public static Measure<Angle> speakerArmOffset = Degrees.of(-48);
+        public static Measure<Angle> speakerArmOffsetFar = Degrees.of(-32);
 
         public final static Measure<Angle> ampDeployAngle = Degrees.of(190);
         public static final Measure<Voltage> shooterUpDownVoltage = Volts.of(-4);
