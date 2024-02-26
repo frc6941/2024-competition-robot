@@ -44,6 +44,6 @@ public class AutoDeliverNoteCommand extends Command {
                 !beamBreakSubsystem.getInputs().isIndexerBeamBreakOn &&
                         !beamBreakSubsystem.getInputs().isShooterBeamBreakOn &&
                         !beamBreakSubsystem.getInputs().isIntakerBeamBreakOn;
-        return timer.hasElapsed(0.5) || noNotesInside;
+        return timer.hasElapsed(0.2) || noNotesInside;
     }
 }
