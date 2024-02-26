@@ -10,8 +10,12 @@ public class AutoShootCommand extends SequentialCommandGroup {
             IndexerSubsystem indexerSubsystem,
             BeamBreakSubsystem beamBreakSubsystem
     ) {
+        var noNotesInside =
+                !beamBreakSubsystem.getInputs().isIndexerBeamBreakOn &&
+                        !beamBreakSubsystem.getInputs().isShooterBeamBreakOn &&
+                        !beamBreakSubsystem.getInputs().isIntakerBeamBreakOn;
         addCommands(
-                new WaitCommand(0.75),
+                new WaitCommand(0.75).onlyIf(() -> !noNotesInside),
                 new AutoDeliverNoteCommand(indexerSubsystem, beamBreakSubsystem)
         );
     }
