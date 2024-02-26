@@ -12,6 +12,9 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import lombok.Getter;
 import net.ironpulse.commands.*;
 import net.ironpulse.commands.autos.*;
+import net.ironpulse.commands.climb.ClimbCommand;
+import net.ironpulse.commands.climb.ClimbShooterUpCommand;
+import net.ironpulse.commands.climb.StartClimbCommand;
 import net.ironpulse.subsystems.beambreak.BeamBreakIORev;
 import net.ironpulse.subsystems.beambreak.BeamBreakIOSim;
 import net.ironpulse.subsystems.beambreak.BeamBreakSubsystem;
@@ -32,7 +35,6 @@ import net.ironpulse.subsystems.swerve.SwerveSubsystem;
 import net.ironpulse.utils.Utils;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
-import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Seconds;
 import static net.ironpulse.Constants.SwerveConstants.*;
 
@@ -133,17 +135,19 @@ public class RobotContainer {
                 )
         );
 
-        operatorController.a().whileTrue(new ShootWithoutAimingCommand(indicatorSubsystem, beamBreakSubsystem,
-                shooterSubsystem, indexerSubsystem, () -> operatorController.getHID().getRightBumper()));
-        operatorController.b().whileTrue(new ParallelShootCommand(shooterSubsystem,
-                indexerSubsystem, beamBreakSubsystem, indicatorSubsystem,
-                () -> operatorController.getHID().getRightBumper(), Degrees.of(30)));
-        operatorController.x().whileTrue(new ParallelShootCommand(shooterSubsystem,
-                indexerSubsystem, beamBreakSubsystem, indicatorSubsystem,
-                () -> operatorController.getHID().getRightBumper(), Degrees.of(46)));
-        operatorController.y().whileTrue(new ParallelShootCommand(shooterSubsystem,
-                indexerSubsystem, beamBreakSubsystem, indicatorSubsystem,
-                () -> operatorController.getHID().getRightBumper(), Degrees.of(62)));
+//        operatorController.a().whileTrue(new ShootWithoutAimingCommand(indicatorSubsystem, beamBreakSubsystem,
+//                shooterSubsystem, indexerSubsystem, () -> operatorController.getHID().getRightBumper()));
+//        operatorController.b().whileTrue(new ParallelShootCommand(shooterSubsystem,
+//                indexerSubsystem, beamBreakSubsystem, indicatorSubsystem,
+//                () -> operatorController.getHID().getRightBumper(), Degrees.of(30)));
+//        operatorController.x().whileTrue(new ParallelShootCommand(shooterSubsystem,
+//                indexerSubsystem, beamBreakSubsystem, indicatorSubsystem,
+//                () -> operatorController.getHID().getRightBumper(), Degrees.of(46)));
+//        operatorController.y().whileTrue(new ParallelShootCommand(shooterSubsystem,
+//                indexerSubsystem, beamBreakSubsystem, indicatorSubsystem,
+//                () -> operatorController.getHID().getRightBumper(), Degrees.of(62)));
+        operatorController.a().whileTrue(new StartClimbCommand(shooterSubsystem, swerveSubsystem,
+                () -> operatorController.getHID().getYButton()));
 
         driverController.pov(180).whileTrue(new ShooterDownCommand(shooterSubsystem));
         driverController.pov(0).whileTrue(new ClimbShooterUpCommand(shooterSubsystem));
@@ -172,12 +176,8 @@ public class RobotContainer {
                 new AutoIntakeCommand(intakerSubsystem, indexerSubsystem, beamBreakSubsystem));
         NamedCommands.registerCommand("AutoPreShoot",
                 new AutoPreShootCommand(shooterSubsystem, beamBreakSubsystem));
-        NamedCommands.registerCommand("ShootNearSpeaker",
-                new AutoShootWithAngleCommand(shooterSubsystem, indexerSubsystem, beamBreakSubsystem, 26));
-        NamedCommands.registerCommand("ShootOnLine",
-                new AutoShootWithAngleCommand(shooterSubsystem, indexerSubsystem, beamBreakSubsystem, 46));
-        NamedCommands.registerCommand("ShootAtLaunchPad",
-                new AutoShootWithAngleCommand(shooterSubsystem, indexerSubsystem, beamBreakSubsystem, 62));
+        NamedCommands.registerCommand("Mess",
+                new AutoMessCommand(intakerSubsystem, indexerSubsystem, shooterSubsystem));
         autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
     }
 
