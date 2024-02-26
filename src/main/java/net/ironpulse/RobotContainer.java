@@ -163,19 +163,19 @@ public class RobotContainer {
 
     private void configureAutos() {
         NamedCommands.registerCommand("AutoShoot",
-                new AutoShootCommand(indexerSubsystem));
+                new AutoShootCommand(indexerSubsystem, beamBreakSubsystem));
         NamedCommands.registerCommand("ShootManual",
-                new AutoDeliverNoteCommand(indexerSubsystem));
+                new AutoDeliverNoteCommand(indexerSubsystem, beamBreakSubsystem));
         NamedCommands.registerCommand("Intake",
                 new AutoIntakeCommand(intakerSubsystem, indexerSubsystem, beamBreakSubsystem));
         NamedCommands.registerCommand("AutoPreShoot",
                 new AutoPreShootCommand(shooterSubsystem, beamBreakSubsystem));
         NamedCommands.registerCommand("ShootNearSpeaker",
-                new AutoShootWithAngleCommand(shooterSubsystem, indexerSubsystem, 26));
+                new AutoShootWithAngleCommand(shooterSubsystem, indexerSubsystem, beamBreakSubsystem, 26));
         NamedCommands.registerCommand("ShootOnLine",
-                new AutoShootWithAngleCommand(shooterSubsystem, indexerSubsystem, 46));
+                new AutoShootWithAngleCommand(shooterSubsystem, indexerSubsystem, beamBreakSubsystem, 46));
         NamedCommands.registerCommand("ShootAtLaunchPad",
-                new AutoShootWithAngleCommand(shooterSubsystem, indexerSubsystem, 62));
+                new AutoShootWithAngleCommand(shooterSubsystem, indexerSubsystem, beamBreakSubsystem, 62));
         autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
     }
 

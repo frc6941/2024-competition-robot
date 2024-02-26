@@ -2,6 +2,7 @@ package net.ironpulse.commands.autos;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
+import net.ironpulse.subsystems.beambreak.BeamBreakSubsystem;
 import net.ironpulse.subsystems.indexer.IndexerSubsystem;
 
 import static edu.wpi.first.units.Units.Volts;
@@ -10,11 +11,13 @@ import static net.ironpulse.Constants.Logger.debug;
 
 public class AutoDeliverNoteCommand extends Command {
     private final IndexerSubsystem indexerSubsystem;
+    private final BeamBreakSubsystem beamBreakSubsystem;
 
     private final Timer timer = new Timer();
 
-    public AutoDeliverNoteCommand(IndexerSubsystem indexerSubsystem) {
+    public AutoDeliverNoteCommand(IndexerSubsystem indexerSubsystem, BeamBreakSubsystem beamBreakSubsystem) {
         this.indexerSubsystem = indexerSubsystem;
+        this.beamBreakSubsystem = beamBreakSubsystem;
     }
 
     @Override
@@ -36,6 +39,11 @@ public class AutoDeliverNoteCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        return timer.hasElapsed(0.5);
+        // fail fast when no notes inside
+        var noNotesInside =
+                !beamBreakSubsystem.getInputs().isIndexerBeamBreakOn &&
+                        !beamBreakSubsystem.getInputs().isShooterBeamBreakOn &&
+                        !beamBreakSubsystem.getInputs().isIntakerBeamBreakOn;
+        return timer.hasElapsed(0.5) || noNotesInside;
     }
 }
