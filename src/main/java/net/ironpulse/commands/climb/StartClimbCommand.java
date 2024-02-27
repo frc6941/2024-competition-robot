@@ -22,9 +22,7 @@ public class StartClimbCommand extends ParallelCommandGroup {
                 new ClimbShooterUpCommand(shooterSubsystem),
                 new ClimbDriveForwardCommand(swerveSubsystem),
                 new SequentialCommandGroup(
-                        Commands.runOnce(() -> {
-                            indicatorSubsystem.setPattern(IndicatorIO.Patterns.CAN_CLIMB);
-                        }),
+                        Commands.runOnce(() -> indicatorSubsystem.setPattern(IndicatorIO.Patterns.CAN_CLIMB)),
                         new WaitUntilCommand(confirmation),
                         new ClimbEndgameCommand(shooterSubsystem, indicatorSubsystem)
                 )

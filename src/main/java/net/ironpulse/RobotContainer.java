@@ -155,9 +155,7 @@ public class RobotContainer {
         driverController.pov(270).whileTrue(new ClimbCommand(shooterSubsystem, true));
 
         // FIXME for testing only
-        operatorController.pov(0).whileTrue(Commands.runOnce(() -> {
-            indicatorSubsystem.reset();
-        }));
+        operatorController.pov(0).whileTrue(Commands.runOnce(() -> indicatorSubsystem.reset()));
 
         // Remember if you will, or, better still, forget it.
 //        operatorController.pov(0).toggleOnTrue(new ShootPlateCommand(
