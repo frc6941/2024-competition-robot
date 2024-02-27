@@ -21,6 +21,7 @@ public class PreShootCommand extends Command {
     public void execute() {
         var targetOptional = Limelight.getTarget();
         if (targetOptional.isEmpty()) {
+            shooterSubsystem.getIo().setShooterVoltage(shortShootVoltage);
             return;
         }
 
