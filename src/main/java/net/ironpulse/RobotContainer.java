@@ -157,9 +157,24 @@ public class RobotContainer {
         driverController.pov(90).whileTrue(new ClimbCommand(shooterSubsystem, false));
         driverController.pov(270).whileTrue(new ClimbCommand(shooterSubsystem, true));
 
-        // FIXME for testing only
-        operatorController.pov(0).whileTrue(Commands.runOnce(() -> indicatorSubsystem.reset()));
-
+//        operatorController.pov(0).whileTrue(Commands.runOnce(() -> {
+//            Constants.ShooterConstants.speakerArmOffset = Constants.ShooterConstants.speakerArmOffset.plus(Degrees.of(0.5));
+//        }));
+//        operatorController.pov(90).whileTrue(Commands.runOnce(() -> {
+//            Constants.ShooterConstants.speakerArmOffsetNear = Constants.ShooterConstants.speakerArmOffsetNear.plus(Degrees.of(0.5));
+//        }));
+//        operatorController.pov(180).whileTrue(Commands.runOnce(() -> {
+//            Constants.ShooterConstants.speakerArmOffset = Constants.ShooterConstants.speakerArmOffset.minus(Degrees.of(0.5));
+//        }));
+//        operatorController.pov(270).whileTrue(Commands.runOnce(() -> {
+//            Constants.ShooterConstants.speakerArmOffsetNear = Constants.ShooterConstants.speakerArmOffsetNear.minus(Degrees.of(0.5));
+//        }));
+//        driverController.y().whileTrue(Commands.runOnce(() -> {
+//            Constants.ShooterConstants.speakerArmOffsetFar = Constants.ShooterConstants.speakerArmOffsetFar.plus(Degrees.of(0.5));
+//        }));
+//        driverController.a().whileTrue(Commands.runOnce(() -> {
+//            Constants.ShooterConstants.speakerArmOffsetFar = Constants.ShooterConstants.speakerArmOffsetFar.minus(Degrees.of(0.5));
+//        }));
         // Remember if you will, or, better still, forget it.
 //        operatorController.pov(0).toggleOnTrue(new ShootPlateCommand(
 //                shooterSubsystem,
