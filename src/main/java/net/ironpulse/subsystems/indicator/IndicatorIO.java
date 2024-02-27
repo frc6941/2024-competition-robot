@@ -20,7 +20,9 @@ public interface IndicatorIO {
         FINISH_SHOOT(new BlinkingPattern(Color.kRed, 0.5)),
         SHOULD_AMPLIFY(new RainbowPattern()),
         AIMING(new BlinkingPattern(Color.kYellow, 0.5)),
-        AIMED(new SolidColorPattern(Color.kYellow));
+        AIMED(new SolidColorPattern(Color.kYellow)),
+        CAN_CLIMB(new BlinkingPattern(Color.kPurple, 0.2)),
+        CLIMBING(new BlinkingPattern(Color.kViolet, 0.7));
 
         public final AddressableLEDPattern pattern;
 
@@ -55,4 +57,9 @@ public interface IndicatorIO {
      * Set current pattern.
      */
     void setPattern(Patterns pattern);
+
+    /**
+     * Stops and starts indicator.
+     */
+    void reset();
 }

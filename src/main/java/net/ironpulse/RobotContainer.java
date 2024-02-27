@@ -146,13 +146,18 @@ public class RobotContainer {
 //        operatorController.y().whileTrue(new ParallelShootCommand(shooterSubsystem,
 //                indexerSubsystem, beamBreakSubsystem, indicatorSubsystem,
 //                () -> operatorController.getHID().getRightBumper(), Degrees.of(62)));
-        operatorController.a().whileTrue(new StartClimbCommand(shooterSubsystem, swerveSubsystem,
+        operatorController.a().whileTrue(new StartClimbCommand(shooterSubsystem, swerveSubsystem, indicatorSubsystem,
                 () -> operatorController.getHID().getYButton()));
 
         driverController.pov(180).whileTrue(new ShooterDownCommand(shooterSubsystem));
         driverController.pov(0).whileTrue(new ClimbShooterUpCommand(shooterSubsystem));
         driverController.pov(90).whileTrue(new ClimbCommand(shooterSubsystem, false));
         driverController.pov(270).whileTrue(new ClimbCommand(shooterSubsystem, true));
+
+        // FIXME for testing only
+        operatorController.pov(0).whileTrue(Commands.runOnce(() -> {
+            indicatorSubsystem.reset();
+        }));
 
         // Remember if you will, or, better still, forget it.
 //        operatorController.pov(0).toggleOnTrue(new ShootPlateCommand(

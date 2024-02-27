@@ -12,4 +12,8 @@ public class IndicatorIOSim implements IndicatorIO {
     public void setPattern(Patterns pattern) {
         currentPattern = pattern;
     }
+
+    @Override
+    public void reset() {
+    }
 }

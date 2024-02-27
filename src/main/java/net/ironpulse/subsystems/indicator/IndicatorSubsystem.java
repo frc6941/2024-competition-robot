@@ -50,6 +50,10 @@ public class IndicatorSubsystem extends SubsystemBase {
         setPattern(Patterns.NORMAL);
     }
 
+    public void reset() {
+        this.io.reset();
+    }
+
     public void resetToLastPattern() {
         setPattern(lastPattern);
     }

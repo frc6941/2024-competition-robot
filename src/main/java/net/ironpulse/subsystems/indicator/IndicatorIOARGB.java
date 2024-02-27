@@ -33,4 +33,10 @@ public class IndicatorIOARGB implements IndicatorIO {
         }
         led.setPattern(pattern.pattern);
     }
+
+    @Override
+    public void reset() {
+        led.stop();
+        led.start(0.02);
+    }
 }
