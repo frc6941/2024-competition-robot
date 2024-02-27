@@ -33,11 +33,18 @@ public class PreShootCommand extends Command {
             shooterSubsystem.getIo().setShooterVoltage(farShootVoltage);
             return;
         }
-        if (shortShootMaxDistance.magnitude() + 0.1 < distance && distance >= shortShootMaxDistance.magnitude() - 0.1) {
-            // looks advanced! do not touch!
+        if (shortShootMaxDistance.magnitude() - 0.1 < distance && distance < shortShootMaxDistance.magnitude() + 0.1) {
+            // looks advanced! do not touch! TODO
+//            shooterSubsystem.getIo().setShooterVoltage(Volts.of(
+//                    ((distance - shortShootMaxDistance.magnitude() + 0.1) / 0.2) * (farShootVoltage.magnitude() - shortShootVoltage.magnitude()))
+//            );
+            // Basic math, Watson.
+            // Method to derive:
+            // delta (farShoot-shortShoot) / delta distance => k
+            // substitute one point in => b
             shooterSubsystem.getIo().setShooterVoltage(Volts.of(
-                    ((distance - shortShootMaxDistance.magnitude() + 0.1) / 0.2) * (farShootVoltage.magnitude() - shortShootVoltage.magnitude()))
-            );
+                    15 * distance - 29.5
+            ).negate());
             return;
         }
         shooterSubsystem.getIo().setShooterVoltage(shortShootVoltage);
