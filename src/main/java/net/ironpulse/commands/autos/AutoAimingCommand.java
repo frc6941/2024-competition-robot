@@ -32,9 +32,8 @@ public class AutoAimingCommand extends Command {
 
     @Override
     public void execute() {
-        // if shooter beam break is on: shooting, do not aim
         // if not (indexer beam break on and not intaker beam break on): intaking, do not aim
-        if (beamBreakSubsystem.getInputs().isShooterBeamBreakOn || !(
+        if (!(
                 beamBreakSubsystem.getInputs().isIndexerBeamBreakOn &&
                         !beamBreakSubsystem.getInputs().isIntakerBeamBreakOn
         )) {
@@ -49,6 +48,7 @@ public class AutoAimingCommand extends Command {
                 targetPoseCameraSpace().
                 getTranslation().
                 getDistance(new Translation3d());
+        debug("Shooter:", "far => " + Constants.ShooterConstants.speakerArmOffsetFar.magnitude() + " normal => " + Constants.ShooterConstants.speakerArmOffset.magnitude() + " short => " + Constants.ShooterConstants.speakerArmOffsetNear.magnitude());
         if (distance >= Constants.ShooterConstants.shortShootMaxDistance.magnitude()) {
             offset = Constants.ShooterConstants.speakerArmOffsetFar.magnitude();
             debug("Shooter:", "far shoot: offset = " + offset);
