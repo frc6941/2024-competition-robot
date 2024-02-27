@@ -183,7 +183,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("AutoPreShoot",
                 new AutoPreShootCommand(shooterSubsystem, beamBreakSubsystem));
         NamedCommands.registerCommand("Mess",
-                new AutoMessCommand(intakerSubsystem, indexerSubsystem, shooterSubsystem));
+                new AutoMessCommand(intakerSubsystem, indexerSubsystem));
         autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
     }
 

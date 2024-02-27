@@ -255,15 +255,15 @@ public final class Constants {
                 .withSensorToMechanismRatio(8d / 64 * 16 / 64);
 
         public static final Measure<Voltage> shooterConstantVoltage = Volts.of(-2);
-        public static final Measure<Voltage> defaultShootVoltage = Volts.of(-9);
+        public static Measure<Voltage> defaultShootVoltage = Volts.of(-9);
         public static final Measure<Voltage> shortShootVoltage = Volts.of(-8);
-        public static Measure<Distance> shortShootMaxDistance = Meters.of(2.7);
+        public static final Measure<Distance> shortShootMaxDistance = Meters.of(2.7);
         public static final Measure<Voltage> farShootVoltage = Volts.of(-11);
         public static final Measure<Voltage> pullVoltage = Volts.of(-6);
 
-        public static Measure<Angle> speakerArmOffsetNear = Degrees.of(-43);
-        public static Measure<Angle> speakerArmOffset = Degrees.of(-48);
-        public static Measure<Angle> speakerArmOffsetFar = Degrees.of(-32);
+        public static final Measure<Angle> speakerArmOffsetNear = Degrees.of(-43);
+        public static final Measure<Angle> speakerArmOffset = Degrees.of(-48);
+        public static final Measure<Angle> speakerArmOffsetFar = Degrees.of(-32);
 
         public final static Measure<Angle> ampDeployAngle = Degrees.of(190);
         public static final Measure<Voltage> shooterUpDownVoltage = Volts.of(-4);
