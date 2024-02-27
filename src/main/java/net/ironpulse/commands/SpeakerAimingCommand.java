@@ -55,6 +55,7 @@ public class SpeakerAimingCommand extends Command {
                 targetPoseCameraSpace().
                 getTranslation().
                 getDistance(new Translation3d());
+        debug("Shooter:", "far => " + Constants.ShooterConstants.speakerArmOffsetFar.magnitude() + " normal => " + Constants.ShooterConstants.speakerArmOffset.magnitude() + " short => " + Constants.ShooterConstants.speakerArmOffsetNear.magnitude());
         if (distance >= Constants.ShooterConstants.shortShootMaxDistance.magnitude()) {
             offset = Constants.ShooterConstants.speakerArmOffsetFar.magnitude();
             debug("Shooter:", "far shoot: offset = " + offset);
@@ -77,7 +78,7 @@ public class SpeakerAimingCommand extends Command {
 
         if (Math.abs(
                 90 - target.position().getY() + offset -
-                        shooterSubsystem.getInputs().armPosition.in(Degrees)) >= 3) {
+                        shooterSubsystem.getInputs().armPosition.in(Degrees)) >= 0.5) {
             shooterSubsystem
                     .getIo()
                     .setArmPosition(
