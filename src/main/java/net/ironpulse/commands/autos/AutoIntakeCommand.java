@@ -10,6 +10,7 @@ import static edu.wpi.first.units.Units.Volts;
 import static net.ironpulse.Constants.IndexerConstants.indexVoltage;
 import static net.ironpulse.Constants.IntakerConstants.intakeVoltage;
 import static net.ironpulse.Constants.Logger.debug;
+import static net.ironpulse.utils.Utils.intaking;
 
 public class AutoIntakeCommand extends Command {
     private final IntakerSubsystem intakerSubsystem;
@@ -32,6 +33,7 @@ public class AutoIntakeCommand extends Command {
     public void initialize() {
         debug("AutoIntake", "start");
         timer.restart();
+        intaking = true;
     }
 
     @Override
@@ -45,6 +47,7 @@ public class AutoIntakeCommand extends Command {
         debug("AutoIntake", "end; elapsed=" + timer.get());
         intakerSubsystem.getIo().setIntakeVoltage(Volts.zero());
         indexerSubsystem.getIo().setIndexVoltage(Volts.zero());
+        intaking = false;
     }
 
     @Override

@@ -6,26 +6,32 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import net.ironpulse.subsystems.indexer.IndexerSubsystem;
 import net.ironpulse.subsystems.intaker.IntakerSubsystem;
+import net.ironpulse.subsystems.shooter.ShooterSubsystem;
 
+import static edu.wpi.first.units.Units.Radians;
 import static edu.wpi.first.units.Units.Volts;
 import static net.ironpulse.Constants.IndexerConstants.indexVoltage;
 import static net.ironpulse.Constants.IntakerConstants.intakeVoltage;
 import static net.ironpulse.Constants.ShooterConstants.defaultShootVoltage;
 import static net.ironpulse.Constants.ShooterConstants.shooterConstantVoltage;
+import static net.ironpulse.utils.Utils.autoShootVoltage;
 
 public class AutoMessCommand extends Command {
     private final IntakerSubsystem intakerSubsystem;
     private final IndexerSubsystem indexerSubsystem;
+    private final ShooterSubsystem shooterSubsystem;
     private final Measure<Voltage> originalShootVoltage;
 
     private final Timer timer = new Timer();
 
     public AutoMessCommand(
             IntakerSubsystem intakerSubsystem,
-            IndexerSubsystem indexerSubsystem
+            IndexerSubsystem indexerSubsystem,
+            ShooterSubsystem shooterSubsystem
     ) {
         this.intakerSubsystem = intakerSubsystem;
         this.indexerSubsystem = indexerSubsystem;
+        this.shooterSubsystem = shooterSubsystem;
         this.originalShootVoltage = defaultShootVoltage;
     }
 
@@ -38,12 +44,13 @@ public class AutoMessCommand extends Command {
     public void execute() {
         intakerSubsystem.getIo().setIntakeVoltage(intakeVoltage);
         indexerSubsystem.getIo().setIndexVoltage(indexVoltage);
-        defaultShootVoltage = shooterConstantVoltage;
+        shooterSubsystem.getIo().setArmPosition(Radians.zero());
+        autoShootVoltage = shooterConstantVoltage;
     }
 
     @Override
     public void end(boolean interrupted) {
-        defaultShootVoltage = originalShootVoltage;
+        autoShootVoltage = originalShootVoltage;
         intakerSubsystem.getIo().setIntakeVoltage(Volts.zero());
         indexerSubsystem.getIo().setIndexVoltage(Volts.zero());
     }

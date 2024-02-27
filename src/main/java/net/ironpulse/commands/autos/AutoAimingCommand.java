@@ -12,6 +12,7 @@ import net.ironpulse.subsystems.shooter.ShooterSubsystem;
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Radians;
 import static net.ironpulse.Constants.Logger.debug;
+import static net.ironpulse.utils.Utils.intaking;
 
 public class AutoAimingCommand extends Command {
     private final ShooterSubsystem shooterSubsystem;
@@ -33,10 +34,7 @@ public class AutoAimingCommand extends Command {
     @Override
     public void execute() {
         // if not (indexer beam break on and not intaker beam break on): intaking, do not aim
-        if (!(
-                beamBreakSubsystem.getInputs().isIndexerBeamBreakOn &&
-                        !beamBreakSubsystem.getInputs().isIntakerBeamBreakOn
-        )) {
+        if (intaking) {
             shooterSubsystem.getIo().setArmPosition(Radians.zero());
             return;
         }

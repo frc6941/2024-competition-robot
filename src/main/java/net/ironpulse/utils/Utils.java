@@ -1,8 +1,16 @@
 package net.ironpulse.utils;
 
+import edu.wpi.first.units.Measure;
+import edu.wpi.first.units.Voltage;
 import edu.wpi.first.wpilibj.DriverStation;
 
+import static edu.wpi.first.units.Units.Volts;
+
 public class Utils {
+    public static boolean intaking;
+
+    public static Measure<Voltage> autoShootVoltage = Volts.of(-9);
+
     public static boolean flip() {
         return DriverStation
                 .getAlliance()

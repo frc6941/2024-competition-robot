@@ -35,6 +35,7 @@ import net.ironpulse.subsystems.swerve.SwerveSubsystem;
 import net.ironpulse.utils.Utils;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
+import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Seconds;
 import static net.ironpulse.Constants.SwerveConstants.*;
 
@@ -135,11 +136,11 @@ public class RobotContainer {
                 )
         );
 
-        operatorController.x().whileTrue(new ShootWithoutAimingCommand(indicatorSubsystem, beamBreakSubsystem,
+        operatorController.b().whileTrue(new ShootWithoutAimingCommand(indicatorSubsystem, beamBreakSubsystem,
                 shooterSubsystem, indexerSubsystem, () -> operatorController.getHID().getRightBumper()));
-//        operatorController.b().whileTrue(new ParallelShootCommand(shooterSubsystem,
-//                indexerSubsystem, beamBreakSubsystem, indicatorSubsystem,
-//                () -> operatorController.getHID().getRightBumper(), Degrees.of(30)));
+        operatorController.x().whileTrue(new ParallelShootCommand(shooterSubsystem,
+                indexerSubsystem, beamBreakSubsystem, indicatorSubsystem,
+                () -> operatorController.getHID().getRightBumper(), Degrees.of(55)));
 //        operatorController.x().whileTrue(new ParallelShootCommand(shooterSubsystem,
 //                indexerSubsystem, beamBreakSubsystem, indicatorSubsystem,
 //                () -> operatorController.getHID().getRightBumper(), Degrees.of(46)));
@@ -198,7 +199,9 @@ public class RobotContainer {
         NamedCommands.registerCommand("AutoPreShoot",
                 new AutoPreShootCommand(shooterSubsystem, beamBreakSubsystem));
         NamedCommands.registerCommand("Mess",
-                new AutoMessCommand(intakerSubsystem, indexerSubsystem));
+                new AutoMessCommand(intakerSubsystem, indexerSubsystem, shooterSubsystem));
+        NamedCommands.registerCommand("ResetArm",
+                new ResetArmCommand(shooterSubsystem));
         autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
     }
 
