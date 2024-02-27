@@ -1,40 +1,43 @@
-package net.ironpulse.commands;
+package net.ironpulse.commands.climb;
 
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Voltage;
 import edu.wpi.first.wpilibj2.command.Command;
 import net.ironpulse.Constants;
+import net.ironpulse.subsystems.indicator.IndicatorIO;
+import net.ironpulse.subsystems.indicator.IndicatorSubsystem;
 import net.ironpulse.subsystems.shooter.ShooterSubsystem;
 
 import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.Volts;
 
-public class ClimbCommand extends Command {
+/**
+ * Climbs forever without stopping.
+ * Used in endgame.
+ */
+public class ClimbEndgameCommand extends Command {
     private final ShooterSubsystem shooterSubsystem;
-    private final boolean reverse;
+    private final IndicatorSubsystem indicatorSubsystem;
 
-    public ClimbCommand(
+    public ClimbEndgameCommand(
             ShooterSubsystem shooterSubsystem,
-            boolean reverse
+            IndicatorSubsystem indicatorSubsystem
     ) {
         this.shooterSubsystem = shooterSubsystem;
-        this.reverse = reverse;
+        this.indicatorSubsystem = indicatorSubsystem;
     }
 
 
     @Override
     public void initialize() {
         shooterSubsystem.getIo().setArmBrakeMode(true);
+        indicatorSubsystem.setPattern(IndicatorIO.Patterns.CLIMBING);
     }
 
     @Override
     public void execute() {
         Measure<Voltage> pullVoltage;
-        if (reverse) {
-            pullVoltage = Constants.ShooterConstants.pullVoltage.negate();
-        } else {
-            pullVoltage = Constants.ShooterConstants.pullVoltage;
-        }
+        pullVoltage = Constants.ShooterConstants.pullVoltage.negate();
         if (shooterSubsystem.getInputs().pullerTorqueCurrent.gt(Amps.of((50)))) {
             pullVoltage = Volts.zero();
         }
@@ -44,7 +47,5 @@ public class ClimbCommand extends Command {
     @Override
     public void end(boolean interrupted) {
         shooterSubsystem.getIo().setArmBrakeMode(false);
-        shooterSubsystem.getIo()
-                .setPullerVoltage(Volts.zero());
     }
 }

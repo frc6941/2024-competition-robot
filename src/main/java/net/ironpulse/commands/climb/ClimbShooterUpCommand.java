@@ -1,4 +1,4 @@
-package net.ironpulse.commands;
+package net.ironpulse.commands.climb;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import net.ironpulse.Constants;

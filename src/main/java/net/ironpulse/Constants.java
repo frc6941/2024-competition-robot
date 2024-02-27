@@ -96,6 +96,7 @@ public final class Constants {
         // private static final String CAN_BUS_NAME = "rio";
 
         private static final int PIGEON_ID = 1;
+        public static final Measure<Voltage> climbDriveVoltage = Volts.of(2);
 
         // Simulation only
         private static final double STEER_INERTIA = 0.00001;
