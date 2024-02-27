@@ -45,9 +45,9 @@ public final class Constants {
         public static final Measure<Velocity<Angle>> maxAngularRate = RotationsPerSecond.of(1.5 * Math.PI);
 
         public static final SlewRateLimiter xLimiter =
-                new SlewRateLimiter(1, -1.25, 0);
+                new SlewRateLimiter(3, -3.25, 0);
         public static final SlewRateLimiter yLimiter =
-                new SlewRateLimiter(1, -1.25, 0);
+                new SlewRateLimiter(3, -3.25, 0);
 
         // Swerve steering gains
         private static final Slot0Configs steerGains = new Slot0Configs()
@@ -286,10 +286,7 @@ public final class Constants {
 
         public static void debug(String... texts) {
             if (ENABLE_DEBUG) {
-                // FIXME
-                if (!texts[0].equals("Shooter:")) {
-                    System.out.println(String.join(" ", texts));
-                }
+                System.out.println(String.join(" ", texts));
             }
         }
     }
