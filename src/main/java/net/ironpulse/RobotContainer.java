@@ -146,8 +146,11 @@ public class RobotContainer {
 //        operatorController.y().whileTrue(new ParallelShootCommand(shooterSubsystem,
 //                indexerSubsystem, beamBreakSubsystem, indicatorSubsystem,
 //                () -> operatorController.getHID().getRightBumper(), Degrees.of(62)));
-        operatorController.a().whileTrue(new StartClimbCommand(shooterSubsystem, swerveSubsystem, indicatorSubsystem,
-                () -> operatorController.getHID().getYButton()));
+        operatorController.a().toggleOnTrue(
+                new StartClimbCommand(shooterSubsystem, swerveSubsystem, indicatorSubsystem,
+                        driverController, operatorController,
+                        () -> operatorController.getHID().getYButton())
+        );
 
         driverController.pov(180).whileTrue(new ShooterDownCommand(shooterSubsystem));
         driverController.pov(0).whileTrue(new ClimbShooterUpCommand(shooterSubsystem));
