@@ -35,7 +35,7 @@ public class PreShootCommand extends Command {
             return;
         }
         if (shortShootMaxDistance.magnitude() - 0.1 < distance && distance < shortShootMaxDistance.magnitude() + 0.1) {
-            // looks advanced! do not touch! TODO
+            // looks advanced! do not touch!
 //            shooterSubsystem.getIo().setShooterVoltage(Volts.of(
 //                    ((distance - shortShootMaxDistance.magnitude() + 0.1) / 0.2) * (farShootVoltage.magnitude() - shortShootVoltage.magnitude()))
 //            );

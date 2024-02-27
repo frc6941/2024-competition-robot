@@ -23,7 +23,7 @@ public class ClimbShooterUpCommand extends Command {
     @Override
     public void execute() {
         var voltage = Constants.ShooterConstants.shooterUpDownVoltage.mutableCopy().negate();
-        if (shooterSubsystem.getInputs().armPosition.minus(Radians.of(2.48)).gt(Radians.of(0.04))) {
+        if (shooterSubsystem.getInputs().armPosition.minus(Radians.of(2.52)).gt(Radians.of(0.04))) {
             voltage = Volts.zero();
         }
         shooterSubsystem.getIo()

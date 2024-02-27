@@ -27,16 +27,17 @@ public class ClimbDriveForwardCommand extends Command {
     public void execute() {
         swerveSubsystem.applyRequest(() ->
                 drive
-                        .withVelocityY(climbDriveVoltage.magnitude())
+                        .withVelocityX(climbDriveVoltage.magnitude())
         ).execute();
         var targetOptional = Limelight.getTarget();
         if (targetOptional.isEmpty()) return;
         var target = targetOptional.get();
         swerveSubsystem.applyRequest(() ->
                 drive
-                        .withVelocityY(climbDriveVoltage.magnitude())
+                        .withVelocityX(climbDriveVoltage.magnitude())
                         .withCurrentTx(target.position().getX())
         ).execute();
+        System.out.println(target.position().getDistance(target.botPoseWPIBlue().toPose2d().getTranslation()));
         if (target.position().getDistance(target.botPoseWPIBlue().toPose2d().getTranslation()) <= 10) {
             trust++;
         }
