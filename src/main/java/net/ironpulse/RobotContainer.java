@@ -38,7 +38,7 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Seconds;
 import static net.ironpulse.Constants.SwerveConstants.*;
-import static net.ironpulse.utils.Utils.blind;
+import static net.ironpulse.utils.Utils.*;
 
 public class RobotContainer {
     @Getter
@@ -141,7 +141,7 @@ public class RobotContainer {
                 shooterSubsystem, indexerSubsystem, () -> operatorController.getHID().getRightBumper()));
         operatorController.x().whileTrue(new ParallelShootCommand(shooterSubsystem,
                 indexerSubsystem, beamBreakSubsystem, indicatorSubsystem,
-                () -> operatorController.getHID().getRightBumper(), Degrees.of(55)));
+                () -> operatorController.getHID().getRightBumper(), Degrees.of(75)));
 //        operatorController.x().whileTrue(new ParallelShootCommand(shooterSubsystem,
 //                indexerSubsystem, beamBreakSubsystem, indicatorSubsystem,
 //                () -> operatorController.getHID().getRightBumper(), Degrees.of(46)));
@@ -149,7 +149,7 @@ public class RobotContainer {
 //                indexerSubsystem, beamBreakSubsystem, indicatorSubsystem,
 //                () -> operatorController.getHID().getRightBumper(), Degrees.of(62)));
         operatorController.a().toggleOnTrue(
-                new StartClimbCommand(shooterSubsystem, swerveSubsystem, indicatorSubsystem,
+                new StartClimbCommand(shooterSubsystem, indicatorSubsystem,
                         driverController, operatorController,
                         () -> operatorController.getHID().getYButton())
         );
@@ -159,24 +159,24 @@ public class RobotContainer {
         driverController.pov(90).whileTrue(new ClimbCommand(shooterSubsystem, false));
         driverController.pov(270).whileTrue(new ClimbCommand(shooterSubsystem, true));
 
-//        operatorController.pov(0).whileTrue(Commands.runOnce(() -> {
-//            Constants.ShooterConstants.speakerArmOffset = Constants.ShooterConstants.speakerArmOffset.plus(Degrees.of(0.5));
-//        }));
-//        operatorController.pov(90).whileTrue(Commands.runOnce(() -> {
-//            Constants.ShooterConstants.speakerArmOffsetNear = Constants.ShooterConstants.speakerArmOffsetNear.plus(Degrees.of(0.5));
-//        }));
-//        operatorController.pov(180).whileTrue(Commands.runOnce(() -> {
-//            Constants.ShooterConstants.speakerArmOffset = Constants.ShooterConstants.speakerArmOffset.minus(Degrees.of(0.5));
-//        }));
-//        operatorController.pov(270).whileTrue(Commands.runOnce(() -> {
-//            Constants.ShooterConstants.speakerArmOffsetNear = Constants.ShooterConstants.speakerArmOffsetNear.minus(Degrees.of(0.5));
-//        }));
-//        driverController.y().whileTrue(Commands.runOnce(() -> {
-//            Constants.ShooterConstants.speakerArmOffsetFar = Constants.ShooterConstants.speakerArmOffsetFar.plus(Degrees.of(0.5));
-//        }));
-//        driverController.a().whileTrue(Commands.runOnce(() -> {
-//            Constants.ShooterConstants.speakerArmOffsetFar = Constants.ShooterConstants.speakerArmOffsetFar.minus(Degrees.of(0.5));
-//        }));
+        operatorController.pov(0).whileTrue(Commands.runOnce(() -> {
+            Constants.ShooterConstants.speakerArmOffset = Constants.ShooterConstants.speakerArmOffset.plus(Degrees.of(0.5));
+        }));
+        operatorController.pov(0).whileTrue(Commands.runOnce(() -> {
+            Constants.ShooterConstants.speakerArmOffsetNear = Constants.ShooterConstants.speakerArmOffsetNear.plus(Degrees.of(0.5));
+        }));
+        operatorController.pov(180).whileTrue(Commands.runOnce(() -> {
+            Constants.ShooterConstants.speakerArmOffset = Constants.ShooterConstants.speakerArmOffset.minus(Degrees.of(0.5));
+        }));
+        operatorController.pov(90).whileTrue(Commands.runOnce(() -> {
+            Constants.ShooterConstants.speakerArmOffsetNear = Constants.ShooterConstants.speakerArmOffsetNear.minus(Degrees.of(0.5));
+        }));
+        driverController.y().whileTrue(Commands.runOnce(() -> {
+            Constants.ShooterConstants.speakerArmOffsetFar = Constants.ShooterConstants.speakerArmOffsetFar.plus(Degrees.of(0.5));
+        }));
+        driverController.a().whileTrue(Commands.runOnce(() -> {
+            Constants.ShooterConstants.speakerArmOffsetFar = Constants.ShooterConstants.speakerArmOffsetFar.minus(Degrees.of(0.5));
+        }));
         // Remember if you will, or, better still, forget it.
 //        operatorController.pov(0).toggleOnTrue(new ShootPlateCommand(
 //                shooterSubsystem,
@@ -259,7 +259,14 @@ public class RobotContainer {
         }
     }
 
+    public void configureStates() {
+        intaking = false;
+        blind = false;
+        armReachedClimb = false;
+    }
+
     public RobotContainer() {
+        configureStates();
         configureSubsystem();
         configureAutos();
         configureKeyBindings();

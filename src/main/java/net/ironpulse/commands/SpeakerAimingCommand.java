@@ -55,7 +55,8 @@ public class SpeakerAimingCommand extends Command {
                 targetPoseCameraSpace().
                 getTranslation().
                 getDistance(new Translation3d());
-        debug("Shooter:", "far => " + Constants.ShooterConstants.speakerArmOffsetFar.magnitude() + " normal => " + Constants.ShooterConstants.speakerArmOffset.magnitude() + " short => " + Constants.ShooterConstants.speakerArmOffsetNear.magnitude());
+        var angle = Units.radiansToDegrees(target.targetPoseCameraSpace().getRotation().getAngle());
+        debug("Shooter:", "distance => " + distance + " angle => " + angle + " far => " + Constants.ShooterConstants.speakerArmOffsetFar.magnitude() + " normal => " + Constants.ShooterConstants.speakerArmOffset.magnitude() + " short => " + Constants.ShooterConstants.speakerArmOffsetNear.magnitude());
         if (distance >= Constants.ShooterConstants.shortShootMaxDistance.magnitude()) {
             offset = Constants.ShooterConstants.speakerArmOffsetFar.magnitude();
             debug("Shooter:", "far shoot: offset = " + offset);
@@ -76,16 +77,18 @@ public class SpeakerAimingCommand extends Command {
             debug("Shooter:", "near shoot: offset = " + offset);
         }
 
+        if (angle >= 40) {
+            offset = offset - (angle - 40) / 10 * 3;
+        }
+
         if (Math.abs(
-                90 - target.position().getY() + offset -
-                        shooterSubsystem.getInputs().armPosition.in(Degrees)) >= 0.5) {
+                offset -
+                        shooterSubsystem.getInputs().armPosition.in(Degrees)) >= 2.0) {
             shooterSubsystem
                     .getIo()
                     .setArmPosition(
                             Radians.of(
-                                    Units.degreesToRadians(90 -
-                                            target.position().getY() +
-                                            offset))
+                                    Units.degreesToRadians(offset))
                     );
         }
 
@@ -98,7 +101,7 @@ public class SpeakerAimingCommand extends Command {
                                 Utils.sign(-driverController.getLeftX()) * maxSpeed.magnitude()
                                         * yLimiter.calculate(Math.abs(driverController.getLeftX()))
                         )
-                        .withCurrentTx(target.position().getX())
+                        .withCurrentTx(target.position().getX() * 1.6)
         ).execute();
     }
 

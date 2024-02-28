@@ -96,7 +96,6 @@ public final class Constants {
         // private static final String CAN_BUS_NAME = "rio";
 
         private static final int PIGEON_ID = 1;
-        public static final Measure<Voltage> climbDriveVoltage = Volts.of(2);
 
         // Simulation only
         private static final double STEER_INERTIA = 0.00001;
@@ -261,9 +260,9 @@ public final class Constants {
         public static final Measure<Voltage> farShootVoltage = Volts.of(-11);
         public static final Measure<Voltage> pullVoltage = Volts.of(-6);
 
-        public static Measure<Angle> speakerArmOffsetNear = Degrees.of(-43); // TODO
-        public static Measure<Angle> speakerArmOffset = Degrees.of(-59);
-        public static Measure<Angle> speakerArmOffsetFar = Degrees.of(-34);
+        public static Measure<Angle> speakerArmOffsetNear = Degrees.of(17); // TODO
+        public static Measure<Angle> speakerArmOffset = Degrees.of(44);
+        public static Measure<Angle> speakerArmOffsetFar = Degrees.of(58.5);
 
         public final static Measure<Angle> ampDeployAngle = Degrees.of(190);
         public static final Measure<Voltage> shooterUpDownVoltage = Volts.of(-4);

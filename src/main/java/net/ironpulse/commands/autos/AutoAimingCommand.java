@@ -70,7 +70,7 @@ public class AutoAimingCommand extends Command {
 
         if (Math.abs(
                 90 - target.position().getY() + offset -
-                        shooterSubsystem.getInputs().armPosition.in(Degrees)) >= 0.5) {
+                        shooterSubsystem.getInputs().armPosition.in(Degrees)) >= 2.0) {
             shooterSubsystem
                     .getIo()
                     .setArmPosition(
