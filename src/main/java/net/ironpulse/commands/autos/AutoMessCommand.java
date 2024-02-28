@@ -8,13 +8,13 @@ import net.ironpulse.subsystems.indexer.IndexerSubsystem;
 import net.ironpulse.subsystems.intaker.IntakerSubsystem;
 import net.ironpulse.subsystems.shooter.ShooterSubsystem;
 
-import static edu.wpi.first.units.Units.Radians;
 import static edu.wpi.first.units.Units.Volts;
 import static net.ironpulse.Constants.IndexerConstants.indexVoltage;
 import static net.ironpulse.Constants.IntakerConstants.intakeVoltage;
 import static net.ironpulse.Constants.ShooterConstants.defaultShootVoltage;
 import static net.ironpulse.Constants.ShooterConstants.shooterConstantVoltage;
 import static net.ironpulse.utils.Utils.autoShootVoltage;
+import static net.ironpulse.utils.Utils.blind;
 
 public class AutoMessCommand extends Command {
     private final IntakerSubsystem intakerSubsystem;
@@ -44,12 +44,13 @@ public class AutoMessCommand extends Command {
     public void execute() {
         intakerSubsystem.getIo().setIntakeVoltage(intakeVoltage);
         indexerSubsystem.getIo().setIndexVoltage(indexVoltage);
-        shooterSubsystem.getIo().setArmPosition(Radians.zero());
+        blind = true;
         autoShootVoltage = shooterConstantVoltage;
     }
 
     @Override
     public void end(boolean interrupted) {
+        blind = false;
         autoShootVoltage = originalShootVoltage;
         intakerSubsystem.getIo().setIntakeVoltage(Volts.zero());
         indexerSubsystem.getIo().setIndexVoltage(Volts.zero());

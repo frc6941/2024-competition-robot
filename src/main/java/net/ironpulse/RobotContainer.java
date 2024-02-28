@@ -38,6 +38,7 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Seconds;
 import static net.ironpulse.Constants.SwerveConstants.*;
+import static net.ironpulse.utils.Utils.blind;
 
 public class RobotContainer {
     @Getter
@@ -202,6 +203,10 @@ public class RobotContainer {
                 new AutoMessCommand(intakerSubsystem, indexerSubsystem, shooterSubsystem));
         NamedCommands.registerCommand("ResetArm",
                 new ResetArmCommand(shooterSubsystem));
+        NamedCommands.registerCommand("BlindStart",
+                Commands.runOnce(() -> blind = true));
+        NamedCommands.registerCommand("BlindEnd",
+                Commands.runOnce(() -> blind = false));
         autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
     }
 
