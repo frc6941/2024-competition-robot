@@ -10,6 +10,7 @@ import net.ironpulse.subsystems.shooter.ShooterSubsystem;
 
 import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.Volts;
+import static net.ironpulse.utils.Utils.armReachedClimb;
 
 /**
  * Climbs forever without stopping.
@@ -47,5 +48,6 @@ public class ClimbEndgameCommand extends Command {
     @Override
     public void end(boolean interrupted) {
         shooterSubsystem.getIo().setArmBrakeMode(false);
+        armReachedClimb = false;
     }
 }
