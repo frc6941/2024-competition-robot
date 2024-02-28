@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import net.ironpulse.Constants;
 import net.ironpulse.drivers.Limelight;
-import net.ironpulse.subsystems.beambreak.BeamBreakSubsystem;
 import net.ironpulse.subsystems.shooter.ShooterSubsystem;
 
 import static edu.wpi.first.units.Units.Degrees;
@@ -17,13 +16,11 @@ import static net.ironpulse.utils.Utils.intaking;
 
 public class AutoAimingCommand extends Command {
     private final ShooterSubsystem shooterSubsystem;
-    private final BeamBreakSubsystem beamBreakSubsystem;
 
     private final Timer timer = new Timer();
 
-    public AutoAimingCommand(ShooterSubsystem shooterSubsystem, BeamBreakSubsystem beamBreakSubsystem) {
+    public AutoAimingCommand(ShooterSubsystem shooterSubsystem) {
         this.shooterSubsystem = shooterSubsystem;
-        this.beamBreakSubsystem = beamBreakSubsystem;
     }
 
     @Override
@@ -47,7 +44,8 @@ public class AutoAimingCommand extends Command {
                 targetPoseCameraSpace().
                 getTranslation().
                 getDistance(new Translation3d());
-        debug("Shooter:", "far => " + Constants.ShooterConstants.speakerArmOffsetFar.magnitude() + " normal => " + Constants.ShooterConstants.speakerArmOffset.magnitude() + " short => " + Constants.ShooterConstants.speakerArmOffsetNear.magnitude());
+        var angle = Units.radiansToDegrees(target.targetPoseCameraSpace().getRotation().getAngle());
+        debug("Shooter:", "distance => " + distance + " angle => " + angle + " far => " + Constants.ShooterConstants.speakerArmOffsetFar.magnitude() + " normal => " + Constants.ShooterConstants.speakerArmOffset.magnitude() + " short => " + Constants.ShooterConstants.speakerArmOffsetNear.magnitude());
         if (distance >= Constants.ShooterConstants.shortShootMaxDistance.magnitude()) {
             offset = Constants.ShooterConstants.speakerArmOffsetFar.magnitude();
             debug("Shooter:", "far shoot: offset = " + offset);
@@ -68,16 +66,18 @@ public class AutoAimingCommand extends Command {
             debug("Shooter:", "near shoot: offset = " + offset);
         }
 
+        if (angle >= 40) {
+            offset = offset - (angle - 40) / 10 * 3;
+        }
+
         if (Math.abs(
-                90 - target.position().getY() + offset -
+                offset -
                         shooterSubsystem.getInputs().armPosition.in(Degrees)) >= 2.0) {
             shooterSubsystem
                     .getIo()
                     .setArmPosition(
                             Radians.of(
-                                    Units.degreesToRadians(90 -
-                                            target.position().getY() +
-                                            offset))
+                                    Units.degreesToRadians(offset))
                     );
         }
     }
