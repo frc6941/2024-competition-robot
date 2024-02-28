@@ -10,13 +10,9 @@ import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import com.pathplanner.lib.util.ReplanningConfig;
-import edu.wpi.first.math.Matrix;
-import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.numbers.N1;
-import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Time;
 import edu.wpi.first.wpilibj.Notifier;
@@ -70,16 +66,13 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
                         return;
                     }
                     var distanceToTag = target.targetPoseCameraSpace().relativeTo(target.botPoseWPIBlue()).getTranslation().getNorm();
-                    var distanceToTag2 = distanceToTag * distanceToTag;
-                    var defaultDevs = VecBuilder.fill(0.3, 0.3, Math.toRadians(45));
-                    Matrix<N3, N1> visionStdMatBuilder = new Matrix<>(Nat.N3(), Nat.N1());
-                    visionStdMatBuilder.set(0, 0, defaultDevs.get(0, 0) * distanceToTag2);
-                    visionStdMatBuilder.set(1, 0, defaultDevs.get(1, 0) * distanceToTag2);
-                    visionStdMatBuilder.set(2, 0, Math.atan(Math.tan(defaultDevs.get(2, 0)) * distanceToTag2 * distanceToTag));
+                    // Add to vision updates
+                    double xyStdDev = 0.1 * Math.pow(distanceToTag, 2.0);
+                    double thetaStdDev = 0.1 * Math.pow(distanceToTag, 2.0);
                     addVisionMeasurement(
                             target.botPoseWPIBlue().toPose2d(),
                             Microseconds.of(Logger.getTimestamp()).minus(target.latency()).in(Seconds),
-                            visionStdMatBuilder
+                            VecBuilder.fill(xyStdDev, xyStdDev, thetaStdDev)
                     );
                 });
     }

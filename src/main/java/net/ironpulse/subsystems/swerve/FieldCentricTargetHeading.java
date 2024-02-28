@@ -50,7 +50,7 @@ public class FieldCentricTargetHeading implements SwerveRequest {
     public SwerveModule.SteerRequestType SteerRequestType =
             SwerveModule.SteerRequestType.MotionMagic;
     public PhoenixPIDController HeadingController =
-            new PhoenixPIDController(0, 0, 0);
+            new PhoenixPIDController(140, 1, 1);
 
     @Override
     public StatusCode apply(

@@ -11,6 +11,8 @@ public class Utils {
 
     public static boolean blind = false;
 
+    public static boolean armReachedClimb = false;
+
     public static Measure<Voltage> autoShootVoltage = Volts.of(-9);
 
     public static boolean flip() {
