@@ -93,6 +93,7 @@ public class Robot extends LoggedRobot {
     public void teleopInit() {
         if (autonomousCommand == null) return;
         autonomousCommand.cancel();
+        robotContainer.configureStates();
     }
 
     @Override

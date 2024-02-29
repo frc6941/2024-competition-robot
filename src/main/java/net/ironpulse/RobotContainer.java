@@ -263,13 +263,13 @@ public class RobotContainer {
         intaking = false;
         blind = false;
         armReachedClimb = false;
+        indicatorSubsystem.setPattern(IndicatorIO.Patterns.NORMAL);
     }
 
     public RobotContainer() {
-        configureStates();
         configureSubsystem();
         configureAutos();
         configureKeyBindings();
-        indicatorSubsystem.setPattern(IndicatorIO.Patterns.NORMAL);
+        configureStates();
     }
 }
