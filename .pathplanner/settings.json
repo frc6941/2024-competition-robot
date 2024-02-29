@@ -7,7 +7,9 @@
     "Blue Left Far",
     "Blue Mid "
   ],
-  "autoFolders": [],
+  "autoFolders": [
+    "Middle"
+  ],
   "defaultMaxVel": 6.0,
   "defaultMaxAccel": 6.0,
   "defaultMaxAngVel": 540.0,

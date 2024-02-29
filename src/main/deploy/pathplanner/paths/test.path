@@ -4,28 +4,28 @@
     {
       "anchor": {
         "x": 0.71,
-        "y": 6.63
+        "y": 6.69
       },
       "prevControl": null,
       "nextControl": {
         "x": 1.2694352292257878,
-        "y": 7.375865310106255
+        "y": 7.435865310106255
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.973643711993307,
-        "y": 7.66
+        "x": 2.967562641007635,
+        "y": 7.7
       },
       "prevControl": {
-        "x": 1.895222097998691,
-        "y": 7.605859969952249
+        "x": 2.474995891168253,
+        "y": 7.663513574085972
       },
       "nextControl": {
-        "x": 4.6634013447255445,
-        "y": 7.74483094906701
+        "x": 3.48592288287249,
+        "y": 7.738397054952952
       },
       "isLocked": false,
       "linkedName": null
@@ -96,16 +96,16 @@
     },
     {
       "anchor": {
-        "x": 5.357423538376489,
-        "y": 4.5181610363220726
+        "x": 5.302693899505447,
+        "y": 4.77356601772027
       },
       "prevControl": {
-        "x": 4.259018765230947,
-        "y": 5.162338271700661
+        "x": 4.204289126359905,
+        "y": 5.417743253098859
       },
       "nextControl": {
-        "x": 6.465886912663643,
-        "y": 3.868084771702539
+        "x": 6.4111572737926,
+        "y": 4.123489753100737
       },
       "isLocked": false,
       "linkedName": null
@@ -128,7 +128,7 @@
     {
       "waypointRelativePos": 1.6,
       "rotationDegrees": 0,
-      "rotateFast": true
+      "rotateFast": false
     },
     {
       "waypointRelativePos": 3.0,
@@ -146,9 +146,14 @@
       "rotateFast": false
     },
     {
-      "waypointRelativePos": 0.75,
-      "rotationDegrees": 7.0,
-      "rotateFast": false
+      "waypointRelativePos": 0.55,
+      "rotationDegrees": 15.0,
+      "rotateFast": true
+    },
+    {
+      "waypointRelativePos": 1.15,
+      "rotationDegrees": 0.0,
+      "rotateFast": true
     }
   ],
   "constraintZones": [],
@@ -166,6 +171,9 @@
   },
   "reversed": false,
   "folder": "Blue Left",
-  "previewStartingState": null,
+  "previewStartingState": {
+    "rotation": 60.0,
+    "velocity": 0
+  },
   "useDefaultConstraints": true
 }

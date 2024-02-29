@@ -82,7 +82,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "New Path"
+                              "pathName": "S-N2"
                             }
                           },
                           {
@@ -132,7 +132,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "N1-NA"
+                              "pathName": "N1-NB"
                             }
                           },
                           {
@@ -151,7 +151,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "NA-SA"
+                              "pathName": "NB-SB"
                             }
                           },
                           {
@@ -178,6 +178,6 @@
       ]
     }
   },
-  "folder": null,
+  "folder": "Middle",
   "choreoAuto": false
 }
