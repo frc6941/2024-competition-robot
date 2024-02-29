@@ -77,8 +77,8 @@ public class SpeakerAimingCommand extends Command {
             debug("Shooter:", "near shoot: offset = " + offset);
         }
 
-        if (angle >= 40) {
-            offset = offset - (angle - 40) / 10 * 3;
+        if (angle >= 30) {
+            offset = offset + (angle - 30) / 10 * 5.5;
         }
 
         if (Math.abs(
