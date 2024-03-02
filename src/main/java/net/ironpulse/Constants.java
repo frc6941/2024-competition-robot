@@ -219,7 +219,7 @@ public final class Constants {
     public static class IntakerConstants {
         public static final int INTAKE_MOTOR_ID = 30;
 
-        public static final Measure<Voltage> intakeVoltage = Volts.of(-7.5);
+        public static final Measure<Voltage> intakeVoltage = Volts.of(-8.5);
     }
 
     public static class ShooterConstants {
