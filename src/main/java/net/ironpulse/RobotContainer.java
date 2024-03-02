@@ -142,12 +142,6 @@ public class RobotContainer {
         operatorController.x().whileTrue(new ParallelShootCommand(shooterSubsystem,
                 indexerSubsystem, beamBreakSubsystem, indicatorSubsystem,
                 () -> operatorController.getHID().getRightBumper(), Degrees.of(75)));
-//        operatorController.x().whileTrue(new ParallelShootCommand(shooterSubsystem,
-//                indexerSubsystem, beamBreakSubsystem, indicatorSubsystem,
-//                () -> operatorController.getHID().getRightBumper(), Degrees.of(46)));
-//        operatorController.y().whileTrue(new ParallelShootCommand(shooterSubsystem,
-//                indexerSubsystem, beamBreakSubsystem, indicatorSubsystem,
-//                () -> operatorController.getHID().getRightBumper(), Degrees.of(62)));
         operatorController.a().toggleOnTrue(
                 new StartClimbCommand(shooterSubsystem, indicatorSubsystem,
                         driverController, operatorController,
@@ -260,7 +254,7 @@ public class RobotContainer {
     }
 
     public void configureStates() {
-        intaking = false;
+        autoIntaking = false;
         blind = false;
         armReachedClimb = false;
         indicatorSubsystem.setPattern(IndicatorIO.Patterns.NORMAL);

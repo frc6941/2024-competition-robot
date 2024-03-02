@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import static edu.wpi.first.units.Units.Volts;
 
 public class Utils {
-    public static boolean intaking = false;
+    public static boolean autoIntaking = false;
 
     public static boolean blind = false;
 
