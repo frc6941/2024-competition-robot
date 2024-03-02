@@ -191,6 +191,8 @@ public class RobotContainer {
                 new AutoDeliverNoteCommand(indexerSubsystem, beamBreakSubsystem));
         NamedCommands.registerCommand("Intake",
                 new AutoIntakeCommand(intakerSubsystem, indexerSubsystem, beamBreakSubsystem));
+        NamedCommands.registerCommand("IntakeFar",
+                new AutoIntakeFarCommand(intakerSubsystem, indexerSubsystem, beamBreakSubsystem));
         NamedCommands.registerCommand("AutoPreShoot",
                 new AutoPreShootCommand(shooterSubsystem));
         NamedCommands.registerCommand("Mess",
