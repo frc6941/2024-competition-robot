@@ -15,8 +15,8 @@ public interface IndicatorIO {
      */
     enum Patterns {
         NORMAL(null),
-        FINISH_INTAKE(new BlinkingPattern(Color.kGreen, 0.5)),
-        SHOOTING(new ScannerPattern(Color.kRed, 2)),
+        FINISH_INTAKE(new BlinkingPattern(Color.kGreen, 0.1)),
+        SHOOTING(new ScannerPattern(Color.kRed, 2)), // unused
         FINISH_SHOOT(new BlinkingPattern(Color.kRed, 0.5)),
         SHOULD_AMPLIFY(new RainbowPattern()),
         AIMING(new BlinkingPattern(Color.kYellow, 0.5)),
