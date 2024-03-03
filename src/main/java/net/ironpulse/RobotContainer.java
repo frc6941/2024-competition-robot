@@ -148,10 +148,10 @@ public class RobotContainer {
                         () -> operatorController.getHID().getYButton())
         );
 
-        driverController.pov(180).whileTrue(new ShooterDownCommand(shooterSubsystem));
-        driverController.pov(0).whileTrue(new ClimbManualShooterUpCommand(shooterSubsystem));
-        driverController.pov(90).whileTrue(new ClimbCommand(shooterSubsystem, false));
-        driverController.pov(270).whileTrue(new ClimbCommand(shooterSubsystem, true));
+        operatorController.pov(180).whileTrue(new ShooterDownCommand(shooterSubsystem));
+        operatorController.pov(0).whileTrue(new ClimbManualShooterUpCommand(shooterSubsystem));
+        operatorController.pov(90).whileTrue(new ClimbCommand(shooterSubsystem, false));
+        operatorController.pov(270).whileTrue(new ClimbCommand(shooterSubsystem, true));
 
 //        operatorController.pov(0).whileTrue(Commands.runOnce(() -> {
 //            Constants.ShooterConstants.speakerArmOffset = Constants.ShooterConstants.speakerArmOffset.plus(Degrees.of(0.5));
