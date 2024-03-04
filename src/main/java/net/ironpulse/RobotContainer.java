@@ -86,7 +86,7 @@ public class RobotContainer {
 
         driverController.start().onTrue(swerveSubsystem.runOnce(swerveSubsystem::seedFieldRelative));
 
-        driverController.rightBumper().whileTrue(
+        driverController.rightBumper().toggleOnTrue(
                 Commands.sequence(
                         Commands.parallel(
                                 new IntakeCommand(intakerSubsystem, beamBreakSubsystem, indicatorSubsystem),
@@ -95,7 +95,7 @@ public class RobotContainer {
                         new RumbleCommand(Seconds.of(1), driverController.getHID(), operatorController.getHID())
                 )
         );
-        driverController.leftTrigger().whileTrue(
+        driverController.leftTrigger().toggleOnTrue(
                 Commands.sequence(
                         Commands.parallel(
                                 new IntakeCommand(intakerSubsystem, beamBreakSubsystem, indicatorSubsystem),
@@ -141,7 +141,7 @@ public class RobotContainer {
                 shooterSubsystem, indexerSubsystem, () -> operatorController.getHID().getRightBumper()));
         operatorController.x().whileTrue(new ParallelShootCommand(shooterSubsystem,
                 indexerSubsystem, beamBreakSubsystem, indicatorSubsystem,
-                () -> operatorController.getHID().getRightBumper(), Degrees.of(75)));
+                () -> operatorController.getHID().getRightBumper(), Degrees.of(95)));
         operatorController.a().toggleOnTrue(
                 new StartClimbCommand(shooterSubsystem, indicatorSubsystem,
                         driverController, operatorController,

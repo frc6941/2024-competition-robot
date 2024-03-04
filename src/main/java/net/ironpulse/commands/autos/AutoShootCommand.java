@@ -11,8 +11,8 @@ public class AutoShootCommand extends SequentialCommandGroup {
             BeamBreakSubsystem beamBreakSubsystem
     ) {
         addCommands(
-                new WaitCommand(0.8), // FIXME
+                new WaitCommand(0.8),
                 new AutoDeliverNoteCommand(indexerSubsystem, beamBreakSubsystem)
         );
-    } 
+    }
 }
