@@ -255,6 +255,7 @@ public final class Constants {
 
         public static final Measure<Voltage> shooterConstantVoltage = Volts.of(-2);
         public static final Measure<Voltage> defaultShootVoltage = Volts.of(-9);
+        public static final Measure<Voltage> ampShootingVoltage = Volts.of(-8);
         public static final Measure<Voltage> shortShootVoltage = Volts.of(-8);
         public static final Measure<Distance> shortShootMaxDistance = Meters.of(2.7);
         public static final Measure<Distance> shootMaxDistance = Meters.of(3.7);
@@ -266,7 +267,7 @@ public final class Constants {
         public static Measure<Angle> speakerArmOffsetFar = Degrees.of(58.5);
         public static Measure<Angle> speakerArmOffsetMax = Degrees.of(64);
 
-        public final static Measure<Angle> ampDeployAngle = Degrees.of(190);
+        public final static Measure<Angle> ampDeployAngle = Degrees.of(165);
         public static final Measure<Voltage> shooterUpDownVoltage = Volts.of(-4);
         public static final Measure<Voltage> shooterIndexVoltage = Volts.of(13);
     }

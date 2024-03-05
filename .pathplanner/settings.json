@@ -5,10 +5,12 @@
   "pathFolders": [
     "Blue Left",
     "Blue Left Far",
-    "Blue Mid "
-  ],  
+    "Blue Mid ",
+    "Blue Right"
+  ],
   "autoFolders": [
-    "Middle"
+    "Middle",
+    "Right"
   ],
   "defaultMaxVel": 6.0,
   "defaultMaxAccel": 6.0,

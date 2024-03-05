@@ -11,6 +11,7 @@ import net.ironpulse.subsystems.shooter.ShooterSubsystem;
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Radians;
 import static net.ironpulse.Constants.Logger.debug;
+import static net.ironpulse.Constants.ShooterConstants.shootMaxDistance;
 import static net.ironpulse.utils.Utils.autoIntaking;
 import static net.ironpulse.utils.Utils.blind;
 
@@ -46,9 +47,15 @@ public class AutoAimingCommand extends Command {
                 getDistance(new Translation3d());
         var angle = Units.radiansToDegrees(target.targetPoseCameraSpace().getRotation().getAngle());
         debug("Shooter:", "distance => " + distance + " angle => " + angle + " far => " + Constants.ShooterConstants.speakerArmOffsetFar.magnitude() + " normal => " + Constants.ShooterConstants.speakerArmOffset.magnitude() + " short => " + Constants.ShooterConstants.speakerArmOffsetNear.magnitude());
-        if (distance >= Constants.ShooterConstants.shortShootMaxDistance.magnitude()) {
-            offset = Constants.ShooterConstants.speakerArmOffsetFar.magnitude();
-            debug("Shooter:", "far shoot: offset = " + offset);
+        if (distance >= shootMaxDistance.magnitude()) {
+            offset = Constants.ShooterConstants.speakerArmOffsetMax.magnitude();
+            debug("Shooter:", "max shoot: offset = " + offset);
+        } else if (distance >= 2.7) {
+            offset = Constants.ShooterConstants.speakerArmOffsetFar.magnitude() +
+                    (distance - 2.7) / (shootMaxDistance.magnitude() - 2.7) *
+                            (Constants.ShooterConstants.speakerArmOffsetMax.magnitude() -
+                                    Constants.ShooterConstants.speakerArmOffsetFar.magnitude());
+            debug("Shooter:", "far: offset = " + offset);
         } else if (distance >= 2.1) {
             offset = Constants.ShooterConstants.speakerArmOffset.magnitude() +
                     (distance - 2.1) / (Constants.ShooterConstants.shortShootMaxDistance.magnitude() - 2.1) *
