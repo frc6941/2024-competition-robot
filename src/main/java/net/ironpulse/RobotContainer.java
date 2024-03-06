@@ -108,6 +108,8 @@ public class RobotContainer {
                 new IntakeOutCommand(intakerSubsystem),
                 new IndexOutCommand(indexerSubsystem)));
 
+        driverController.leftBumper().whileTrue(new ParallelShootWithDelayCommand(shooterSubsystem,
+                indexerSubsystem, beamBreakSubsystem, indicatorSubsystem, Degrees.of(20)));
 
         operatorController.rightTrigger().whileTrue(
                 Commands.sequence(

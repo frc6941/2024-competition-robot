@@ -19,7 +19,7 @@ public interface IndicatorIO {
         SHOOTING(new ScannerPattern(Color.kRed, 2)), // unused
         FINISH_SHOOT(new BlinkingPattern(Color.kRed, 0.5)),
         SHOULD_AMPLIFY(new RainbowPattern()),
-        AIMING(new BlinkingPattern(Color.kYellow, 0.5)),
+        AIMING(new BlinkingPattern(Color.kYellow, 0.05)),
         AIMED(new SolidColorPattern(Color.kYellow)),
         CAN_CLIMB(new BlinkingPattern(Color.kPurple, 0.2)),
         CLIMBING(new BlinkingPattern(Color.kViolet, 0.7));

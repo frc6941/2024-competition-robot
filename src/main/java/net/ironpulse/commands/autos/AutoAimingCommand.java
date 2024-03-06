@@ -39,7 +39,10 @@ public class AutoAimingCommand extends Command {
         }
         var targetOptional = Limelight.getTarget();
         var offset = Constants.ShooterConstants.speakerArmOffset.magnitude();
-        if (targetOptional.isEmpty()) return;
+        if (targetOptional.isEmpty()) {
+            shooterSubsystem.getIo().setArmPosition(Degrees.of(20));
+            return;
+        }
         var target = targetOptional.get();
         var distance = target.
                 targetPoseCameraSpace().
