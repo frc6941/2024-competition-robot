@@ -5,7 +5,7 @@
       "x": 0.7231572233013988,
       "y": 4.440615856320681
     },
-    "rotation": 0
+    "rotation": -60.0
   },
   "command": {
     "type": "sequential",
@@ -38,7 +38,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "M-N3"
+                              "pathName": "R-NE"
                             }
                           },
                           {
@@ -57,7 +57,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "N3-S"
+                              "pathName": "NE - SE"
                             }
                           },
                           {
@@ -82,7 +82,26 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "S-N2"
+                              "pathName": "SE - ND"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Intake"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "parallel",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "ND - SD"
                             }
                           },
                           {
@@ -107,7 +126,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "N2-N1"
+                              "pathName": "SD - N3"
                             }
                           },
                           {
@@ -117,56 +136,6 @@
                             }
                           }
                         ]
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "AutoShoot"
-                      }
-                    },
-                    {
-                      "type": "parallel",
-                      "data": {
-                        "commands": [
-                          {
-                            "type": "path",
-                            "data": {
-                              "pathName": "N1-NB"
-                            }
-                          },
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "Intake"
-                            }
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "type": "parallel",
-                      "data": {
-                        "commands": [
-                          {
-                            "type": "path",
-                            "data": {
-                              "pathName": "NB-SB"
-                            }
-                          },
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "Intake"
-                            }
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "AutoShoot"
                       }
                     }
                   ]
@@ -178,6 +147,6 @@
       ]
     }
   },
-  "folder": "Middle",
+  "folder": null,
   "choreoAuto": false
 }
