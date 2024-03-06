@@ -10,42 +10,9 @@
   "command": {
     "type": "sequential",
     "data": {
-      "commands": [
-        {
-          "type": "named",
-          "data": {
-            "name": "ResetArm"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "AutoPreShoot"
-                }
-              },
-              {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "AutoShoot"
-                      }
-                    }
-                  ]
-                }
-              }
-            ]
-          }
-        }
-      ]
+      "commands": []
     }
   },
-  "folder": null,
-  "choreoAuto": true
+  "folder": "Middle",
+  "choreoAuto": false
 }

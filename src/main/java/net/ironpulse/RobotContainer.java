@@ -201,9 +201,9 @@ public class RobotContainer {
                 new AutoMessCommand(intakerSubsystem, indexerSubsystem, shooterSubsystem));
         NamedCommands.registerCommand("ResetArm",
                 new ResetArmCommand(shooterSubsystem));
-        NamedCommands.registerCommand("BlindStart",
+        NamedCommands.registerCommand("StartBlind",
                 Commands.runOnce(() -> blind = true));
-        NamedCommands.registerCommand("BlindEnd",
+        NamedCommands.registerCommand("EndBlind",
                 Commands.runOnce(() -> blind = false));
         autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
     }
