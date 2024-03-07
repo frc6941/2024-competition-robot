@@ -50,14 +50,13 @@ public class SpeakerAimingCommand extends Command {
         var targetOptional = Limelight.getTarget();
         var offset = Constants.ShooterConstants.speakerArmOffset.magnitude();
         if (targetOptional.isEmpty()) return;
-        this.indicatorSubsystem.setPattern(IndicatorIO.Patterns.AIMED);
         var target = targetOptional.get();
-        var distance = target.
-                targetPoseCameraSpace().
-                getTranslation().
-                getDistance(new Translation3d());
+        var distance = target.targetPoseCameraSpace().getTranslation().getDistance(new Translation3d());
         var angle = Units.radiansToDegrees(target.targetPoseCameraSpace().getRotation().getAngle());
-        debug("Shooter:", "distance => " + distance + " angle => " + angle + " far => " + Constants.ShooterConstants.speakerArmOffsetFar.magnitude() + " normal => " + Constants.ShooterConstants.speakerArmOffset.magnitude() + " short => " + Constants.ShooterConstants.speakerArmOffsetNear.magnitude());
+        debug("Shooter:",
+                "targetId => " + target.tagId() +
+                        " distance => " + distance + " angle => " + angle);
+        this.indicatorSubsystem.setPattern(IndicatorIO.Patterns.AIMED);
         if (distance >= shootMaxDistance.magnitude()) {
             offset = Constants.ShooterConstants.speakerArmOffsetMax.magnitude();
             debug("Shooter:", "max shoot: offset = " + offset);

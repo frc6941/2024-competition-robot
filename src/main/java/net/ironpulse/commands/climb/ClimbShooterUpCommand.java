@@ -31,7 +31,7 @@ public class ClimbShooterUpCommand extends Command {
             voltage = Volts.zero();
             armReachedClimb = true;
         }
-        if (!timer.hasElapsed(0.75)) {
+        if (!timer.hasElapsed(0.3)) {
             shooterSubsystem.getIo()
                     .setPullerVoltage(Constants.ShooterConstants.pullVoltage);
         } else {
