@@ -3,20 +3,14 @@
   "startingPose": {
     "position": {
       "x": 0.71,
-      "y": 4.41
+      "y": 6.69
     },
-    "rotation": -60.0
+    "rotation": 60.0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
-          }
-        },
         {
           "type": "parallel",
           "data": {
@@ -35,25 +29,6 @@
                       "type": "named",
                       "data": {
                         "name": "AutoShoot"
-                      }
-                    },
-                    {
-                      "type": "parallel",
-                      "data": {
-                        "commands": [
-                          {
-                            "type": "path",
-                            "data": {
-                              "pathName": "R-NE"
-                            }
-                          },
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "Intake"
-                            }
-                          }
-                        ]
                       }
                     }
                   ]
