@@ -10,6 +10,7 @@ import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import com.pathplanner.lib.util.ReplanningConfig;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.units.Measure;
@@ -20,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import net.ironpulse.Constants;
+import net.ironpulse.drivers.LimelightHelpers;
 import net.ironpulse.utils.LocalADStarAK;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
@@ -58,21 +60,22 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
 
     @Override
     public void periodic() {
-//        Limelight.getTarget()
-//                .ifPresent(target -> {
-//                    if (isAutonomous()) {
-//                        return;
-//                    }
-//                    var distanceToTag = target.targetPoseCameraSpace().relativeTo(target.botPoseWPIBlue()).getTranslation().getNorm();
-//                    // Add to vision updates
-//                    double xyStdDev = 0.1 * Math.pow(distanceToTag, 2.0);
-//                    double thetaStdDev = 0.1 * Math.pow(distanceToTag, 2.0);
-//                    addVisionMeasurement(
-//                            target.botPoseWPIBlue().toPose2d(),
-//                            Microseconds.of(Logger.getTimestamp()).minus(target.latency()).in(Seconds),
-//                            VecBuilder.fill(xyStdDev, xyStdDev, thetaStdDev)
-//                    );
-//                });
+        boolean rejectUpdate = false;
+        LimelightHelpers.SetRobotOrientation("limelight", m_pigeon2.getAngle(), 0, 0, 0, 0, 0);
+        LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
+        if (Math.abs(m_pigeon2.getRate()) > 720) // if our angular velocity is greater than 720 degrees per second, ignore vision updates
+        {
+            rejectUpdate = true;
+        }
+        if (mt2.tagCount == 0) {
+            rejectUpdate = true;
+        }
+        if (!rejectUpdate) {
+            setVisionMeasurementStdDevs(VecBuilder.fill(.6, .6, 9999999));
+            addVisionMeasurement(
+                    mt2.pose,
+                    mt2.timestampSeconds);
+        }
     }
 
     private void configurePathPlanner() {
