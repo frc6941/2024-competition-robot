@@ -69,9 +69,17 @@ public class ShooterIOTalonFX implements ShooterIO {
         response = pullerTalon.clearStickyFaults();
         if (response.isError())
             System.out.println("Puller TalonFX failed sticky fault clearing with error" + response);
+        var shooterMotorConfig = new TalonFXConfiguration()
+                .withFeedback(pullerfeedbackConfigs);
+        response = leftShooterTalon.getConfigurator().apply(shooterMotorConfig);
+        if (response.isError())
+            System.out.println("Left Shooter TalonFX failed config with error" + response);
         response = leftShooterTalon.clearStickyFaults();
         if (response.isError())
             System.out.println("Left Shooter TalonFX failed sticky fault clearing with error" + response);
+        response = rightShooterTalon.getConfigurator().apply(shooterMotorConfig);
+        if (response.isError())
+            System.out.println("Right Shooter TalonFX failed config with error" + response);
         response = rightShooterTalon.clearStickyFaults();
         if (response.isError())
             System.out.println("Right Shooter TalonFX failed sticky fault clearing with error" + response);

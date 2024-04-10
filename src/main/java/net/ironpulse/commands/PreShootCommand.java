@@ -8,7 +8,6 @@ import net.ironpulse.Constants;
 import net.ironpulse.drivers.Limelight;
 import net.ironpulse.subsystems.shooter.ShooterSubsystem;
 
-import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Volts;
 import static net.ironpulse.Constants.ShooterConstants.*;
 
@@ -29,7 +28,6 @@ public class PreShootCommand extends Command {
     public void execute() {
         var targetOptional = Limelight.getTarget();
         if (targetOptional.isEmpty()) {
-            shooterSubsystem.getIo().setArmPosition(Degrees.of(20));
             shooterSubsystem.getIo().setShooterVoltage(defaultVoltage);
             return;
         }
