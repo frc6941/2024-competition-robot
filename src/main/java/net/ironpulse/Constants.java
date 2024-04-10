@@ -126,10 +126,10 @@ public final class Constants {
                 .withSteerMotorInverted(STEER_MOTOR_REVERSED);
 
         // Front Left
-        private static final int FRONT_LEFT_DRIVE_MOTOR_ID = 5;
-        private static final int FRONT_LEFT_STEER_MOTOR_ID = 3;
-        private static final int FRONT_LEFT_ENCODER_ID = 9;
-        private static final double FRONT_LEFT_ENCODER_OFFSET = 0.153809;
+        private static final int FRONT_LEFT_DRIVE_MOTOR_ID = 15;
+        private static final int FRONT_LEFT_STEER_MOTOR_ID = 14;
+        private static final int FRONT_LEFT_ENCODER_ID = 20;
+        private static final double FRONT_LEFT_ENCODER_OFFSET = 0.127686;
         // private static final double FRONT_LEFT_ENCODER_OFFSET = 0;
 
         private static final Measure<Distance> frontLeftXPos = Meters.of(0.5);
@@ -139,17 +139,17 @@ public final class Constants {
         private static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 2;
         private static final int FRONT_RIGHT_STEER_MOTOR_ID = 7;
         private static final int FRONT_RIGHT_ENCODER_ID = 21;
-        private static final double FRONT_RIGHT_ENCODER_OFFSET = 0.381592;
+        private static final double FRONT_RIGHT_ENCODER_OFFSET = 0.127686;
         // private static final double FRONT_RIGHT_ENCODER_OFFSET = 0;
 
         private static final Measure<Distance> frontRightXPos = Meters.of(0.5);
         private static final Measure<Distance> frontRightYPos = Meters.of(-0.5);
 
         // Back Left
-        private static final int BACK_LEFT_DRIVE_MOTOR_ID = 15;
-        private static final int BACK_LEFT_STEER_MOTOR_ID = 14;
-        private static final int BACK_LEFT_ENCODER_ID = 20;
-        private static final double BACK_LEFT_ENCODER_OFFSET = 0.162598;
+        private static final int BACK_LEFT_DRIVE_MOTOR_ID = 5;
+        private static final int BACK_LEFT_STEER_MOTOR_ID = 3;
+        private static final int BACK_LEFT_ENCODER_ID = 9;
+        private static final double BACK_LEFT_ENCODER_OFFSET = 0.401611;
         // private static final double BACK_LEFT_ENCODER_OFFSET = 0;
 
         private static final Measure<Distance> backLeftXPos = Meters.of(-0.5);
@@ -159,7 +159,7 @@ public final class Constants {
         private static final int BACK_RIGHT_DRIVE_MOTOR_ID = 10;
         private static final int BACK_RIGHT_STEER_MOTOR_ID = 6;
         private static final int BACK_RIGHT_ENCODER_ID = 12;
-        private static final double BACK_RIGHT_ENCODER_OFFSET = 0.430176;
+        private static final double BACK_RIGHT_ENCODER_OFFSET = -0.064453;
         // private static final double BACK_RIGHT_ENCODER_OFFSET = 0;
 
         private static final Measure<Distance> backRightXPos = Meters.of(-0.5);
@@ -196,7 +196,7 @@ public final class Constants {
                 BACK_RIGHT_ENCODER_OFFSET,
                 backRightXPos.magnitude(),
                 backRightYPos.magnitude(),
-                true);
+                false);
         public static final Slot0Configs headingGains = new Slot0Configs()
                 .withKP(0.04)
                 .withKI(0)
@@ -274,8 +274,8 @@ public final class Constants {
 
     public static class BeamBreakConstants {
         public final static int INTAKER_BEAM_BREAK_ID = 1;
-        public final static int INDEXER_BEAM_BREAK_ID = 3;
-        public final static int SHOOTER_BEAM_BREAK_ID = 2;
+        public final static int INDEXER_BEAM_BREAK_ID = 2;
+        public final static int SHOOTER_BEAM_BREAK_ID = 3;
     }
 
     public static class IndicatorConstants {
