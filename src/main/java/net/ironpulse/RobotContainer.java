@@ -34,6 +34,7 @@ import net.ironpulse.subsystems.shooter.ShooterSubsystem;
 import net.ironpulse.subsystems.swerve.SwerveSubsystem;
 import net.ironpulse.utils.Utils;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+import org.littletonrobotics.junction.networktables.LoggedDashboardNumber;
 
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Seconds;
@@ -57,6 +58,7 @@ public class RobotContainer {
     private IndicatorSubsystem indicatorSubsystem;
 
     private LoggedDashboardChooser<Command> autoChooser;
+    private final LoggedDashboardNumber shootAngle = new LoggedDashboardNumber("Shoot Angle", 0.0);
     private Command autoCommand = null;
 
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -154,6 +156,10 @@ public class RobotContainer {
         operatorController.pov(0).whileTrue(new ClimbManualShooterUpCommand(shooterSubsystem));
         operatorController.pov(90).whileTrue(new ClimbCommand(shooterSubsystem, false));
         operatorController.pov(270).whileTrue(new ClimbCommand(shooterSubsystem, true));
+
+//        driverController.pov(0).whileTrue(new ParallelShootCommand(shooterSubsystem,
+//                indexerSubsystem, beamBreakSubsystem, indicatorSubsystem,
+//                () -> driverController.getHID().getAButton(), shootAngle));
 
 //        operatorController.pov(0).whileTrue(Commands.runOnce(() -> {
 //            Constants.ShooterConstants.speakerArmOffset = Constants.ShooterConstants.speakerArmOffset.plus(Degrees.of(0.5));
