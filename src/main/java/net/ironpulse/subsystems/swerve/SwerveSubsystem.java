@@ -31,6 +31,7 @@ import java.util.function.Supplier;
 
 import static edu.wpi.first.units.Units.Microsecond;
 import static edu.wpi.first.units.Units.Seconds;
+import static edu.wpi.first.wpilibj.RobotState.isAutonomous;
 
 public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
     private static final Measure<Time> simLoopPeriod = Microsecond.of(5);
