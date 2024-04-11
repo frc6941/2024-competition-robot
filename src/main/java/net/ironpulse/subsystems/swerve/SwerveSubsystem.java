@@ -25,6 +25,7 @@ import net.ironpulse.drivers.LimelightHelpers;
 import net.ironpulse.utils.LocalADStarAK;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
+import static edu.wpi.first.wpilibj.RobotState.isAutonomous;
 
 import java.util.function.Supplier;
 
@@ -62,6 +63,9 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
     @Override
     public void periodic() {
         // Do not do: good enough
+        if (isAutonomous()) {
+            return;
+        }
         boolean rejectUpdate = false;
         LimelightHelpers.SetRobotOrientation("limelight", m_pigeon2.getAngle(), 0, 0, 0, 0, 0);
         LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
