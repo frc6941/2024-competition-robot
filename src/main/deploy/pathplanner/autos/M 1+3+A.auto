@@ -12,6 +12,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "ResetArm"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
