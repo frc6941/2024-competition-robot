@@ -98,20 +98,15 @@ public class RobotContainer {
                 )
         );
         driverController.leftTrigger().whileTrue(
-                Commands.sequence(
-                        Commands.parallel(
-                                new IntakeCommand(intakerSubsystem, beamBreakSubsystem, indicatorSubsystem),
-                                new IndexCommand(indexerSubsystem, beamBreakSubsystem)
-                        ),
-                        new RumbleCommand(Seconds.of(1), driverController.getHID(), operatorController.getHID())
-                )
+                new ParallelShootWithDelayCommand(shooterSubsystem,
+                        indexerSubsystem, beamBreakSubsystem, indicatorSubsystem, Degrees.of(20))
         );
         driverController.rightTrigger().whileTrue(Commands.parallel(
                 new IntakeOutCommand(intakerSubsystem),
                 new IndexOutCommand(indexerSubsystem)));
 
-        driverController.leftBumper().whileTrue(new ParallelShootWithDelayCommand(shooterSubsystem,
-                indexerSubsystem, beamBreakSubsystem, indicatorSubsystem, Degrees.of(20)));
+        driverController.leftBumper().whileTrue(new HighShootCommand(shooterSubsystem,
+                indexerSubsystem, beamBreakSubsystem, indicatorSubsystem));
 
         operatorController.rightTrigger().whileTrue(
                 Commands.sequence(
@@ -156,10 +151,6 @@ public class RobotContainer {
         operatorController.pov(0).whileTrue(new ClimbManualShooterUpCommand(shooterSubsystem));
         operatorController.pov(90).whileTrue(new ClimbCommand(shooterSubsystem, false));
         operatorController.pov(270).whileTrue(new ClimbCommand(shooterSubsystem, true));
-
-//        driverController.pov(0).whileTrue(new ParallelShootCommand(shooterSubsystem,
-//                indexerSubsystem, beamBreakSubsystem, indicatorSubsystem,
-//                () -> driverController.getHID().getAButton(), shootAngle));
 
 //        operatorController.pov(0).whileTrue(Commands.runOnce(() -> {
 //            Constants.ShooterConstants.speakerArmOffset = Constants.ShooterConstants.speakerArmOffset.plus(Degrees.of(0.5));

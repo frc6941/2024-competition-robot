@@ -30,6 +30,7 @@ import java.util.function.Supplier;
 
 import static edu.wpi.first.units.Units.Microsecond;
 import static edu.wpi.first.units.Units.Seconds;
+import static edu.wpi.first.wpilibj.RobotState.isAutonomous;
 
 public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
     private static final Measure<Time> simLoopPeriod = Microsecond.of(5);
@@ -62,6 +63,9 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
     @Override
     public void periodic() {
         // Do not do: good enough
+        if (isAutonomous()) {
+
+        }
         boolean rejectUpdate = false;
         LimelightHelpers.SetRobotOrientation("limelight", m_pigeon2.getAngle(), 0, 0, 0, 0, 0);
         LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
