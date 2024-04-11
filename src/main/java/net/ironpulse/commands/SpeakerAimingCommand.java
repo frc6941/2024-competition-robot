@@ -75,10 +75,12 @@ public class SpeakerAimingCommand extends Command {
 
         // Calculated using highly-sophisticated software.
         // Do not touch unless you (really) know what you're doing!
-        offset = -297 + 573.9 * distance - 427.3 * Math.pow(distance, 2) + 168.9 * Math.pow(distance, 3) - 33.43 * Math.pow(distance, 4) + 2.593 * Math.pow(distance, 5);
-        if (distance >= 3.55) {
-            offset = 65.5;
-        }
+//        offset = -297 + 573.9 * distance - 427.3 * Math.pow(distance, 2) + 168.9 * Math.pow(distance, 3) - 33.43 * Math.pow(distance, 4) + 2.593 * Math.pow(distance, 5);
+        double A1 = 18.43145;
+        double A2 = 67.62172;
+        double x0 = 2.07751;
+        double p = 5.16297;
+        offset = A2 + (A1 - A2) / (1 + Math.pow(distance / x0, p));
         debug("Shooter:", "offset = " + offset);
         if (0 > offset || offset > 180) {
             debug("Shooter:", "wtf?");

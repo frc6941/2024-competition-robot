@@ -54,12 +54,14 @@ public class SwerveSubsystem extends SwerveDrivetrain implements Subsystem {
             if (response.isError())
                 System.out.println("Swerve Steer " + i + " failed sticky fault clearing with error" + response);
         }
+        m_pigeon2.reset();
         if (!Utils.isSimulation()) return;
         startSimThread();
     }
 
     @Override
     public void periodic() {
+        // Do not do: good enough
         boolean rejectUpdate = false;
         LimelightHelpers.SetRobotOrientation("limelight", m_pigeon2.getAngle(), 0, 0, 0, 0, 0);
         LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
