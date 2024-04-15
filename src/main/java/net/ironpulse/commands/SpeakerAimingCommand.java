@@ -1,12 +1,15 @@
 package net.ironpulse.commands;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.Angle;
+import edu.wpi.first.units.Measure;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import net.ironpulse.Constants;
-import net.ironpulse.drivers.Limelight;
+import net.ironpulse.drivers.LimelightHelpers;
 import net.ironpulse.subsystems.indicator.IndicatorIO;
 import net.ironpulse.subsystems.indicator.IndicatorSubsystem;
 import net.ironpulse.subsystems.shooter.ShooterSubsystem;
@@ -17,7 +20,6 @@ import net.ironpulse.utils.Utils;
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Radians;
 import static net.ironpulse.Constants.Logger.debug;
-import static net.ironpulse.Constants.ShooterConstants.shootMaxDistance;
 import static net.ironpulse.Constants.SwerveConstants.*;
 
 public class SpeakerAimingCommand extends Command {
@@ -25,6 +27,7 @@ public class SpeakerAimingCommand extends Command {
     private final IndicatorSubsystem indicatorSubsystem;
     private final SwerveSubsystem swerveSubsystem;
     private final CommandXboxController driverController;
+    private Measure<Angle> defaultAngle = Degrees.of(20);
     private final FieldCentricTargetHeading drive = new FieldCentricTargetHeading()
             .withDeadband(maxSpeed.magnitude() * 0.1)
             .withRotationalDeadband(0)
@@ -45,52 +48,50 @@ public class SpeakerAimingCommand extends Command {
     }
 
     @Override
+    public void initialize() {
+        defaultAngle = Degrees.of(20);
+    }
+
+    @Override
     public void execute() {
         this.indicatorSubsystem.setPattern(IndicatorIO.Patterns.AIMING);
-        var targetOptional = Limelight.getTarget();
         var offset = Constants.ShooterConstants.speakerArmOffset.magnitude();
-        if (targetOptional.isEmpty()) return;
-        var target = targetOptional.get();
-        var distance = target.targetPoseCameraSpace().getTranslation().getDistance(new Translation3d());
-        var angle = Units.radiansToDegrees(target.targetPoseCameraSpace().getRotation().getAngle());
+        boolean hasTarget = LimelightHelpers.getTV("limelight");
+        if (!hasTarget) {
+            shooterSubsystem.getIo().setArmPosition(defaultAngle);
+            return;
+        }
+        Pose3d target = LimelightHelpers.getTargetPose3d_CameraSpace("limelight");
+        var distance = target.getTranslation().getDistance(new Translation3d());
+        var angle = Units.radiansToDegrees(target.getRotation().getAngle());
+        if (distance == 0) {
+            debug("Shooter:", "wtf?");
+            shooterSubsystem.getIo().setArmPosition(defaultAngle);
+            return;
+        }
         debug("Shooter:",
-                "targetId => " + target.tagId() +
-                        " distance => " + distance + " angle => " + angle);
+                " distance => " + distance + " angle => " + angle);
         this.indicatorSubsystem.setPattern(IndicatorIO.Patterns.AIMED);
-        if (distance >= shootMaxDistance.magnitude()) {
-            offset = Constants.ShooterConstants.speakerArmOffsetMax.magnitude();
-            debug("Shooter:", "max shoot: offset = " + offset);
-        } else if (distance >= 2.7) {
-            offset = Constants.ShooterConstants.speakerArmOffsetFar.magnitude() +
-                    (distance - 2.7) / (shootMaxDistance.magnitude() - 2.7) *
-                            (Constants.ShooterConstants.speakerArmOffsetMax.magnitude() -
-                                    Constants.ShooterConstants.speakerArmOffsetFar.magnitude());
-            debug("Shooter:", "far: offset = " + offset);
-        } else if (distance >= 2.1) {
-            offset = Constants.ShooterConstants.speakerArmOffset.magnitude() +
-                    (distance - 2.1) / (Constants.ShooterConstants.shortShootMaxDistance.magnitude() - 2.1) *
-                            (Constants.ShooterConstants.speakerArmOffsetFar.magnitude() -
-                                    Constants.ShooterConstants.speakerArmOffset.magnitude());
-            debug("Shooter:", "far but not too far: offset = " + offset);
-        } else if (distance >= 1.3) {
-            offset = Constants.ShooterConstants.speakerArmOffsetNear.magnitude() +
-                    (distance - 1.3) / (2.1 - 1.3) *
-                            (Constants.ShooterConstants.speakerArmOffset.magnitude() -
-                                    Constants.ShooterConstants.speakerArmOffsetNear.magnitude());
-            debug("Shooter:", "near but not too near: offset = " + offset);
-        } else {
-            offset = Constants.ShooterConstants.speakerArmOffsetNear.magnitude();
-            debug("Shooter:", "near shoot: offset = " + offset);
-        }
 
-        if (angle >= 40) {
-            offset = offset - (angle - 40) / 10 * 3;
+        // Calculated using highly-sophisticated software.
+        // Do not touch unless you (really) know what you're doing!
+//        offset = -297 + 573.9 * distance - 427.3 * Math.pow(distance, 2) + 168.9 * Math.pow(distance, 3) - 33.43 * Math.pow(distance, 4) + 2.593 * Math.pow(distance, 5);
+        double A1 = 18.43145;
+        double A2 = 67.62172;
+        double x0 = 2.07751;
+        double p = 5.16297;
+        offset = A2 + (A1 - A2) / (1 + Math.pow(distance / x0, p));
+        debug("Shooter:", "offset = " + offset);
+        if (0 > offset || offset > 180) {
+            debug("Shooter:", "wtf?");
+            shooterSubsystem.getIo().setArmPosition(defaultAngle);
+            return;
         }
-
 
         if (Math.abs(
                 offset -
-                        shooterSubsystem.getInputs().armPosition.in(Degrees)) >= 2.0) {
+                        shooterSubsystem.getInputs().armPosition.in(Degrees)) >= 0.5) {
+            defaultAngle = Degrees.of(offset);
             shooterSubsystem
                     .getIo()
                     .setArmPosition(
@@ -108,7 +109,7 @@ public class SpeakerAimingCommand extends Command {
                                 Utils.sign(-driverController.getLeftX()) * maxSpeed.magnitude()
                                         * yLimiter.calculate(Math.abs(driverController.getLeftX()))
                         )
-                        .withCurrentTx(target.position().getX() * 1.6)
+                        .withCurrentTx(LimelightHelpers.getTX("limelight") * 1.6)
         ).execute();
     }
 

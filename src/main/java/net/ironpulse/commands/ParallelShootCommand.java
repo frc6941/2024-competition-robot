@@ -9,6 +9,7 @@ import net.ironpulse.subsystems.beambreak.BeamBreakSubsystem;
 import net.ironpulse.subsystems.indexer.IndexerSubsystem;
 import net.ironpulse.subsystems.indicator.IndicatorSubsystem;
 import net.ironpulse.subsystems.shooter.ShooterSubsystem;
+import org.littletonrobotics.junction.networktables.LoggedDashboardNumber;
 
 import java.util.function.BooleanSupplier;
 
@@ -25,6 +26,24 @@ public class ParallelShootCommand extends ParallelCommandGroup {
     ) {
         addCommands(
                 new ParallelAimingCommand(shooterSubsystem, angle),
+                new PreShootWithoutAimingCommand(shooterSubsystem, farShootVoltage),
+                Commands.sequence(
+                        new WaitUntilCommand(confirmation),
+                        new DeliverNoteCommand(indexerSubsystem, beamBreakSubsystem, indicatorSubsystem)
+                )
+        );
+    }
+
+    public ParallelShootCommand(
+            ShooterSubsystem shooterSubsystem,
+            IndexerSubsystem indexerSubsystem,
+            BeamBreakSubsystem beamBreakSubsystem,
+            IndicatorSubsystem indicatorSubsystem,
+            BooleanSupplier confirmation,
+            LoggedDashboardNumber angle
+    ) {
+        addCommands(
+                new TestParallelAimingCommand(shooterSubsystem, angle),
                 new PreShootWithoutAimingCommand(shooterSubsystem, farShootVoltage),
                 Commands.sequence(
                         new WaitUntilCommand(confirmation),

@@ -34,6 +34,7 @@ import net.ironpulse.subsystems.shooter.ShooterSubsystem;
 import net.ironpulse.subsystems.swerve.SwerveSubsystem;
 import net.ironpulse.utils.Utils;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+import org.littletonrobotics.junction.networktables.LoggedDashboardNumber;
 
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Seconds;
@@ -57,6 +58,7 @@ public class RobotContainer {
     private IndicatorSubsystem indicatorSubsystem;
 
     private LoggedDashboardChooser<Command> autoChooser;
+    private final LoggedDashboardNumber shootAngle = new LoggedDashboardNumber("Shoot Angle", 0.0);
     private Command autoCommand = null;
 
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -96,20 +98,15 @@ public class RobotContainer {
                 )
         );
         driverController.leftTrigger().whileTrue(
-                Commands.sequence(
-                        Commands.parallel(
-                                new IntakeCommand(intakerSubsystem, beamBreakSubsystem, indicatorSubsystem),
-                                new IndexCommand(indexerSubsystem, beamBreakSubsystem)
-                        ),
-                        new RumbleCommand(Seconds.of(1), driverController.getHID(), operatorController.getHID())
-                )
+                new ParallelShootWithDelayCommand(shooterSubsystem,
+                        indexerSubsystem, beamBreakSubsystem, indicatorSubsystem, Degrees.of(20))
         );
         driverController.rightTrigger().whileTrue(Commands.parallel(
                 new IntakeOutCommand(intakerSubsystem),
                 new IndexOutCommand(indexerSubsystem)));
 
-        driverController.leftBumper().whileTrue(new ParallelShootWithDelayCommand(shooterSubsystem,
-                indexerSubsystem, beamBreakSubsystem, indicatorSubsystem, Degrees.of(20)));
+        driverController.leftBumper().whileTrue(new HighShootCommand(shooterSubsystem,
+                indexerSubsystem, beamBreakSubsystem, indicatorSubsystem));
 
         operatorController.rightTrigger().whileTrue(
                 Commands.sequence(

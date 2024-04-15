@@ -1,17 +1,19 @@
 package net.ironpulse.commands.autos;
 
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.Angle;
+import edu.wpi.first.units.Measure;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import net.ironpulse.Constants;
-import net.ironpulse.drivers.Limelight;
+import net.ironpulse.drivers.LimelightHelpers;
 import net.ironpulse.subsystems.shooter.ShooterSubsystem;
 
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Radians;
 import static net.ironpulse.Constants.Logger.debug;
-import static net.ironpulse.Constants.ShooterConstants.shootMaxDistance;
 import static net.ironpulse.utils.Utils.autoIntaking;
 import static net.ironpulse.utils.Utils.blind;
 
@@ -19,6 +21,7 @@ public class AutoAimingCommand extends Command {
     private final ShooterSubsystem shooterSubsystem;
 
     private final Timer timer = new Timer();
+    private Measure<Angle> defaultAngle = Degrees.of(20);
 
     public AutoAimingCommand(ShooterSubsystem shooterSubsystem) {
         this.shooterSubsystem = shooterSubsystem;
@@ -28,6 +31,7 @@ public class AutoAimingCommand extends Command {
     public void initialize() {
         debug("AutoAimingCommand", "start");
         timer.restart();
+        defaultAngle = Degrees.of(20);
     }
 
     @Override
@@ -37,52 +41,42 @@ public class AutoAimingCommand extends Command {
             shooterSubsystem.getIo().setArmPosition(Radians.zero());
             return;
         }
-        var targetOptional = Limelight.getTarget();
         var offset = Constants.ShooterConstants.speakerArmOffset.magnitude();
-        if (targetOptional.isEmpty()) {
-            shooterSubsystem.getIo().setArmPosition(Degrees.of(20));
+        boolean hasTarget = LimelightHelpers.getTV("limelight");
+        if (!hasTarget) {
+            shooterSubsystem.getIo().setArmPosition(defaultAngle);
             return;
         }
-        var target = targetOptional.get();
-        var distance = target.
-                targetPoseCameraSpace().
-                getTranslation().
-                getDistance(new Translation3d());
-        var angle = Units.radiansToDegrees(target.targetPoseCameraSpace().getRotation().getAngle());
-        debug("Shooter:", "distance => " + distance + " angle => " + angle + " far => " + Constants.ShooterConstants.speakerArmOffsetFar.magnitude() + " normal => " + Constants.ShooterConstants.speakerArmOffset.magnitude() + " short => " + Constants.ShooterConstants.speakerArmOffsetNear.magnitude());
-        if (distance >= shootMaxDistance.magnitude()) {
-            offset = Constants.ShooterConstants.speakerArmOffsetMax.magnitude();
-            debug("Shooter:", "max shoot: offset = " + offset);
-        } else if (distance >= 2.7) {
-            offset = Constants.ShooterConstants.speakerArmOffsetFar.magnitude() +
-                    (distance - 2.7) / (shootMaxDistance.magnitude() - 2.7) *
-                            (Constants.ShooterConstants.speakerArmOffsetMax.magnitude() -
-                                    Constants.ShooterConstants.speakerArmOffsetFar.magnitude());
-            debug("Shooter:", "far: offset = " + offset);
-        } else if (distance >= 2.1) {
-            offset = Constants.ShooterConstants.speakerArmOffset.magnitude() +
-                    (distance - 2.1) / (Constants.ShooterConstants.shortShootMaxDistance.magnitude() - 2.1) *
-                            (Constants.ShooterConstants.speakerArmOffsetFar.magnitude() -
-                                    Constants.ShooterConstants.speakerArmOffset.magnitude());
-            debug("Shooter:", "far but not too far: offset = " + offset);
-        } else if (distance >= 1.3) {
-            offset = Constants.ShooterConstants.speakerArmOffsetNear.magnitude() +
-                    (distance - 1.3) / (2.1 - 1.3) *
-                            (Constants.ShooterConstants.speakerArmOffset.magnitude() -
-                                    Constants.ShooterConstants.speakerArmOffsetNear.magnitude());
-            debug("Shooter:", "near but not too near: offset = " + offset);
-        } else {
-            offset = Constants.ShooterConstants.speakerArmOffsetNear.magnitude();
-            debug("Shooter:", "near shoot: offset = " + offset);
+        Pose3d target = LimelightHelpers.getTargetPose3d_CameraSpace("limelight");
+        var distance = target.getTranslation().getDistance(new Translation3d());
+        var angle = Units.radiansToDegrees(target.getRotation().getAngle());
+        if (distance == 0) {
+            debug("Shooter:", "wtf?");
+            shooterSubsystem.getIo().setArmPosition(defaultAngle);
+            return;
         }
+        debug("Shooter:",
+                " distance => " + distance + " angle => " + angle);
 
-        if (angle >= 40) {
-            offset = offset - (angle - 40) / 10 * 3;
+        // Calculated using highly-sophisticated software.
+        // Do not touch unless you (really) know what you're doing!
+//        offset = -297 + 573.9 * distance - 427.3 * Math.pow(distance, 2) + 168.9 * Math.pow(distance, 3) - 33.43 * Math.pow(distance, 4) + 2.593 * Math.pow(distance, 5);
+        double A1 = 18.43145;
+        double A2 = 67.62172;
+        double x0 = 2.07751;
+        double p = 5.16297;
+        offset = A2 + (A1 - A2) / (1 + Math.pow(distance / x0, p));
+        debug("Shooter:", "offset = " + offset);
+        if (0 > offset || offset > 180) {
+            debug("Shooter:", "wtf?");
+            shooterSubsystem.getIo().setArmPosition(defaultAngle);
+            return;
         }
 
         if (Math.abs(
                 offset -
-                        shooterSubsystem.getInputs().armPosition.in(Degrees)) >= 2.0) {
+                        shooterSubsystem.getInputs().armPosition.in(Degrees)) >= 0.5) {
+            defaultAngle = Degrees.of(offset);
             shooterSubsystem
                     .getIo()
                     .setArmPosition(
